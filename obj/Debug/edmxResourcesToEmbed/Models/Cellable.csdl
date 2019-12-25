@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CellableModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Carrier">
+    <Key>
+      <PropertyRef Name="CarrierId" />
+    </Key>
+    <Property Name="CarrierId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CarrierName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="UserPhones" Relationship="Self.FK_171" FromRole="Carrier" ToRole="UserPhone" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="OrderID" />
+    </Key>
+    <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="OrderStatusId" Type="Int32" Nullable="false" />
+    <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PaymentTypeId" Type="Int32" />
+    <Property Name="PromoId" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="Self.FK_106" FromRole="Orders" ToRole="User" />
+    <NavigationProperty Name="OrderStatu" Relationship="Self.FK_151" FromRole="Orders" ToRole="OrderStatus" />
+    <NavigationProperty Name="PaymentType" Relationship="Self.FK_Orders_PaymentTypes" FromRole="Orders" ToRole="PaymentTypes" />
+    <NavigationProperty Name="Promo" Relationship="Self.FK_Orders_Promos" FromRole="Orders" ToRole="Promos" />
+  </EntityType>
+  <EntityType Name="OrderStatu">
+    <Key>
+      <PropertyRef Name="OrderStatusId" />
+    </Key>
+    <Property Name="OrderStatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StatusType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK_151" FromRole="OrderStatus" ToRole="Orders" />
+  </EntityType>
+  <EntityType Name="PaymentType">
+    <Key>
+      <PropertyRef Name="PaymentTypeId" />
+    </Key>
+    <Property Name="PaymentTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PaymentType1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_PaymentTypes" FromRole="PaymentTypes" ToRole="Orders" />
+  </EntityType>
+  <EntityType Name="Permission">
+    <Key>
+      <PropertyRef Name="PermissionId" />
+    </Key>
+    <Property Name="PermissionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PermissionType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_178" FromRole="Permissions" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Phone">
+    <Key>
+      <PropertyRef Name="PhoneId" />
+    </Key>
+    <Property Name="PhoneId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="PhoneVersions" Relationship="Self.FK__PhoneVers__Phone__5070F446" FromRole="Phones" ToRole="PhoneVersion" />
+    <NavigationProperty Name="UserPhones" Relationship="Self.FK_190" FromRole="Phones" ToRole="UserPhone" />
+  </EntityType>
+  <EntityType Name="PhoneVersion">
+    <Key>
+      <PropertyRef Name="VersionId" />
+    </Key>
+    <Property Name="VersionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Version" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BaseCost" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="ImageName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneId" Type="Int32" />
+    <Property Name="StorageCapacityId" Type="Int32" />
+    <NavigationProperty Name="Phone" Relationship="Self.FK__PhoneVers__Phone__5070F446" FromRole="PhoneVersion" ToRole="Phones" />
+    <NavigationProperty Name="PossibleDefects" Relationship="Self.FK_125" FromRole="PhoneVersion" ToRole="PossibleDefects" />
+    <NavigationProperty Name="UserPhones" Relationship="Self.FK_174" FromRole="PhoneVersion" ToRole="UserPhone" />
+    <NavigationProperty Name="StorageCapacity" Relationship="Self.FK_PhoneVersion_StorageCapacity" FromRole="PhoneVersion" ToRole="StorageCapacity" />
+  </EntityType>
+  <EntityType Name="PossibleDefect">
+    <Key>
+      <PropertyRef Name="PossibleDefectId" />
+    </Key>
+    <Property Name="PossibleDefectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DefectName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DefectCost" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="VersionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="PhoneVersion" Relationship="Self.FK_125" FromRole="PossibleDefects" ToRole="PhoneVersion" />
+    <NavigationProperty Name="UserAnswers" Relationship="Self.FK_110" FromRole="PossibleDefects" ToRole="UserAnswers" />
+  </EntityType>
+  <EntityType Name="Promo">
+    <Key>
+      <PropertyRef Name="PromoId" />
+    </Key>
+    <Property Name="PromoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PromoCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PromoName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Discount" Type="Decimal" Precision="3" Scale="2" Nullable="false" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Promos" FromRole="Promos" ToRole="Orders" />
+  </EntityType>
+  <EntityType Name="State">
+    <Key>
+      <PropertyRef Name="StateID" />
+    </Key>
+    <Property Name="StateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StateAbbrv" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="StateName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StorageCapacity">
+    <Key>
+      <PropertyRef Name="StorageCapacityId" />
+    </Key>
+    <Property Name="StorageCapacityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StorageCapacity1" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="PhoneVersions" Relationship="Self.FK_PhoneVersion_StorageCapacity" FromRole="StorageCapacity" ToRole="PhoneVersion" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PermissionId" Type="Int32" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Zip" Type="Int32" Nullable="false" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LastLogin" Type="DateTime" Precision="3" />
+    <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK_106" FromRole="User" ToRole="Orders" />
+    <NavigationProperty Name="Permission" Relationship="Self.FK_178" FromRole="User" ToRole="Permissions" />
+    <NavigationProperty Name="UserPhones" Relationship="Self.FK_175" FromRole="User" ToRole="UserPhone" />
+  </EntityType>
+  <EntityType Name="UserAnswer">
+    <Key>
+      <PropertyRef Name="AnswerId" />
+    </Key>
+    <Property Name="AnswerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Answer" Type="Boolean" Nullable="false" />
+    <Property Name="PossibleDefectId" Type="Int32" Nullable="false" />
+    <Property Name="UserPhoneId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="PossibleDefect" Relationship="Self.FK_110" FromRole="UserAnswers" ToRole="PossibleDefects" />
+    <NavigationProperty Name="UserPhone" Relationship="Self.FK_137" FromRole="UserAnswers" ToRole="UserPhone" />
+  </EntityType>
+  <EntityType Name="UserPhone">
+    <Key>
+      <PropertyRef Name="UserPhoneId" />
+    </Key>
+    <Property Name="UserPhoneId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="PhoneId" Type="Int32" Nullable="false" />
+    <Property Name="CarrierId" Type="Int32" Nullable="false" />
+    <Property Name="VersionId" Type="Int32" Nullable="false" />
+    <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Carrier" Relationship="Self.FK_171" FromRole="UserPhone" ToRole="Carrier" />
+    <NavigationProperty Name="Phone" Relationship="Self.FK_190" FromRole="UserPhone" ToRole="Phones" />
+    <NavigationProperty Name="PhoneVersion" Relationship="Self.FK_174" FromRole="UserPhone" ToRole="PhoneVersion" />
+    <NavigationProperty Name="User" Relationship="Self.FK_175" FromRole="UserPhone" ToRole="User" />
+    <NavigationProperty Name="UserAnswers" Relationship="Self.FK_137" FromRole="UserPhone" ToRole="UserAnswers" />
+  </EntityType>
+  <Association Name="FK_171">
+    <End Role="Carrier" Type="Self.Carrier" Multiplicity="1" />
+    <End Role="UserPhone" Type="Self.UserPhone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Carrier">
+        <PropertyRef Name="CarrierId" />
+      </Principal>
+      <Dependent Role="UserPhone">
+        <PropertyRef Name="CarrierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_106">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_151">
+    <End Role="OrderStatus" Type="Self.OrderStatu" Multiplicity="1" />
+    <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrderStatus">
+        <PropertyRef Name="OrderStatusId" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="OrderStatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_PaymentTypes">
+    <End Role="PaymentTypes" Type="Self.PaymentType" Multiplicity="0..1" />
+    <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PaymentTypes">
+        <PropertyRef Name="PaymentTypeId" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="PaymentTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_Promos">
+    <End Role="Promos" Type="Self.Promo" Multiplicity="0..1" />
+    <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Promos">
+        <PropertyRef Name="PromoId" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="PromoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_178">
+    <End Role="Permissions" Type="Self.Permission" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Permissions">
+        <PropertyRef Name="PermissionId" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="PermissionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PhoneVers__Phone__5070F446">
+    <End Role="Phones" Type="Self.Phone" Multiplicity="0..1" />
+    <End Role="PhoneVersion" Type="Self.PhoneVersion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Phones">
+        <PropertyRef Name="PhoneId" />
+      </Principal>
+      <Dependent Role="PhoneVersion">
+        <PropertyRef Name="PhoneId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_190">
+    <End Role="Phones" Type="Self.Phone" Multiplicity="1" />
+    <End Role="UserPhone" Type="Self.UserPhone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Phones">
+        <PropertyRef Name="PhoneId" />
+      </Principal>
+      <Dependent Role="UserPhone">
+        <PropertyRef Name="PhoneId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_125">
+    <End Role="PhoneVersion" Type="Self.PhoneVersion" Multiplicity="1" />
+    <End Role="PossibleDefects" Type="Self.PossibleDefect" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PhoneVersion">
+        <PropertyRef Name="VersionId" />
+      </Principal>
+      <Dependent Role="PossibleDefects">
+        <PropertyRef Name="VersionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_174">
+    <End Role="PhoneVersion" Type="Self.PhoneVersion" Multiplicity="1" />
+    <End Role="UserPhone" Type="Self.UserPhone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PhoneVersion">
+        <PropertyRef Name="VersionId" />
+      </Principal>
+      <Dependent Role="UserPhone">
+        <PropertyRef Name="VersionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PhoneVersion_StorageCapacity">
+    <End Role="StorageCapacity" Type="Self.StorageCapacity" Multiplicity="0..1" />
+    <End Role="PhoneVersion" Type="Self.PhoneVersion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StorageCapacity">
+        <PropertyRef Name="StorageCapacityId" />
+      </Principal>
+      <Dependent Role="PhoneVersion">
+        <PropertyRef Name="StorageCapacityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_110">
+    <End Role="PossibleDefects" Type="Self.PossibleDefect" Multiplicity="1" />
+    <End Role="UserAnswers" Type="Self.UserAnswer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PossibleDefects">
+        <PropertyRef Name="PossibleDefectId" />
+      </Principal>
+      <Dependent Role="UserAnswers">
+        <PropertyRef Name="PossibleDefectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_175">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserPhone" Type="Self.UserPhone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="UserPhone">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_137">
+    <End Role="UserPhone" Type="Self.UserPhone" Multiplicity="1" />
+    <End Role="UserAnswers" Type="Self.UserAnswer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserPhone">
+        <PropertyRef Name="UserPhoneId" />
+      </Principal>
+      <Dependent Role="UserAnswers">
+        <PropertyRef Name="UserPhoneId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CellableEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Carriers" EntityType="Self.Carrier" />
+    <EntitySet Name="Orders" EntityType="Self.Order" />
+    <EntitySet Name="OrderStatus" EntityType="Self.OrderStatu" />
+    <EntitySet Name="PaymentTypes" EntityType="Self.PaymentType" />
+    <EntitySet Name="Permissions" EntityType="Self.Permission" />
+    <EntitySet Name="Phones" EntityType="Self.Phone" />
+    <EntitySet Name="PhoneVersions" EntityType="Self.PhoneVersion" />
+    <EntitySet Name="PossibleDefects" EntityType="Self.PossibleDefect" />
+    <EntitySet Name="Promos" EntityType="Self.Promo" />
+    <EntitySet Name="States" EntityType="Self.State" />
+    <EntitySet Name="StorageCapacities" EntityType="Self.StorageCapacity" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <EntitySet Name="UserAnswers" EntityType="Self.UserAnswer" />
+    <EntitySet Name="UserPhones" EntityType="Self.UserPhone" />
+    <AssociationSet Name="FK_171" Association="Self.FK_171">
+      <End Role="Carrier" EntitySet="Carriers" />
+      <End Role="UserPhone" EntitySet="UserPhones" />
+    </AssociationSet>
+    <AssociationSet Name="FK_106" Association="Self.FK_106">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_151" Association="Self.FK_151">
+      <End Role="OrderStatus" EntitySet="OrderStatus" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_PaymentTypes" Association="Self.FK_Orders_PaymentTypes">
+      <End Role="PaymentTypes" EntitySet="PaymentTypes" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_Promos" Association="Self.FK_Orders_Promos">
+      <End Role="Promos" EntitySet="Promos" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_178" Association="Self.FK_178">
+      <End Role="Permissions" EntitySet="Permissions" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PhoneVers__Phone__5070F446" Association="Self.FK__PhoneVers__Phone__5070F446">
+      <End Role="Phones" EntitySet="Phones" />
+      <End Role="PhoneVersion" EntitySet="PhoneVersions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_190" Association="Self.FK_190">
+      <End Role="Phones" EntitySet="Phones" />
+      <End Role="UserPhone" EntitySet="UserPhones" />
+    </AssociationSet>
+    <AssociationSet Name="FK_125" Association="Self.FK_125">
+      <End Role="PhoneVersion" EntitySet="PhoneVersions" />
+      <End Role="PossibleDefects" EntitySet="PossibleDefects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_174" Association="Self.FK_174">
+      <End Role="PhoneVersion" EntitySet="PhoneVersions" />
+      <End Role="UserPhone" EntitySet="UserPhones" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PhoneVersion_StorageCapacity" Association="Self.FK_PhoneVersion_StorageCapacity">
+      <End Role="StorageCapacity" EntitySet="StorageCapacities" />
+      <End Role="PhoneVersion" EntitySet="PhoneVersions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_110" Association="Self.FK_110">
+      <End Role="PossibleDefects" EntitySet="PossibleDefects" />
+      <End Role="UserAnswers" EntitySet="UserAnswers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_175" Association="Self.FK_175">
+      <End Role="User" EntitySet="Users" />
+      <End Role="UserPhone" EntitySet="UserPhones" />
+    </AssociationSet>
+    <AssociationSet Name="FK_137" Association="Self.FK_137">
+      <End Role="UserPhone" EntitySet="UserPhones" />
+      <End Role="UserAnswers" EntitySet="UserAnswers" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
