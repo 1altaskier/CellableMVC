@@ -9,12 +9,70 @@ namespace CellableMVC.Controllers
 {
     public class UsersController : Controller
     {
-     private CellableEntities db = new CellableEntities();
+        private CellableEntities db = new CellableEntities();
 
-       // GET: Users
+        [HttpPost]
+        public JsonResult UserExists(string UserName)
+        {
+            if (UserName != null)
+            {
+                if (db.Users.Any(x => x.UserName == UserName))
+                {
+                    User existingUser = db.Users.Single(x => x.UserName == UserName);
+                    if (existingUser.UserName == UserName)
+                    {
+                        return Json(false);
+                    }
+                    else
+                    {
+                        return Json(true);
+                    }
+                }
+                else
+                {
+                    return Json(true);
+                }
+            }
+            else
+            {
+                return Json(!db.Users.Any(x => x.UserName == UserName));
+            }
+        }
+
+        [HttpPost]
+        public JsonResult EmailExists(string Email)
+        {
+            if (Email != null)
+            {
+                if (db.Users.Any(x => x.Email == Email))
+                {
+                    User existingEmail = db.Users.Single(x => x.Email == Email);
+                    if (existingEmail.Email == Email)
+                    {
+                        return Json(false);
+                    }
+                    else
+                    {
+                        return Json(true);
+                    }
+                }
+                else
+                {
+                    return Json(true);
+                }
+            }
+            else
+            {
+                return Json(!db.Users.Any(x => x.Email == Email));
+            }
+        }
+
+        // GET: Users
         public ActionResult Index()
         {
-            return View();
+            var model = new User();
+
+            return View(model);
         }
 
         // GET: Users/Details/5
@@ -26,10 +84,34 @@ namespace CellableMVC.Controllers
         // GET: Users/Create
         public ActionResult Register()
         {
-            // TODO: Add insert logic here
-            ViewBag.PermissionId = new SelectList(db.Permissions, "PermissionId", "PermissionType");
+            ViewBag.State = new SelectList(db.States, "StateAbbrv", "StateName", "-- Select State --");
 
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register([Bind(Include = "UserId,UserName,Password,FirstName,LastName,Email,Address,Address2,City,State,Zip,PhoneNumber")] User user)
+        {
+            // Insert Additional Data into Model
+            user.CreatedBy = "System";
+            user.CreateDate = DateTime.UtcNow;
+            user.LastLogin = DateTime.UtcNow;
+            user.PermissionId = 2;
+            user.ConfirmPassword = user.Password;
+
+            try
+            {
+                db.Users.Add(user);
+                db.SaveChanges();
+                return RedirectToAction("Index","Home");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Error encountered while attempting to register user";
+                ViewBag.State = new SelectList(db.States, "StateAbbrv", "StateName", "-- Select State --");
+                return View("Register");
+            }
         }
 
         public ActionResult Login()
