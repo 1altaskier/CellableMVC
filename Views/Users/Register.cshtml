@@ -6,6 +6,25 @@
 }
 
 <script type="text/javascript">
+        function togglePassword() {
+            const password = document.getElementById("password");
+            const confirmPassword = document.getElementById("confirmPassword");
+            const Password1Div = document.getElementById("Password1");
+            const Password2Div = document.getElementById("Password2");
+
+            if (password.type === "password") {
+                password.type = "text";
+                confirmPassword.type = "text"
+                Password1Div.innerHTML = "<i class='fa fa-eye input-field' onclick='togglePassword()'></i>"
+                Password2Div.innerHTML = "<i class='fa fa-eye input-field' onclick='togglePassword()'></i>"
+            } else {
+                password.type = "password";
+                confirmPassword.type = "password"
+                    Password1Div.innerHTML = "<i class='fa fa-eye-slash input-field' onclick='togglePassword()'></i>"
+                Password2Div.innerHTML = "<i class='fa fa-eye-slash input-field' onclick='togglePassword()'></i>"
+            }
+        };
+
         function valid_form() {
         // Custom "Forced" Validation For State
         if (document.getElementById("States").value == "") {
@@ -20,71 +39,74 @@
         return valid;
     }
 </script>
-<div style="height:50px"></div>
 
 @using (Html.BeginForm("Register", "Users"))
 {
     @Html.AntiForgeryToken()
-
-
     <table style="width:70%; margin-left:auto; margin-right:auto;">
         <tr>
             <td>
-                <h4 >Register New User</h4>
+                <h4>Register New User</h4>
                 <hr />
-                <div style="text-align:center"class="text-danger">@ViewBag.Message</div>
+                <div style="text-align:center" class="text-danger">@ViewBag.Message</div>
                 <table style="width:100%">
                     <tr>
-                        <td style="width:10%; text-align:right; padding:10px;">User Name:</td>
+                        <td style="width:10%; text-align:right; padding:10px;"> <i class="text-danger">*</i>&nbsp;User Name:</td>
                         <td style="width:20%; padding:10px;">
                             @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", autofocus = true } })
                             @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:10%; padding:5px; text-align:right; padding:5px;">Password:</td>
+                        <td style="width:10%; padding:5px; text-align:right; padding:5px;"><i class="text-danger">*</i>&nbsp;Password:</td>
                         <td style="width:20%; padding:10px;">
-                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                            <input id="password" type="password" class="form-control" name="password">
+                            <div id="Password1">
+                                <i class="fa fa-eye-slash input-field" onclick="togglePassword()"></i>
+                            </div>
                             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:10%; padding:5px; text-align:right; padding:5px;">Confirm Password:</td>
+                        <td style="width:10%; padding:5px; text-align:right; padding:5px;"><i class="text-danger">*</i>&nbsp;Confirm Password:</td>
                         <td style="width:20%; padding:10px;">
-                            @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
+                            <input id="confirmPassword" type="password" class="form-control" name="confirmPassword">
+                            <div id="Password2">
+                                <i class="fa fa-eye-slash input-field" onclick="togglePassword()"></i>
+                            </div>
                             @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:10%; text-align:right; padding:10px;">First Name:</td>
+                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;First Name:</td>
                         <td style="width:20%; padding:10px;">
                             @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:10%; text-align:right; padding:10px;">Last Name:</td>
+                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;Last Name:</td>
                         <td style="width:20%; padding:10px;">
                             @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:10%; text-align:right; padding:10px;">Email:</td>
+                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;Email:</td>
                         <td style="width:20%; padding:10px;">
                             @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:10%; text-align:right; padding:10px;">Phone Number:</td>
+                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;Phone Number:</td>
                         <td style="width:20%; padding:10px;">
                             @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:10%; text-align:right; padding:10px;">Address:</td>
+                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;Address:</td>
                         <td style="width:20%; padding:10px;">
                             @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
@@ -98,21 +120,21 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:10%; text-align:right; padding:10px;">City:</td>
+                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;City:</td>
                         <td style="width:20%; padding:10px;">
                             @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:10%; text-align:right; padding:10px;">State:</td>
+                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;State:</td>
                         <td style="width:20%; padding:10px;">
                             @Html.DropDownList("State", null, "-- Select State --", htmlAttributes: new { @class = "form-control", onclick = "valid_form()" })
                             <div id="StateValidationMessage" class="text-danger"></div>
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:10%; text-align:right; padding:10px;">Zip:</td>
+                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;Zip:</td>
                         <td style="width:20%; padding:10px;">
                             @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger" })

@@ -140,6 +140,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PhonesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -276,6 +277,7 @@
     <Content Include="Pictures\S10.jpg" />
     <Content Include="Pictures\S5.jpg" />
     <Content Include="Pictures\S6.jpg" />
+    <Content Include="Pictures\samsung.jpg" />
     <Content Include="Pictures\Samsung_logo.png" />
     <Content Include="Pictures\Sprintlogo.jpg" />
     <Content Include="Pictures\S_10.jpg" />
@@ -438,6 +440,7 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Phones\Phones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using CellableMVC.Models;
 using System.Web.Security;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace EF_CRUD.Controllers
 {
@@ -11,7 +14,7 @@ namespace EF_CRUD.Controllers
         private CellableEntities db = new CellableEntities();
 
         [ValidateAntiForgeryToken]
-        public ActionResult UserLogin([Bind(Include = "UserName,Password")]string userName, string password)
+        public ActionResult UserLogin([Bind(Include = "userName,password,rememberMe")]string userName, string password)
         {
             IList<User> users = null;
 
@@ -19,8 +22,26 @@ namespace EF_CRUD.Controllers
 
             if (users.Count > 0)
             {
-                FormsAuthentication.SetAuthCookie(userName, false);
-                return RedirectToAction("Dashboard", "Users");
+                Session["LoggedInUser"] = userName;
+
+                var rememberMe = false;
+                // Check if the user wants to be remembered
+                if (rememberMe)
+                {
+                    //var cookie = FormsAuthentication.GetAuthCookie(userName, rememberMe);
+                    //var salt = Hmac.GenerateSalt();
+                    //var hashPass = Hmac.ComputeHMAC_SHA256(Encoding.UTF8.GetBytes(password), salt);
+                    //cookie["Password"] = hashPass;
+                    //cookie.Expires = DateTime.Now.AddDays(30);
+                    //Response.Cookies.Add(cookie);
+                }
+                else
+                {
+                    // Set the cookie as normal
+                    FormsAuthentication.SetAuthCookie(userName, false);
+                }
+
+                return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -33,6 +54,32 @@ namespace EF_CRUD.Controllers
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Users");
+        }
+    }
+
+    public static class Hmac
+    {
+        private const int SaltSize = 32;
+
+        public static byte[] GenerateSalt()
+        {
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                var randomNumber = new byte[SaltSize];
+
+                rng.GetBytes(randomNumber);
+
+                return randomNumber;
+
+            }
+        }
+
+        public static byte[] ComputeHMAC_SHA256(byte[] data, byte[] salt)
+        {
+            using (var hmac = new HMACSHA256(salt))
+            {
+                return hmac.ComputeHash(data);
+            }
         }
     }
 }

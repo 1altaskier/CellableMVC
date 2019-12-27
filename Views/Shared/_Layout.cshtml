@@ -34,11 +34,14 @@
                         <td style="width:20%; text-align:center" class="Header"><h2>Cellable</h2></td>
                         <td style="text-align:left; vertical-align:middle">
                             <div style="display: inline-block; width:80px">@Html.ActionLink("Home", "Index", "Home", new { }, new { @class = "NavLink" })</div>
-                            <div style="display: inline-block; width:80px">@Html.ActionLink("About", "Index", "PhoneVersions", new { }, new { @class = "NavLink" })</div>
-                            <div style="display: inline-block; width:80px">@Html.ActionLink("Sell", "Index", "Carriers", new { }, new { @class = "NavLink" })</div>
+                            <div style="display: inline-block; width:80px">@Html.ActionLink("About", "About", "Home", new { }, new { @class = "NavLink" })</div>
+                            <div style="display: inline-block; width:80px">@Html.ActionLink("Sell", "Phones", "Phones", new { }, new { @class = "NavLink" })</div>
                         </td>
                         <td style="width:7%; text-align:left">@Html.ActionLink("Register", "Register", "Users", new { }, new { @class = "NavLink" })</td>
-                        <td style="width:20%; text-align:left">@Html.ActionLink("Login", "Login", "Users", new { }, new { @class = "NavLink" })</td>
+                        <td style="width:10%; text-align:left">@Html.ActionLink("Login", "Login", "Users", new { }, new { @class = "NavLink" })</td>
+                        @if (System.Web.HttpContext.Current.Session["LoggedInUser"]!= null && Session["LoggedInUser"].ToString() != "") {
+                            <td style="width:10%; text-align:left"><i class="LoggedIn">Logged in as:<br />@Session["LoggedInUser"]</i></td>
+                        }
                     </tr>
                 </table>
             </td>
@@ -47,14 +50,15 @@
     <table style="width:100%">
         <tr>
             <td style="padding:20px; width:100%; vertical-align:top;" colspan="4">
+                <div style="height:50px"></div>
                 @RenderBody()
             </td>
         </tr>
         <tr>
             <td style="text-align:left">
-                <div style="display: inline-block; width:43%; padding:10px; text-align:center">&copy; @DateTime.Now.Year - Cellable Admin</div>
+                <div style="display: inline-block; width:43%; padding:10px; text-align:center">&copy; @DateTime.Now.Year - Cellable</div>
                 <div style="display: inline-block; width:80px">Support</div>
-                <div style="display: inline-block; width:80px">About Us</div>
+                <div style="display: inline-block; width:80px">@Html.ActionLink("About Us", "About", "Home", new { }, new { @class = "NavLink" })</div>
                 <div style="display: inline-block; width:80px">Contact Us</div>
                 <div style="display: inline-block; width:35%; text-align:right; vertical-align:bottom;">
                     <table style="width:100%;">

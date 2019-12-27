@@ -23,6 +23,7 @@ textarea {
     .jumbotron {
         margin-top: 20px;
     }
+
     .body-content {
         padding: 0;
     }
@@ -38,6 +39,12 @@ textarea {
     .NavLink:hover {
         color: lawngreen;
     }
+
+.LoggedIn {
+    text-decoration: none;
+    color: darkgray;
+    font-size: small;
+}
 
 .Header {
     color: lawngreen;
@@ -57,6 +64,19 @@ textarea {
     width: 120px;
     border-radius: 12px;
 }
+
     .button:hover {
         background-color: lawngreen;
     }
+
+.input-field {
+    float: left;
+    margin-left: 255px;
+    margin-top: -25px;
+    position: relative;
+}
+
+.container {
+    padding-top: 50px;
+    margin: auto;
+}
