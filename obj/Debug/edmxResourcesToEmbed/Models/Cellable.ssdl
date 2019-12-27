@@ -47,6 +47,7 @@
     </Key>
     <Property Name="PhoneId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Brand" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ImageName" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="PhoneVersion">
     <Key>

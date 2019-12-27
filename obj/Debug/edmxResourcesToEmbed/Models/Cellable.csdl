@@ -57,6 +57,7 @@
     <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="PhoneVersions" Relationship="Self.FK__PhoneVers__Phone__5070F446" FromRole="Phones" ToRole="PhoneVersion" />
     <NavigationProperty Name="UserPhones" Relationship="Self.FK_190" FromRole="Phones" ToRole="UserPhone" />
+    <Property Name="ImageName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="PhoneVersion">
     <Key>

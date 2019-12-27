@@ -50,6 +50,7 @@
     <EntitySetMapping Name="Phones">
       <EntityTypeMapping TypeName="CellableModel.Phone">
         <MappingFragment StoreEntitySet="Phones">
+          <ScalarProperty Name="ImageName" ColumnName="ImageName" />
           <ScalarProperty Name="PhoneId" ColumnName="PhoneId" />
           <ScalarProperty Name="Brand" ColumnName="Brand" />
         </MappingFragment>
