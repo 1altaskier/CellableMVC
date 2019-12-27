@@ -60,7 +60,7 @@ namespace CellableMVC.Models
         public string State { get; set; }
 
         [Required(ErrorMessage = "Zip Code is required")]
-        [DataType(DataType.PostalCode)]
+        [DataType(DataType.Text)]
         public int Zip { get; set; }
 
         [Required(ErrorMessage = "Phone Number is required")]
