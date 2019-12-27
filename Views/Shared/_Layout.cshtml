@@ -49,7 +49,7 @@
     </table>
     <table style="width:100%">
         <tr>
-            <td style="padding:20px; width:100%; vertical-align:top;" colspan="4">
+            <td style="padding:20px; width:100%; vertical-align:top;">
                 <div style="height:50px"></div>
                 @RenderBody()
             </td>
@@ -59,7 +59,7 @@
                 <div style="display: inline-block; width:43%; padding:10px; text-align:center">&copy; @DateTime.Now.Year - Cellable</div>
                 <div style="display: inline-block; width:80px">Support</div>
                 <div style="display: inline-block; width:80px">@Html.ActionLink("About Us", "About", "Home", new { }, new { @class = "NavLink" })</div>
-                <div style="display: inline-block; width:80px">Contact Us</div>
+                <div style="display: inline-block; width:80px">@Html.ActionLink("Contact Us", "Contact", "Home", new { }, new { @class = "NavLink" })</div>
                 <div style="display: inline-block; width:35%; text-align:right; vertical-align:bottom;">
                     <table style="width:100%;">
                         <tr>
@@ -67,7 +67,7 @@
                                 <a href="https://twitter.com/TwitterDev?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow us on Twitter</a>
                                 <a href="https://twitter.com/intent/tweet?screen_name=TwitterDev&ref_src=twsrc%5Etfw" class="twitter-mention-button" data-show-count="false">Mention us on Twitter</a>
                             </td>
-                            <td style="vertical-align:top; padding:3px">
+                            <td style="vertical-align:top; padding:3px; height:40px">
                                 <a href="https://www.facebook.com/CellableApp/" class="fb-like" data-layout="button_count" data-action="recommend" data-size="small" data-share="true"></a>
                             </td>
                         </tr>
