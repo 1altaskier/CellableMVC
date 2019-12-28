@@ -18,5 +18,16 @@ namespace CellableMVC.Controllers
 
             return View(phones);
         }
+
+        public ActionResult PhoneVersions(int? brandId)
+        {
+            // Initialize PhoneVersions Variable
+            IList<PhoneVersion> phoneVersions = null;
+
+            // Get a list of Phone Versions to pass to the view
+            phoneVersions = db.PhoneVersions.ToList().Where(x => x.Phone.PhoneId == brandId).ToList();
+
+            return View(phoneVersions);
+        }
     }
 }
