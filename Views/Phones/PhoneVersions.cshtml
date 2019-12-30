@@ -11,7 +11,6 @@
     }
 </script>
 
-<p />
 @*@using (Html.BeginForm("Index", "PhoneVersions", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <table>
@@ -73,7 +72,7 @@
                         <br />
                         Base Cost: $@Html.DisplayFor(modelItem => item.BaseCost)
                         <br />
-                        @Html.ActionLink("Edit", "Edit", new { id = item.VersionId })
+                        @Html.ActionLink("Edit", "DefectQuestions", new { id = item.VersionId })
                     </td>
 
                     if (cellCount == cellLimit)

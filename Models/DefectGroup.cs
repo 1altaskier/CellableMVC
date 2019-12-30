@@ -12,24 +12,19 @@ namespace CellableMVC.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class PossibleDefect
+    public partial class DefectGroup
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PossibleDefect()
+        public DefectGroup()
         {
-            this.UserAnswers = new HashSet<UserAnswer>();
+            this.PossibleDefects = new HashSet<PossibleDefect>();
         }
     
-        public int PossibleDefectId { get; set; }
-        public string DefectName { get; set; }
-        public decimal DefectCost { get; set; }
-        public int VersionId { get; set; }
-        public Nullable<int> DefectGroupId { get; set; }
-        public string GroupImage { get; set; }
+        public int DefectGroupId { get; set; }
+        public string GroupName { get; set; }
+        public Nullable<int> DisplayOrder { get; set; }
     
-        public virtual PhoneVersion PhoneVersion { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserAnswer> UserAnswers { get; set; }
-        public virtual DefectGroup DefectGroup { get; set; }
+        public virtual ICollection<PossibleDefect> PossibleDefects { get; set; }
     }
 }

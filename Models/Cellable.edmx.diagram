@@ -34,6 +34,8 @@
         <AssociationConnector Association="CellableModel.FK_110" ManuallyRouted="false" />
         <AssociationConnector Association="CellableModel.FK_175" ManuallyRouted="false" />
         <AssociationConnector Association="CellableModel.FK_137" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CellableModel.DefectGroup" Width="1.5" PointX="10.375" PointY="5.875" />
+        <AssociationConnector Association="CellableModel.FK_PossibleDefects_DefectGroup" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

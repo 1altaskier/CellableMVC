@@ -40,5 +40,6 @@ namespace CellableMVC.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserAnswer> UserAnswers { get; set; }
         public virtual DbSet<UserPhone> UserPhones { get; set; }
+        public virtual DbSet<DefectGroup> DefectGroups { get; set; }
     }
 }

@@ -1,0 +1,106 @@
+﻿@model IEnumerable<CellableMVC.Models.PossibleDefect>
+
+@{
+    ViewBag.Title = "DefectQuestions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table style="width:70%; margin-left:auto; margin-right:auto; font-family:'HP Simplified'">
+    <tr>
+        <td style="text-align:center; vertical-align:top; width:30%">
+            <div style="height:100px;"></div>
+            @Html.Raw(ViewBag.VersionName)
+            <br />
+            <img src="~/Pictures/@ViewBag.ImageLocation" style="height:250px; width:130px;" />
+            <br />
+            Please Note: We do not pay for devices that have been reported lost or stolen.
+        </td>
+        <td style="text-align:left;">
+            <h4>We need to ask you a few questions about your device</h4>
+            <hr />
+            <div class="text-danger" style="text-align:center">@ViewBag.Message</div>
+            @using (Html.BeginForm("PricePhone", "Phones", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <input id="id" name="id" type="hidden" value="@ViewBag.ID" />
+                <table style="width:80%; margin-left:auto; margin-right:auto;">
+                    <tr>
+                        <td>
+                            <div style=" margin-right: 50px; height: 125px; border: medium solid #ccc; width: 600px; border-radius: 15px; margin-left: 24px;">
+                                <div style="text-align:left; background-color:lightgray;">
+                                    &nbsp;&nbsp;&nbsp;
+                                    <p style="text-align:left; background-color:lightgray; margin-top: -10px; width: 573px; margin-left: 17px; border-bottom: thin solid #ccc; ">
+                                        Storage Capacity
+                                    </p>
+                                </div>
+                                <div style="display:inline-block; width:50px;"></div>
+                                <input id="32GB" type="radio" name="capacity" value="32" checked />32GB &nbsp;&nbsp;
+                                <input id="64GB" type="radio" name="capacity" value="64" />64GB &nbsp;&nbsp;
+                                <input id="128GB" type="radio" name="capacity" value="128" />128GB &nbsp;&nbsp;
+                                <input id="164GB" type="radio" name="capacity" value="164" />164GB &nbsp;&nbsp;
+                                <input id="512GB" type="radio" name="capacity" value="512" />512GB &nbsp;&nbsp;
+                                <input id="1TR" type="radio" name="capacity" value="1" />1TR &nbsp;&nbsp;
+                            </div>
+                        </td>
+                    </tr>
+                    @{var lastGroupId = 0; }
+                    @foreach (var group in Model)
+                    {
+                        if (group.DefectGroup.GroupName == "Default")
+                        {
+                            <tr>
+                                <td style="vertical-align:middle;">
+                                    <div style="vertical-align:bottom; margin-right: 50px; height: 88px; border: medium solid #ccc; width: 600px; border-radius: 15px; margin-left: 24px;">
+                                        <div style="height:12px"></div>
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td style="width:5%"></td>
+                                                <td style="width:15%; text-align:left"><img src="~/Pictures/@Html.DisplayFor(modelItem => group.GroupImage)" /></td>
+                                                <td style="width:55%; text-align:left; font-size:large;">@Html.DisplayFor(modelItem => group.DefectName)</td>
+                                                <td style="width:10%; text-align:right"><input type="checkbox" value="@Html.DisplayFor(modelItem => group.DefectCost)"></td>
+                                                <td style="width:15%"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            if (lastGroupId != group.DefectGroup.DefectGroupId)
+                            {
+                                lastGroupId = group.DefectGroup.DefectGroupId;
+
+                                <tr>
+                                    <td>
+                                        <div style=" margin-right: 50px; height: 125px; border: medium solid #ccc; width: 600px; border-radius: 15px; margin-left: 24px;">
+                                            &nbsp;&nbsp;&nbsp;
+                                            <p style="text-align:left; margin-top: -10px; font-size:large; width: 573px; margin-left: 17px; border-bottom: thin solid #ccc; ">
+                                                @Html.DisplayFor(modelItem => group.DefectGroup.GroupName)
+                                            </p>
+                                            <div style="width:30px; display:inline-block"></div>
+                                            @foreach (var defect in Model)
+                                            {
+                                                if (group.DefectGroupId == defect.DefectGroupId)
+                                                {
+                                                    <input id="@defect.PossibleDefectId" type="radio" name="@group.DefectGroupId" value="@Html.DisplayFor(modelItem => defect.DefectCost)" /> @Html.Raw("&nbsp;")@Html.DisplayFor(modelItem => defect.DefectName) @Html.Raw("&nbsp;&nbsp;")
+                                                }
+                                            }
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                    <tr>
+                        <td style="text-align:center">
+                            <input type="submit" class="button" value="Calculate your phone's worth >>" style="width:100%" />
+                            <input type="reset" class="button" value="Reset Form" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </td>
+    </tr>
+</table>

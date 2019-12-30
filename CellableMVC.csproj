@@ -163,6 +163,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Cellable.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\DefectGroup.cs">
+      <DependentUpon>Cellable.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Order.cs">
       <DependentUpon>Cellable.tt</DependentUpon>
     </Compile>
@@ -442,6 +445,8 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Phones\Phones.cshtml" />
     <Content Include="Views\Phones\PhoneVersions.cshtml" />
+    <Content Include="Views\Phones\DefectQuestions.cshtml" />
+    <Content Include="Views\Phones\PricePhone.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

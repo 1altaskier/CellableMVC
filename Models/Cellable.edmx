@@ -12,6 +12,14 @@
           <Property Name="CarrierId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CarrierName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="DefectGroup">
+          <Key>
+            <PropertyRef Name="DefectGroupId" />
+          </Key>
+          <Property Name="DefectGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DisplayOrder" Type="int" />
+        </EntityType>
         <EntityType Name="Orders">
           <Key>
             <PropertyRef Name="OrderID" />
@@ -73,6 +81,8 @@
           <Property Name="DefectName" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="DefectCost" Type="money" Nullable="false" />
           <Property Name="VersionId" Type="int" Nullable="false" />
+          <Property Name="DefectGroupId" Type="int" />
+          <Property Name="GroupImage" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Promos">
           <Key>
@@ -319,8 +329,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PossibleDefects_DefectGroup">
+          <End Role="DefectGroup" Type="Self.DefectGroup" Multiplicity="0..1" />
+          <End Role="PossibleDefects" Type="Self.PossibleDefects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefectGroup">
+              <PropertyRef Name="DefectGroupId" />
+            </Principal>
+            <Dependent Role="PossibleDefects">
+              <PropertyRef Name="DefectGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="CellableModelStoreContainer">
           <EntitySet Name="Carrier" EntityType="Self.Carrier" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DefectGroup" EntityType="Self.DefectGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderStatus" EntityType="Self.OrderStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PaymentTypes" EntityType="Self.PaymentTypes" Schema="dbo" store:Type="Tables" />
@@ -390,6 +413,10 @@
           <AssociationSet Name="FK_PhoneVersion_StorageCapacity" Association="Self.FK_PhoneVersion_StorageCapacity">
             <End Role="StorageCapacity" EntitySet="StorageCapacity" />
             <End Role="PhoneVersion" EntitySet="PhoneVersion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PossibleDefects_DefectGroup" Association="Self.FK_PossibleDefects_DefectGroup">
+            <End Role="DefectGroup" EntitySet="DefectGroup" />
+            <End Role="PossibleDefects" EntitySet="PossibleDefects" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -480,6 +507,9 @@
           <Property Name="VersionId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PhoneVersion" Relationship="Self.FK_125" FromRole="PossibleDefects" ToRole="PhoneVersion" />
           <NavigationProperty Name="UserAnswers" Relationship="Self.FK_110" FromRole="PossibleDefects" ToRole="UserAnswers" />
+          <Property Name="DefectGroupId" Type="Int32" />
+          <NavigationProperty Name="DefectGroup" Relationship="CellableModel.FK_PossibleDefects_DefectGroup" FromRole="PossibleDefect" ToRole="DefectGroup" />
+          <Property Name="GroupImage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Promo">
           <Key>
@@ -810,7 +840,33 @@
             <End Role="UserPhone" EntitySet="UserPhones" />
             <End Role="UserAnswers" EntitySet="UserAnswers" />
           </AssociationSet>
+          <EntitySet Name="DefectGroups" EntityType="CellableModel.DefectGroup" />
+          <AssociationSet Name="FK_PossibleDefects_DefectGroup" Association="CellableModel.FK_PossibleDefects_DefectGroup">
+            <End Role="DefectGroup" EntitySet="DefectGroups" />
+            <End Role="PossibleDefect" EntitySet="PossibleDefects" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="DefectGroup">
+          <Key>
+            <PropertyRef Name="DefectGroupId" />
+          </Key>
+          <Property Name="DefectGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PossibleDefects" Relationship="CellableModel.FK_PossibleDefects_DefectGroup" FromRole="DefectGroup" ToRole="PossibleDefect" />
+          <Property Name="DisplayOrder" Type="Int32" />
+        </EntityType>
+        <Association Name="FK_PossibleDefects_DefectGroup">
+          <End Type="CellableModel.DefectGroup" Role="DefectGroup" Multiplicity="0..1" />
+          <End Type="CellableModel.PossibleDefect" Role="PossibleDefect" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefectGroup">
+              <PropertyRef Name="DefectGroupId" />
+            </Principal>
+            <Dependent Role="PossibleDefect">
+              <PropertyRef Name="DefectGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -887,6 +943,8 @@
           <EntitySetMapping Name="PossibleDefects">
             <EntityTypeMapping TypeName="CellableModel.PossibleDefect">
               <MappingFragment StoreEntitySet="PossibleDefects">
+                <ScalarProperty Name="GroupImage" ColumnName="GroupImage" />
+                <ScalarProperty Name="DefectGroupId" ColumnName="DefectGroupId" />
                 <ScalarProperty Name="PossibleDefectId" ColumnName="PossibleDefectId" />
                 <ScalarProperty Name="DefectName" ColumnName="DefectName" />
                 <ScalarProperty Name="DefectCost" ColumnName="DefectCost" />
@@ -975,6 +1033,15 @@
                 <ScalarProperty Name="CarrierId" ColumnName="CarrierId" />
                 <ScalarProperty Name="VersionId" ColumnName="VersionId" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DefectGroups">
+            <EntityTypeMapping TypeName="CellableModel.DefectGroup">
+              <MappingFragment StoreEntitySet="DefectGroup">
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="DefectGroupId" ColumnName="DefectGroupId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

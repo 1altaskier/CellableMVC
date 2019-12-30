@@ -71,6 +71,8 @@
     <EntitySetMapping Name="PossibleDefects">
       <EntityTypeMapping TypeName="CellableModel.PossibleDefect">
         <MappingFragment StoreEntitySet="PossibleDefects">
+          <ScalarProperty Name="GroupImage" ColumnName="GroupImage" />
+          <ScalarProperty Name="DefectGroupId" ColumnName="DefectGroupId" />
           <ScalarProperty Name="PossibleDefectId" ColumnName="PossibleDefectId" />
           <ScalarProperty Name="DefectName" ColumnName="DefectName" />
           <ScalarProperty Name="DefectCost" ColumnName="DefectCost" />
@@ -159,6 +161,15 @@
           <ScalarProperty Name="CarrierId" ColumnName="CarrierId" />
           <ScalarProperty Name="VersionId" ColumnName="VersionId" />
           <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DefectGroups">
+      <EntityTypeMapping TypeName="CellableModel.DefectGroup">
+        <MappingFragment StoreEntitySet="DefectGroup">
+          <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+          <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+          <ScalarProperty Name="DefectGroupId" ColumnName="DefectGroupId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -29,5 +29,37 @@ namespace CellableMVC.Controllers
 
             return View(phoneVersions);
         }
+
+        public ActionResult DefectQuestions(int? id)
+        {
+            // Initialize Defects Variable
+            IList<PossibleDefect> possibleDefects = null;
+
+            // Initialize Defect Groups
+            IList<DefectGroup> defectGroup = db.DefectGroups.ToList();
+
+
+            // Get a list of Defects to pass to the view
+            possibleDefects = db.PossibleDefects.ToList().OrderBy(x => x.DefectGroup.DisplayOrder).Where(x => x.VersionId == id).ToList();
+
+            PhoneVersion phoneVersion = db.PhoneVersions.Find(id);
+
+            // Get Phone Image to display
+            ViewBag.ImageLocation = phoneVersion.ImageName;
+            ViewBag.VersionName = phoneVersion.Version;
+
+            ViewBag.ID = phoneVersion.PhoneId;
+
+            return View(possibleDefects);
+        }
+
+        public ActionResult PricePhone(int? id, FormCollection form)
+        {
+            PhoneVersion version = db.PhoneVersions.Find(id);
+
+            var baseCost = version.BaseCost;
+
+            return View();
+        }
     }
 }

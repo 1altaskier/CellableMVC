@@ -7,6 +7,14 @@
     <Property Name="CarrierId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CarrierName" Type="nvarchar" MaxLength="50" Nullable="false" />
   </EntityType>
+  <EntityType Name="DefectGroup">
+    <Key>
+      <PropertyRef Name="DefectGroupId" />
+    </Key>
+    <Property Name="DefectGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GroupName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DisplayOrder" Type="int" />
+  </EntityType>
   <EntityType Name="Orders">
     <Key>
       <PropertyRef Name="OrderID" />
@@ -68,6 +76,8 @@
     <Property Name="DefectName" Type="nvarchar" MaxLength="150" Nullable="false" />
     <Property Name="DefectCost" Type="money" Nullable="false" />
     <Property Name="VersionId" Type="int" Nullable="false" />
+    <Property Name="DefectGroupId" Type="int" />
+    <Property Name="GroupImage" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Promos">
     <Key>
@@ -314,8 +324,21 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_PossibleDefects_DefectGroup">
+    <End Role="DefectGroup" Type="Self.DefectGroup" Multiplicity="0..1" />
+    <End Role="PossibleDefects" Type="Self.PossibleDefects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DefectGroup">
+        <PropertyRef Name="DefectGroupId" />
+      </Principal>
+      <Dependent Role="PossibleDefects">
+        <PropertyRef Name="DefectGroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="CellableModelStoreContainer">
     <EntitySet Name="Carrier" EntityType="Self.Carrier" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DefectGroup" EntityType="Self.DefectGroup" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="OrderStatus" EntityType="Self.OrderStatus" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PaymentTypes" EntityType="Self.PaymentTypes" Schema="dbo" store:Type="Tables" />
@@ -385,6 +408,10 @@
     <AssociationSet Name="FK_PhoneVersion_StorageCapacity" Association="Self.FK_PhoneVersion_StorageCapacity">
       <End Role="StorageCapacity" EntitySet="StorageCapacity" />
       <End Role="PhoneVersion" EntitySet="PhoneVersion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PossibleDefects_DefectGroup" Association="Self.FK_PossibleDefects_DefectGroup">
+      <End Role="DefectGroup" EntitySet="DefectGroup" />
+      <End Role="PossibleDefects" EntitySet="PossibleDefects" />
     </AssociationSet>
   </EntityContainer>
 </Schema>
