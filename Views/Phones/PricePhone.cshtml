@@ -55,15 +55,11 @@
                             <br />
                             @Html.Raw("+" + Session["PromoValue"] + "%");
                         }
-                            <p>
-                                @using (Html.BeginForm("Register", "Users"))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    <input type="submit" value="Sell My Phone" class="button" />
-                                    <input type="button" value="Cancel" class="button" />
-                                }
-                            </p>
-                        </td>
+                        <p>
+                            <input type="button" value="Sell My Phone" class="button" onclick="location.href='@Url.Action("Register", "Users")';return false;" />
+                            <input type="button" value="Cancel" class="button" onclick="location.href='@Url.Action("Cancel", "Users")';return false;" />
+                        </p>
+                    </td>
                     <td style="width:20%;">
                         <i>"Easiest process I've ever had selling a used phone..."</i>
                     </td>

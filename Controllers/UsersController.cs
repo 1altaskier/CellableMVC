@@ -119,6 +119,14 @@ namespace CellableMVC.Controllers
             return View();
         }
 
+        public ActionResult Cancel()
+        {
+            // Remove All Session Variables
+            Session.Clear();
+
+            return RedirectToAction("Index", "Home");
+        }
+
         // POST: Users/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
