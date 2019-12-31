@@ -9,9 +9,9 @@
     <tr>
         <td style="text-align:center; vertical-align:top; width:30%">
             <div style="height:100px;"></div>
-            @Html.Raw(ViewBag.VersionName)
+            @Html.Raw(Session["VersionName"])
             <br />
-            <img src="~/Pictures/@ViewBag.ImageLocation" style="height:250px; width:130px;" />
+            <img src="~/Pictures/@Session["ImageLocation"]" style="height:250px; width:130px;" />
             <br />
             Please Note: We do not pay for devices that have been reported lost or stolen.
         </td>
@@ -22,7 +22,7 @@
             @using (Html.BeginForm("PricePhone", "Phones", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 @Html.AntiForgeryToken()
-                <input id="id" name="id" type="hidden" value="@ViewBag.ID" />
+                <input id="id" name="id" type="hidden" value="@Session["VersionId"]" />
                 <table style="width:80%; margin-left:auto; margin-right:auto;">
                     <tr>
                         <td>
@@ -57,7 +57,7 @@
                                                 <td style="width:5%"></td>
                                                 <td style="width:15%; text-align:left"><img src="~/Pictures/@Html.DisplayFor(modelItem => group.GroupImage)" /></td>
                                                 <td style="width:55%; text-align:left; font-size:large;">@Html.DisplayFor(modelItem => group.DefectName)</td>
-                                                <td style="width:10%; text-align:right"><input type="checkbox" value="@Html.DisplayFor(modelItem => group.DefectCost)"></td>
+                                                <td style="width:10%; text-align:right"><input type="checkbox" id="@Html.DisplayFor(modelItem => group.PossibleDefectId)" name="@Html.DisplayFor(modelItem => group.PossibleDefectId)" value="@Html.DisplayFor(modelItem => group.DefectCost)"></td>
                                                 <td style="width:15%"></td>
                                             </tr>
                                         </table>
@@ -70,7 +70,6 @@
                             if (lastGroupId != group.DefectGroup.DefectGroupId)
                             {
                                 lastGroupId = group.DefectGroup.DefectGroupId;
-
                                 <tr>
                                     <td>
                                         <div style=" margin-right: 50px; height: 125px; border: medium solid #ccc; width: 600px; border-radius: 15px; margin-left: 24px;">
@@ -83,10 +82,20 @@
                                             {
                                                 if (group.DefectGroupId == defect.DefectGroupId)
                                                 {
-                                                    <input id="@defect.PossibleDefectId" type="radio" name="@group.DefectGroupId" value="@Html.DisplayFor(modelItem => defect.DefectCost)" /> @Html.Raw("&nbsp;")@Html.DisplayFor(modelItem => defect.DefectName) @Html.Raw("&nbsp;&nbsp;")
+                                                    <input id="@defect.PossibleDefectId" type="radio" name="@group.DefectGroupId" value="@Html.DisplayFor(modelItem => defect.DefectCost)"
+                                                           @if (defect.DefectName == "Yes")
+                                                           {
+                                                               @Html.Raw("checked");
+                                                           }
+                                                           /> @Html.Raw("&nbsp;")@Html.DisplayFor(modelItem => defect.DefectName)
+                                                    @Html.Raw("&nbsp;&nbsp;&nbsp;")
                                                 }
                                             }
 
+                                            @if (@group.DefectGroupId != 10 && @group.DefectGroupId != 11)
+                                            {
+                                                <input id="@group.DefectGroupId" type="radio" name="@group.DefectGroupId" value="0" checked /> @Html.Raw("None")
+                                            }
                                         </div>
                                     </td>
                                 </tr>

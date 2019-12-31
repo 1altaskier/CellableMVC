@@ -4,5 +4,71 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Your phone's value is...</h2>
+<style>
+    .PromoCode:hover {
+        box-shadow: 0 2px 3px 0 lawngreen, 0 2px 3px 0 rgba(0,0,0,0.19);
+    }
+</style>
 
+<table style="width:70%; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td>
+            <h4>We've calculated your phone's value...</h4>
+            <hr />
+            <table style="width:60%; margin-left:auto; margin-right:auto; font-family:'HP Simplified'">
+                <tr>
+                    <td style="text-align:center; vertical-align:top; width:30%">
+                        <div style="height:100px;"></div>
+                        @Session["VersionName"].ToString()
+                        <br />
+                        <img src="~/Pictures/@Session["ImageLocation"]" style="height:250px; width:130px;" />
+                        <br />
+                        Please Note: We do not pay for devices that have been reported lost or stolen.
+                    </td>
+                    <td style="text-align:center; width:80%">
+                        <div style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: green; font-size: 55px;">
+                            $@decimal.Truncate(decimal.Parse(Session["PhoneValue"].ToString()))
+                        </div>
+                        <p />
+                        @if (Session["PromoCode"] == null)
+                        {
+                            @Html.Raw("Do you have a Promo Code?");
+                            <br />
+                            using (Html.BeginForm("CalcPromo", "Phones", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input id="id" name="id" type="hidden" value="@Session["VersionId"]" />
+                                <input id="PromoCode" name="PromoCode" type="text" placeholder="Enter Promo Code" autofocus />
+                                <button type="submit" name="submit" id="PromoCode" class="PromoCode" value="reset">
+                                    <i class="fa fa-plus-square"></i>
+                                </button>
+                            }
+                        }
+                        else
+                        {
+                            //string discount = Session["PromoDiscount"].ToString();
+                            //discount.Split(char["."])[0];
+
+                            @Html.Raw("Promo Code Discount Applied");
+                            <br />
+                            @Html.Raw("Promo Code: " + Session["PromoCode"]);
+                            <br />
+                            @Html.Raw(Session["PromoDiscount"] + "%");
+                        }
+                            <p>
+                                @using (Html.BeginForm("Register", "Users", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="submit" value="Sell My Phone" class="button" />
+                                    <input type="button" value="Cancel" class="button" />
+                                }
+                            </p>
+                        </td>
+                    <td style="width:20%;">
+                        <i>"Easiest process I've ever had selling a used phone..."</i>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

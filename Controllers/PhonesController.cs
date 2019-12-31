@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace CellableMVC.Controllers
@@ -48,18 +47,51 @@ namespace CellableMVC.Controllers
             ViewBag.ImageLocation = phoneVersion.ImageName;
             ViewBag.VersionName = phoneVersion.Version;
 
-            ViewBag.ID = phoneVersion.PhoneId;
+            Session["VersionName"] = phoneVersion.Version;
+            Session["PhoneValue"] = phoneVersion.BaseCost;
+            Session["ImageLocation"] = phoneVersion.ImageName;
+            Session["VersionId"] = phoneVersion.VersionId;
 
             return View(possibleDefects);
         }
 
-        public ActionResult PricePhone(int? id, FormCollection form)
+        public ActionResult PricePhone(FormCollection form)
         {
-            PhoneVersion version = db.PhoneVersions.Find(id);
+            PhoneVersion version = db.PhoneVersions.Find(Session["VersionId"]);
 
             var baseCost = version.BaseCost;
 
+            foreach (var item in form)
+            {
+                if (item.ToString() != "__RequestVerificationToken" &&
+                    item.ToString() != "id" &&
+                    item.ToString() != "capacity")
+                {
+                    baseCost -= decimal.Parse(Request.Form[item.ToString()]);
+                    Session[item.ToString()] = Request.Form[item.ToString()];
+                }
+            }
+
             return View();
+        }
+
+        public ActionResult CalcPromo(string PromoCode)
+        {
+            try
+            {
+                Promo promo = db.Promos.FirstOrDefault(x => x.PromoCode == PromoCode && (x.StartDate < DateTime.Today && x.EndDate > DateTime.Today));
+
+                var promoDiscount = decimal.Parse(Session["PhoneValue"].ToString()) * promo.Discount;
+                Session["PromoCode"] = PromoCode;
+                Session["PromoDiscount"] = promo.Discount;
+                Session["PhoneValue"] = decimal.Parse(Session["PhoneValue"].ToString()) - promoDiscount;
+            }
+            catch(Exception ex)
+            {
+
+            }
+
+            return RedirectToAction("PricePhone", "Phones");
         }
     }
 }
