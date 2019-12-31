@@ -83,8 +83,8 @@ namespace CellableMVC.Controllers
 
                 var promoDiscount = decimal.Parse(Session["PhoneValue"].ToString()) * promo.Discount;
                 Session["PromoCode"] = PromoCode;
-                Session["PromoDiscount"] = promo.Discount;
-                Session["PhoneValue"] = decimal.Parse(Session["PhoneValue"].ToString()) - promoDiscount;
+                Session["PromoValue"] = promo.Discount;
+                Session["PhoneValue"] = decimal.Parse(Session["PhoneValue"].ToString()) + promoDiscount;
             }
             catch(Exception ex)
             {

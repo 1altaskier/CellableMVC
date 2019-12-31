@@ -49,14 +49,14 @@
                             //string discount = Session["PromoDiscount"].ToString();
                             //discount.Split(char["."])[0];
 
-                            @Html.Raw("Promo Code Discount Applied");
+                            @Html.Raw("Promo Code Applied");
                             <br />
                             @Html.Raw("Promo Code: " + Session["PromoCode"]);
                             <br />
-                            @Html.Raw(Session["PromoDiscount"] + "%");
+                            @Html.Raw("+" + Session["PromoValue"] + "%");
                         }
                             <p>
-                                @using (Html.BeginForm("Register", "Users", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                @using (Html.BeginForm("Register", "Users"))
                                 {
                                     @Html.AntiForgeryToken()
                                     <input type="submit" value="Sell My Phone" class="button" />
