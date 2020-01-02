@@ -447,6 +447,7 @@
     <Content Include="Views\Phones\PhoneVersions.cshtml" />
     <Content Include="Views\Phones\DefectQuestions.cshtml" />
     <Content Include="Views\Phones\PricePhone.cshtml" />
+    <Content Include="Views\Users\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

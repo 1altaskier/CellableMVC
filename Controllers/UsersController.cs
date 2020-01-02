@@ -81,6 +81,11 @@ namespace CellableMVC.Controllers
             return View();
         }
 
+        public ActionResult CompleteUserPhoneRegistration()
+        {
+            return RedirectToAction("Register", "Users");
+        }
+
         // GET: Users/Create
         public ActionResult Register()
         {
@@ -104,13 +109,42 @@ namespace CellableMVC.Controllers
             {
                 db.Users.Add(user);
                 db.SaveChanges();
-                return RedirectToAction("Index","Home");
+
+                SaveUserPhone(user.UserId);
+
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
                 ViewBag.Message = "Error encountered while attempting to register user";
                 ViewBag.State = new SelectList(db.States, "StateAbbrv", "StateName", "-- Select State --");
                 return View("Register");
+            }
+        }
+
+        public void SaveUserPhone(int userId)
+        {
+            // Save User Phone
+            UserPhone userPhone = new UserPhone();
+            userPhone.UserId = userId;
+            userPhone.PhoneId = 0;
+            userPhone.CarrierId = 0;
+            userPhone.PhoneId = 0;
+            userPhone.VersionId = 0;
+            userPhone.CreateDate = DateTime.Now;
+            db.SaveChanges();
+
+            // Save User Answers
+            UserAnswer userAnswer = new UserAnswer();
+
+
+            // Create Order
+            Order order = new Order();
+
+
+            foreach (var item in Session)
+            {
+
             }
         }
 
@@ -133,52 +167,6 @@ namespace CellableMVC.Controllers
         {
             try
             {
-
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Users/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Users/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Users/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Users/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
                 return RedirectToAction("Index");
             }
             catch

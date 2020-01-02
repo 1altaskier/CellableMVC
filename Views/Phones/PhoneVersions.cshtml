@@ -64,15 +64,15 @@
                     }
 
                     <td style="text-align:center; padding:6px">
-                        <img src="~/Pictures/@item.ImageName" alt="@item.ImageName" style="height:250px; width:130px;" />
+                        <a class="btn btn-default" href="@Url.Action("DefectQuestions", "Phones", new { id = item.VersionId } )" >
+                            <img src="~/Pictures/@item.ImageName" alt="@item.ImageName" style="height:250px; width:130px;" />
+                        </a>
                         <br />
                         @Html.DisplayFor(modelItem => item.Phone.Brand)
                         <br />
                         @Html.DisplayFor(modelItem => item.Version)
                         <br />
                         Base Cost: $@Html.DisplayFor(modelItem => item.BaseCost)
-                        <br />
-                        @Html.ActionLink("Edit", "DefectQuestions", new { id = item.VersionId })
                     </td>
 
                     if (cellCount == cellLimit)
