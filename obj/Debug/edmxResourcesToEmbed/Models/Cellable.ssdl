@@ -27,6 +27,8 @@
     <Property Name="CreateBy" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="PaymentTypeId" Type="int" />
     <Property Name="PromoId" Type="int" />
+    <Property Name="UserPhoneId" Type="int" />
+    <Property Name="PaymentUserName" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="OrderStatus">
     <Key>
@@ -104,6 +106,7 @@
     </Key>
     <Property Name="StorageCapacityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="StorageCapacity" Type="int" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>

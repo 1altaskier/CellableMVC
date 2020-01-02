@@ -12,6 +12,8 @@
     <EntitySetMapping Name="Orders">
       <EntityTypeMapping TypeName="CellableModel.Order">
         <MappingFragment StoreEntitySet="Orders">
+          <ScalarProperty Name="PaymentUserName" ColumnName="PaymentUserName" />
+          <ScalarProperty Name="UserPhoneId" ColumnName="UserPhoneId" />
           <ScalarProperty Name="OrderID" ColumnName="OrderID" />
           <ScalarProperty Name="Amount" ColumnName="Amount" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -104,6 +106,7 @@
     <EntitySetMapping Name="StorageCapacities">
       <EntityTypeMapping TypeName="CellableModel.StorageCapacity">
         <MappingFragment StoreEntitySet="StorageCapacity">
+          <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="StorageCapacityId" ColumnName="StorageCapacityId" />
           <ScalarProperty Name="StorageCapacity1" ColumnName="StorageCapacity" />
         </MappingFragment>

@@ -89,6 +89,7 @@ namespace CellableMVC.Controllers
         // GET: Users/Create
         public ActionResult Register()
         {
+            ViewBag.PaymentTypes = new SelectList(db.PaymentTypes, "PaymentTypeId", "PaymentType1", "-- How You Get Paid --");
             ViewBag.State = new SelectList(db.States, "StateAbbrv", "StateName", "-- Select State --");
 
             return View();
@@ -96,7 +97,7 @@ namespace CellableMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register([Bind(Include = "UserId,UserName,Password,FirstName,LastName,Email,Address,Address2,City,State,Zip,PhoneNumber")] User user)
+        public ActionResult Register([Bind(Include = "UserId,UserName,Password,PaymentTypes,FirstName,LastName,Email,Address,Address2,City,State,Zip,PhoneNumber")] User user)
         {
             // Insert Additional Data into Model
             user.CreatedBy = "System";
@@ -110,42 +111,73 @@ namespace CellableMVC.Controllers
                 db.Users.Add(user);
                 db.SaveChanges();
 
-                SaveUserPhone(user.UserId);
+                string paymentUserName = Request.Form["PaymentUserName"];
+                int paymentTypeId = int.Parse(Request.Form["PaymentTypes"].ToString());
+
+                SaveUserPhone(user.UserId, paymentTypeId, paymentUserName);
 
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
-                ViewBag.Message = "Error encountered while attempting to register user";
+                ViewBag.Message = "Error encountered while attempting to register user/phone";
                 ViewBag.State = new SelectList(db.States, "StateAbbrv", "StateName", "-- Select State --");
                 return View("Register");
             }
         }
 
-        public void SaveUserPhone(int userId)
+        public void SaveUserPhone(int userId, int paymentTypeId, string paymentUserName)
         {
             // Save User Phone
             UserPhone userPhone = new UserPhone();
             userPhone.UserId = userId;
-            userPhone.PhoneId = 0;
-            userPhone.CarrierId = 0;
-            userPhone.PhoneId = 0;
-            userPhone.VersionId = 0;
+            userPhone.PhoneId = int.Parse(Session["PhoneBrand"].ToString());
+            userPhone.CarrierId = int.Parse(Session["Carrier"].ToString());
+            userPhone.VersionId = int.Parse(Session["VersionId"].ToString());
             userPhone.CreateDate = DateTime.Now;
+            db.UserPhones.Add(userPhone);
             db.SaveChanges();
+            var userPhoneId = userPhone.UserPhoneId;
 
             // Save User Answers
-            UserAnswer userAnswer = new UserAnswer();
-
+            foreach (var item in Session)
+            {
+                var temp = 0;
+                if (int.TryParse(item.ToString(), out temp))
+                {
+                    if (Session[item.ToString()].ToString() != "0.00" && Session[item.ToString()].ToString() != "0")
+                    {
+                        UserAnswer userAnswer = new UserAnswer();
+                        userAnswer.Answer = true;
+                        userAnswer.PossibleDefectId = int.Parse(item.ToString());
+                        userAnswer.UserPhoneId = userPhoneId;
+                        db.UserAnswers.Add(userAnswer);
+                        db.SaveChanges();
+                    }
+                }
+            }
 
             // Create Order
             Order order = new Order();
-
-
-            foreach (var item in Session)
+            order.Amount = decimal.Parse(Session["Phone Value"].ToString());
+            order.UserId = userId;
+            order.OrderStatusId = 1;
+            if(Session["PromoCode"] != null)
             {
-
+                order.PromoId = int.Parse(Session["PromoCode"].ToString());
             }
+            else
+            {
+                order.PromoId = null;
+            }
+            order.UserPhoneId = userPhoneId;
+            order.PaymentTypeId = paymentTypeId;
+            order.PaymentUserName = paymentUserName;
+            order.CreateDate = DateTime.Now;
+            order.CreateBy = "System";
+            db.Orders.Add(order);
+            db.SaveChanges();
+            var orderId = order.OrderID;
         }
 
         public ActionResult Login()
@@ -157,6 +189,7 @@ namespace CellableMVC.Controllers
         {
             // Remove All Session Variables
             Session.Clear();
+            Session.Abandon();
 
             return RedirectToAction("Index", "Home");
         }

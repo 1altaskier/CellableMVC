@@ -18,13 +18,13 @@ namespace CellableMVC.Controllers
             return View(phones);
         }
 
-        public ActionResult PhoneVersions(int? brandId)
+        public ActionResult PhoneVersions(int? id)
         {
             // Initialize PhoneVersions Variable
             IList<PhoneVersion> phoneVersions = null;
 
             // Get a list of Phone Versions to pass to the view
-            phoneVersions = db.PhoneVersions.ToList().Where(x => x.Phone.PhoneId == brandId).ToList();
+            phoneVersions = db.PhoneVersions.ToList().Where(x => x.Phone.PhoneId == id).ToList();
 
             return View(phoneVersions);
         }
@@ -33,26 +33,30 @@ namespace CellableMVC.Controllers
         {
             // Initialize Defects Variable
             IList<PossibleDefect> possibleDefects = null;
-
-            // Initialize Defect Groups
-            //IList<DefectGroup> defectGroup = db.DefectGroups.ToList();
-
+            
             // Get a list of Defects to pass to the view
             possibleDefects = db.PossibleDefects.ToList().OrderBy(x => x.DefectGroup.DisplayOrder).Where(x => x.VersionId == id).ToList();
 
+            // Get the Version Info for this Particular Phone
             PhoneVersion phoneVersion = db.PhoneVersions.Find(id);
 
-            IList<Carrier> list = db.Carriers.ToList();
-            ViewBag.Carriers = list;
+            Session["PhoneBrand"] = phoneVersion.PhoneId;
+            Session["VersionName"] = phoneVersion.Version;
+            Session["ImageLocation"] = phoneVersion.ImageName;
+            Session["VersionId"] = phoneVersion.VersionId;
+            Session["BaseCost"] = phoneVersion.BaseCost;
 
             // Get Phone Image to display
             ViewBag.ImageLocation = phoneVersion.ImageName;
             ViewBag.VersionName = phoneVersion.Version;
 
-            Session["VersionName"] = phoneVersion.Version;
-            Session["ImageLocation"] = phoneVersion.ImageName;
-            Session["VersionId"] = phoneVersion.VersionId;
-            Session["BaseCost"] = phoneVersion.BaseCost;
+            // Get List of Storage Capacities
+            IList<StorageCapacity> storage = db.StorageCapacities.ToList();
+            ViewBag.Storage = storage;
+
+            // Get List of Carriers
+            IList<Carrier> carriers = db.Carriers.ToList();
+            ViewBag.Carriers = carriers;
 
             return View(possibleDefects);
         }
@@ -76,21 +80,26 @@ namespace CellableMVC.Controllers
                     string[] defect;
                     defect = defectField.Split(delimiter, StringSplitOptions.None);
 
-
                     if (defect[1] != "0" && defect[1] != "0.00")
                     {
                         baseCost -= decimal.Parse(defect[1]);
                         Session[defect[0]] = defect[1];
                     }
                 }
-                if(item.ToString() == "capacity")
-                {
-                    Session["Storage Capacity"] = Request.Form[item.ToString()];
-                }
-                if(item.ToString() == "carriers")
-                {
-                    Session["Carrier"] = Request.Form[item.ToString()];
-                }
+            }
+
+            if(!String.IsNullOrEmpty(Request.Form["capacity"]))
+            {
+                Session["Storage Capacity"] = Request.Form["capacity"];
+            }
+
+            StorageCapacity capacity  = db.StorageCapacities.Find(int.Parse(Session["Storage Capacity"].ToString()));
+            // For Description on Pricing Page
+            ViewBag.CapacityDesc = capacity.Description;
+
+            if (!String.IsNullOrEmpty(Request.Form["carriers"]))
+            {
+                Session["Carrier"] = Request.Form["carriers"];
             }
 
             if (Session["Phone Value"] == null)
@@ -98,25 +107,26 @@ namespace CellableMVC.Controllers
                 Session["Phone Value"] = baseCost;
             }
 
-            ViewBag.Carriers = new SelectList(db.Carriers, "CarrierId", "CarrierName", "-- Select Carrier --");
-
             return View(defects);
         }
 
         public ActionResult CalcPromo(string PromoCode)
         {
-            try
+            if (!String.IsNullOrEmpty(PromoCode))
             {
-                Promo promo = db.Promos.FirstOrDefault(x => x.PromoCode == PromoCode && (x.StartDate < DateTime.Today && x.EndDate > DateTime.Today));
+                try
+                {
+                    Promo promo = db.Promos.FirstOrDefault(x => x.PromoCode == PromoCode && (x.StartDate < DateTime.Today && x.EndDate > DateTime.Today));
 
-                var promoDiscount = decimal.Parse(Session["Phone Value"].ToString()) * promo.Discount;
-                Session["PromoCode"] = PromoCode;
-                Session["PromoValue"] = promo.Discount;
-                Session["Phone Value"] = decimal.Parse(Session["Phone Value"].ToString()) + promoDiscount;
-            }
-            catch(Exception ex)
-            {
+                    var promoDiscount = decimal.Parse(Session["Phone Value"].ToString()) * promo.Discount;
+                    Session["PromoCode"] = PromoCode;
+                    Session["PromoValue"] = promo.Discount;
+                    Session["Phone Value"] = decimal.Parse(Session["Phone Value"].ToString()) + promoDiscount;
+                }
+                catch (Exception ex)
+                {
 
+                }
             }
 
             return RedirectToAction("PricePhone", "Phones");

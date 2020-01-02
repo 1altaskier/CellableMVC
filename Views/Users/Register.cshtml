@@ -6,33 +6,53 @@
 }
 
 <script type="text/javascript">
-        function togglePassword() {
-            const password = document.getElementById("password");
-            const confirmPassword = document.getElementById("confirmPassword");
-            const Password1Div = document.getElementById("Password1");
-            const Password2Div = document.getElementById("Password2");
+    function togglePassword() {
+        const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirmPassword");
+        const Password1Div = document.getElementById("Password1");
+        const Password2Div = document.getElementById("Password2");
 
-            if (password.type === "password") {
-                password.type = "text";
-                confirmPassword.type = "text"
-                Password1Div.innerHTML = "<i class='fa fa-eye input-field' onclick='togglePassword()'></i>"
-                Password2Div.innerHTML = "<i class='fa fa-eye input-field' onclick='togglePassword()'></i>"
-            } else {
-                password.type = "password";
-                confirmPassword.type = "password"
-                    Password1Div.innerHTML = "<i class='fa fa-eye-slash input-field' onclick='togglePassword()'></i>"
-                Password2Div.innerHTML = "<i class='fa fa-eye-slash input-field' onclick='togglePassword()'></i>"
-            }
-        };
+        if (password.type === "password") {
+            password.type = "text";
+            confirmPassword.type = "text"
+            Password1Div.innerHTML = "<i class='fa fa-eye input-field' onclick='togglePassword()'></i>"
+            Password2Div.innerHTML = "<i class='fa fa-eye input-field' onclick='togglePassword()'></i>"
+        } else {
+            password.type = "password";
+            confirmPassword.type = "password"
+            Password1Div.innerHTML = "<i class='fa fa-eye-slash input-field' onclick='togglePassword()'></i>"
+            Password2Div.innerHTML = "<i class='fa fa-eye-slash input-field' onclick='togglePassword()'></i>"
+        }
+    };
 
-        function valid_form() {
+    function valid_form() {
         // Custom "Forced" Validation For State
-        if (document.getElementById("States").value == "") {
+        if (document.getElementById("State").value == "") {
             document.getElementById("StateValidationMessage").innerHTML = "Please Select State";
             valid = false;
         }
         else {
             document.getElementById("StateValidationMessage").innerHTML = "";
+            valid = true;
+        }
+
+        //// Custom "Forced" Validation For Payment Types
+        if (document.getElementById("PaymentTypes").value == "") {
+            document.getElementById("PaymentValidationMessage").innerHTML = "Please Select Payment Type";
+            valid = false;
+        }
+        else {
+            document.getElementById("PaymentValidationMessage").innerHTML = "";
+            valid = true;
+        }
+
+        //// Custom "Forced" Validation For Payment User Name
+        if (document.getElementById("PaymentUserName").value == "") {
+            document.getElementById("PaymentUserNameValidationMessage").innerHTML = "Payment User Name is Required";
+            valid = false;
+        }
+        else {
+            document.getElementById("PaymentUserNameValidationMessage").innerHTML = "";
             valid = true;
         }
 
@@ -78,6 +98,20 @@
                         </td>
                     </tr>
                     <tr>
+                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;Payment Method:</td>
+                        <td style="width:20%; padding:10px;">
+                            @Html.DropDownList("PaymentTypes", null, "-- How You Get Paid --", htmlAttributes: new { @class = "form-control", onchange = "return valid_form()" })
+                            <div id="PaymentValidationMessage" class="text-danger"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;Payment User Name:</td>
+                        <td style="width:20%; padding:10px;">
+                            <input type="text" id="PaymentUserName" name="PaymentUserName" class="form-control" />
+                            <div id="PaymentUserNameValidationMessage" class="text-danger"></div>
+                        </td>
+                    </tr>
+                    <tr>
                         <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;First Name:</td>
                         <td style="width:20%; padding:10px;">
                             @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
@@ -113,7 +147,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:10%; text-align:right; padding:10px;">Address 2:</td>
+                        <td style="width:10%; text-align:right; padding:10px;">Apt/Ste #:</td>
                         <td style="width:20%; padding:10px;">
                             @Html.EditorFor(model => model.Address2, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Address2, "", new { @class = "text-danger" })
@@ -129,7 +163,7 @@
                     <tr>
                         <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;State:</td>
                         <td style="width:20%; padding:10px;">
-                            @Html.DropDownList("State", null, "-- Select State --", htmlAttributes: new { @class = "form-control", onclick = "valid_form()" })
+                            @Html.DropDownList("State", null, "-- Select State --", htmlAttributes: new { @class = "form-control", onchange = "valid_form()" })
                             <div id="StateValidationMessage" class="text-danger"></div>
                         </td>
                     </tr>

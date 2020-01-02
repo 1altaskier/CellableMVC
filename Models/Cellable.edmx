@@ -32,6 +32,8 @@
           <Property Name="CreateBy" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="PaymentTypeId" Type="int" />
           <Property Name="PromoId" Type="int" />
+          <Property Name="UserPhoneId" Type="int" />
+          <Property Name="PaymentUserName" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="OrderStatus">
           <Key>
@@ -109,6 +111,7 @@
           </Key>
           <Property Name="StorageCapacityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StorageCapacity" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -447,6 +450,8 @@
           <NavigationProperty Name="OrderStatu" Relationship="Self.FK_151" FromRole="Orders" ToRole="OrderStatus" />
           <NavigationProperty Name="PaymentType" Relationship="Self.FK_Orders_PaymentTypes" FromRole="Orders" ToRole="PaymentTypes" />
           <NavigationProperty Name="Promo" Relationship="Self.FK_Orders_Promos" FromRole="Orders" ToRole="Promos" />
+          <Property Name="UserPhoneId" Type="Int32" />
+          <Property Name="PaymentUserName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="OrderStatu">
           <Key>
@@ -538,6 +543,7 @@
           <Property Name="StorageCapacityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StorageCapacity1" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PhoneVersions" Relationship="Self.FK_PhoneVersion_StorageCapacity" FromRole="StorageCapacity" ToRole="PhoneVersion" />
+          <Property Name="Description" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -884,6 +890,8 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="CellableModel.Order">
               <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="PaymentUserName" ColumnName="PaymentUserName" />
+                <ScalarProperty Name="UserPhoneId" ColumnName="UserPhoneId" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -976,6 +984,7 @@
           <EntitySetMapping Name="StorageCapacities">
             <EntityTypeMapping TypeName="CellableModel.StorageCapacity">
               <MappingFragment StoreEntitySet="StorageCapacity">
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="StorageCapacityId" ColumnName="StorageCapacityId" />
                 <ScalarProperty Name="StorageCapacity1" ColumnName="StorageCapacity" />
               </MappingFragment>

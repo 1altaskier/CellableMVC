@@ -34,12 +34,10 @@
                                     </p>
                                 </div>
                                 <div style="display:inline-block; width:50px;"></div>
-                                <input id="32GB" type="radio" name="capacity" value="32GB" checked />32GB &nbsp;&nbsp;
-                                <input id="64GB" type="radio" name="capacity" value="64GB" />64GB &nbsp;&nbsp;
-                                <input id="128GB" type="radio" name="capacity" value="128GB" />128GB &nbsp;&nbsp;
-                                <input id="164GB" type="radio" name="capacity" value="164GB" />164GB &nbsp;&nbsp;
-                                <input id="512GB" type="radio" name="capacity" value="512GB" />512GB &nbsp;&nbsp;
-                                <input id="1TR" type="radio" name="capacity" value="1TR" />1TR &nbsp;&nbsp;
+                                @foreach (var storage in ViewBag.Storage)
+                                {
+                                    <input id="@storage.StorageCapacityId" type="radio" name="capacity" value="@storage.StorageCapacityId" checked />@storage.Description @Html.Raw("&nbsp; &nbsp;")
+                                }
                             </div>
                         </td>
                     </tr>
@@ -55,7 +53,7 @@
                                 <div style="display:inline-block; width:50px;"></div>
                                 @foreach (var carrier in ViewBag.Carriers)
                                 {
-                                    <input id="@carrier.CarrierId" type="radio" name="carriers" value="@carrier.CarrierName" checked />@carrier.CarrierName @Html.Raw("&nbsp; &nbsp;")
+                                    <input id="@carrier.CarrierId" type="radio" name="carriers" value="@carrier.CarrierId" checked />@carrier.CarrierName @Html.Raw("&nbsp; &nbsp;")
                                 }
                             </div>
                         </td>

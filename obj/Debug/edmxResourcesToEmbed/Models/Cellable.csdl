@@ -24,6 +24,8 @@
     <NavigationProperty Name="OrderStatu" Relationship="Self.FK_151" FromRole="Orders" ToRole="OrderStatus" />
     <NavigationProperty Name="PaymentType" Relationship="Self.FK_Orders_PaymentTypes" FromRole="Orders" ToRole="PaymentTypes" />
     <NavigationProperty Name="Promo" Relationship="Self.FK_Orders_Promos" FromRole="Orders" ToRole="Promos" />
+    <Property Name="UserPhoneId" Type="Int32" />
+    <Property Name="PaymentUserName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="OrderStatu">
     <Key>
@@ -115,6 +117,7 @@
     <Property Name="StorageCapacityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="StorageCapacity1" Type="Int32" Nullable="false" />
     <NavigationProperty Name="PhoneVersions" Relationship="Self.FK_PhoneVersion_StorageCapacity" FromRole="StorageCapacity" ToRole="PhoneVersion" />
+    <Property Name="Description" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="sysdiagram">
     <Key>

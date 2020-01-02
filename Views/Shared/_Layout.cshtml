@@ -23,6 +23,18 @@
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v5.0"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <script type="text/javascript">
+        // Redirect User 1 Minute Before Session Timeout
+        var sessionTimeoutWarning = @Session.Timeout- 1;
+
+        var sTimeout = parseInt(sessionTimeoutWarning) * 60 * 1000;
+        setTimeout('SessionEnd()', sTimeout);
+
+        function SessionEnd() {
+            window.location = "/Users/Cancel";
+        }
+    </script>
+
 </head>
 <body>
     <div id="fb-root"></div>
@@ -55,11 +67,10 @@
                 @RenderBody()
             </td>
         </tr>
-        </table>
+    </table>
     <table style="position:fixed; bottom:0; width:100%; background-color:black">
         <tr>
             <td style="text-align:left; width:5%;">
-                
             </td>
             <td style="text-align:left; width:25%;">
                 <div class="Header">&copy; @DateTime.Now.Year - Cellable</div>
