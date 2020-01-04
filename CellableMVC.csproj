@@ -135,11 +135,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\EmailController.cs" />
+    <Compile Include="Mail\Address.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="Mail\Package.cs" />
+    <Compile Include="Mail\Rate.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Mail\TrackingInfo.cs" />
+    <Compile Include="Mail\USPSManager.cs" />
+    <Compile Include="Mail\USPSManagerException.cs" />
+    <Compile Include="Mail\ZipCodeLookupResponse.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MailController.cs" />
     <Compile Include="Controllers\PhonesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -280,6 +289,7 @@
     <Content Include="Pictures\S10.jpg" />
     <Content Include="Pictures\S5.jpg" />
     <Content Include="Pictures\S6.jpg" />
+    <Content Include="Pictures\SampleMailingLabel.png" />
     <Content Include="Pictures\samsung.jpg" />
     <Content Include="Pictures\Samsung_logo.png" />
     <Content Include="Pictures\Sprintlogo.jpg" />
@@ -448,10 +458,13 @@
     <Content Include="Views\Phones\DefectQuestions.cshtml" />
     <Content Include="Views\Phones\PricePhone.cshtml" />
     <Content Include="Views\Users\View.cshtml" />
+    <Content Include="Views\Users\TrackProgress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Authentication\" />
+    <Folder Include="Views\Email\" />
+    <Folder Include="Views\Mail\" />
     <Folder Include="Views\Register\" />
     <Folder Include="Views\Validation\" />
     <Folder Include="Views\WebUser\" />

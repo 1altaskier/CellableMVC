@@ -25,7 +25,8 @@
     <NavigationProperty Name="PaymentType" Relationship="Self.FK_Orders_PaymentTypes" FromRole="Orders" ToRole="PaymentTypes" />
     <NavigationProperty Name="Promo" Relationship="Self.FK_Orders_Promos" FromRole="Orders" ToRole="Promos" />
     <Property Name="UserPhoneId" Type="Int32" />
-    <Property Name="PaymentUserName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="PaymentUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="USPSTrackingId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="OrderStatu">
     <Key>

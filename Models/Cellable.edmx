@@ -33,7 +33,8 @@
           <Property Name="PaymentTypeId" Type="int" />
           <Property Name="PromoId" Type="int" />
           <Property Name="UserPhoneId" Type="int" />
-          <Property Name="PaymentUserName" Type="nvarchar" MaxLength="10" />
+          <Property Name="PaymentUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="USPSTrackingId" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="OrderStatus">
           <Key>
@@ -451,7 +452,8 @@
           <NavigationProperty Name="PaymentType" Relationship="Self.FK_Orders_PaymentTypes" FromRole="Orders" ToRole="PaymentTypes" />
           <NavigationProperty Name="Promo" Relationship="Self.FK_Orders_Promos" FromRole="Orders" ToRole="Promos" />
           <Property Name="UserPhoneId" Type="Int32" />
-          <Property Name="PaymentUserName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="USPSTrackingId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="OrderStatu">
           <Key>
@@ -890,6 +892,7 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="CellableModel.Order">
               <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="USPSTrackingId" ColumnName="USPSTrackingId" />
                 <ScalarProperty Name="PaymentUserName" ColumnName="PaymentUserName" />
                 <ScalarProperty Name="UserPhoneId" ColumnName="UserPhoneId" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />

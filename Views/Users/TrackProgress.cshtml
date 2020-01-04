@@ -1,0 +1,88 @@
+﻿@model IEnumerable<CellableMVC.Models.Order>
+
+@{
+    ViewBag.Title = "TrackProgress";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<!-- The Modal -->
+<div id="id01" class="w3-modal">
+    <div class="w3-modal-content">
+        <div class="w3-container">
+            <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+
+                A status update is not yet available on your package. 
+                It will be available when the shipper provides an update 
+                or the package is delivered to USPS. Check back soon. 
+                Sign up for Informed Delivery<SUP>&reg;</SUP> to receive notifications for packages addressed to you.
+        </div>
+    </div>
+</div>
+
+<input type="button" value="clik"  onclick="document.getElementById('id01').style.display='block'" name="button" id="button">
+<table style="width:70%; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td>
+            <h4>Track your phone in our system & with USPS</h4>
+            <hr />
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.Raw("Phone Version")
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Amount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderStatu.StatusType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PaymentUserName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PaymentType.PaymentType1)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Promo.PromoCode)
+                    </th>
+                    <th>
+                        @Html.Raw("USPS Tracking")
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreateDate)
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserPhoneId)
+                        </td>
+                        <td>
+                            $@Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderStatu.StatusType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PaymentUserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PaymentType.PaymentType1)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Promo.PromoCode)
+                        </td>
+                        <td>
+                            @Html.ActionLink("EJ958083578US", "ValidateAddress", "Mail", new { id = "EJ958083578US" }, null)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreateDate)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </td>
+    </tr>
+</table>

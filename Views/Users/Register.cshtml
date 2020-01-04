@@ -100,14 +100,14 @@
                     <tr>
                         <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;Payment Method:</td>
                         <td style="width:20%; padding:10px;">
-                            @Html.DropDownList("PaymentTypes", null, "-- How You Get Paid --", htmlAttributes: new { @class = "form-control", onchange = "return valid_form()" })
+                            @Html.DropDownList("PaymentTypes", null, "-- How You Get Paid --", htmlAttributes: new { @class = "form-control", onchange = "valid_form()" })
                             <div id="PaymentValidationMessage" class="text-danger"></div>
                         </td>
                     </tr>
                     <tr>
                         <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;Payment User Name:</td>
                         <td style="width:20%; padding:10px;">
-                            <input type="text" id="PaymentUserName" name="PaymentUserName" class="form-control" />
+                            <input type="text" id="PaymentUserName" name="PaymentUserName" class="form-control" onchange="valid_form()" />
                             <div id="PaymentUserNameValidationMessage" class="text-danger"></div>
                         </td>
                     </tr>

@@ -46,6 +46,10 @@ namespace CellableMVC.Controllers
             Session["VersionId"] = phoneVersion.VersionId;
             Session["BaseCost"] = phoneVersion.BaseCost;
 
+            // Get Phone Brand to display
+            Phone phoneBrand = db.Phones.Find(int.Parse(Session["PhoneBrand"].ToString()));
+            Session["PhoneBrandName"] = phoneBrand.Brand;
+
             // Get Phone Image to display
             ViewBag.ImageLocation = phoneVersion.ImageName;
             ViewBag.VersionName = phoneVersion.Version;
@@ -73,7 +77,9 @@ namespace CellableMVC.Controllers
                 if (item.ToString() != "__RequestVerificationToken" &&
                     item.ToString() != "id" &&
                     item.ToString() != "capacity" && 
-                    item.ToString() != "carriers")
+                    item.ToString() != "carriers"  &&
+                    item.ToString() != "hdCarrier"  &&
+                    item.ToString() != "hdCapacity")
                 {
                     string defectField = Request.Form[item.ToString()];
                     string[] delimiter = new string[] { "_" };

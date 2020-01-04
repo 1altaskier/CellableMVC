@@ -28,7 +28,8 @@
     <Property Name="PaymentTypeId" Type="int" />
     <Property Name="PromoId" Type="int" />
     <Property Name="UserPhoneId" Type="int" />
-    <Property Name="PaymentUserName" Type="nvarchar" MaxLength="10" />
+    <Property Name="PaymentUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="USPSTrackingId" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="OrderStatus">
     <Key>

@@ -1,14 +1,19 @@
-﻿using CellableMVC.Models;
+﻿using CellableMVC.Mail;
+using CellableMVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace CellableMVC.Controllers
 {
     public class UsersController : Controller
     {
+        private string USPSAPIUserName = WebConfigurationManager.AppSettings["USPSAPIUserName"];
+        private string USPSAPIPassword = WebConfigurationManager.AppSettings["USPSAPIPassword"];
+
         private CellableEntities db = new CellableEntities();
 
         [HttpPost]
@@ -111,16 +116,26 @@ namespace CellableMVC.Controllers
                 db.Users.Add(user);
                 db.SaveChanges();
 
+
                 string paymentUserName = Request.Form["PaymentUserName"];
                 int paymentTypeId = int.Parse(Request.Form["PaymentTypes"].ToString());
 
+                // Set User Name
+                User sessionUser = db.Users.Find(user.UserId);
+                Session["LoggedInUser"] = sessionUser.UserName;
+
                 SaveUserPhone(user.UserId, paymentTypeId, paymentUserName);
 
-                return RedirectToAction("Index", "Home");
+                // Send Confirmation Email(s)
+                EmailController email = new EmailController();
+                email.ConfirmationEmail("REPLACE");
+
+                return RedirectToAction("TrackProgress", "Users");
             }
             catch (Exception ex)
             {
-                ViewBag.Message = "Error encountered while attempting to register user/phone";
+                ViewBag.Message = ex.Message  + "<br />" + ex.InnerException;
+                ViewBag.PaymentTypes = new SelectList(db.PaymentTypes, "PaymentTypeId", "PaymentType1", "-- How You Get Paid --");
                 ViewBag.State = new SelectList(db.States, "StateAbbrv", "StateName", "-- Select State --");
                 return View("Register");
             }
@@ -180,6 +195,19 @@ namespace CellableMVC.Controllers
             var orderId = order.OrderID;
         }
 
+        public ActionResult TrackProgress()
+        {
+            IList<Order> order = db.Orders.ToList().Where(x => x.User.UserName == Session["LoggedInUser"].ToString()).ToList();
+
+            //var result = new USPSManager().GetTrackingInfo(USPSAPIUserName, USPSAPIPassword, "EJ958083578US");
+
+            //string output = trackingInfo.TrackPackage("");
+
+            //ViewBag.USPSInfo = Mail.TrackingInfo();
+
+            return View(order);
+        }
+
         public ActionResult Login()
         {
             return View();
@@ -192,20 +220,6 @@ namespace CellableMVC.Controllers
             Session.Abandon();
 
             return RedirectToAction("Index", "Home");
-        }
-
-        // POST: Users/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

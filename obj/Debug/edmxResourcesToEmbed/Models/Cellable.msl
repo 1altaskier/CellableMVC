@@ -12,6 +12,7 @@
     <EntitySetMapping Name="Orders">
       <EntityTypeMapping TypeName="CellableModel.Order">
         <MappingFragment StoreEntitySet="Orders">
+          <ScalarProperty Name="USPSTrackingId" ColumnName="USPSTrackingId" />
           <ScalarProperty Name="PaymentUserName" ColumnName="PaymentUserName" />
           <ScalarProperty Name="UserPhoneId" ColumnName="UserPhoneId" />
           <ScalarProperty Name="OrderID" ColumnName="OrderID" />

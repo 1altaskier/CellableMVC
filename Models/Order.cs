@@ -11,8 +11,7 @@ namespace CellableMVC.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Order
     {
         public int OrderID { get; set; }
@@ -24,8 +23,8 @@ namespace CellableMVC.Models
         public Nullable<int> PaymentTypeId { get; set; }
         public Nullable<int> PromoId { get; set; }
         public Nullable<int> UserPhoneId { get; set; }
-
         public string PaymentUserName { get; set; }
+        public string USPSTrackingId { get; set; }
     
         public virtual User User { get; set; }
         public virtual OrderStatu OrderStatu { get; set; }

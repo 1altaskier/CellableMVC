@@ -41,7 +41,7 @@ namespace EF_CRUD.Controllers
                     FormsAuthentication.SetAuthCookie(userName, false);
                 }
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("TrackProgress", "Users");
             }
             else
             {

@@ -5,24 +5,77 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<table style="width:70%; margin-left:auto; margin-right:auto; font-family:'HP Simplified'">
+<script type="text/javascript">
+    function ValidateForm() {
+
+        var isValid;
+
+        if (document.getElementById("hdCapacity").value == "") {
+            document.getElementById("CapacityValidationMessage").innerHTML = "* Please Select You Phone's Storage Capacity";
+            isValid = false
+        }
+        else {
+            document.getElementById("CapacityValidationMessage").innerHTML = "";
+            isValid = true;
+        }
+
+        if (document.getElementById("hdCarrier").value == "") {
+            document.getElementById("CarriersValidationMessage").innerHTML = "* Please Select Phone Carrier";
+            isValid = false
+        }
+        else {
+            document.getElementById("CarriersValidationMessage").innerHTML = "";
+            isValid = true;
+        }
+
+        return isValid;
+    }
+
+    function SetField(field) {
+        if (field == "capacity") {
+            document.getElementById("hdCapacity").value = "GoodToGo";
+            document.getElementById("CapacityValidationMessage").innerHTML = "";
+        }
+        if (field == "carrier") {
+            document.getElementById("hdCarrier").value = "GoodToGo";
+            document.getElementById("CarriersValidationMessage").innerHTML = "";
+        }
+    }
+</script>
+
+<table style="width:80%; margin-left:auto; margin-right:auto;">
     <tr>
-        <td style="text-align:center; vertical-align:top; width:30%">
-            <div style="height:100px;"></div>
-            @Html.Raw(Session["VersionName"])
-            <br />
-            <img src="~/Pictures/@Session["ImageLocation"]" style="height:250px; width:130px;" />
-            <br />
-            Please Note: We do not pay for devices that have been reported lost or stolen.
-        </td>
-        <td style="text-align:left;">
+        <td>
             <h4>We need to ask you a few questions about your device</h4>
             <hr />
             <div class="text-danger" style="text-align:center">@ViewBag.Message</div>
-            @using (Html.BeginForm("PricePhone", "Phones", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                @Html.AntiForgeryToken()
-                <input id="id" name="id" type="hidden" value="@Session["VersionId"]" />
+        </td>
+    </tr>
+</table>
+
+@using (Html.BeginForm("PricePhone", "Phones", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <input id="id" name="id" type="hidden" value="@Session["VersionId"]" />
+    <table style="width:70%; margin-left:auto; margin-right:auto; font-family:'HP Simplified'">
+        <tr>
+            <td style="text-align:center; vertical-align:top; width:30%;">
+                <div style="height:50px;"></div>
+                <div style="position:fixed; width:300px">
+                    @Html.Raw(Session["PhoneBrandName"])
+                    <br />
+                    @Html.Raw(Session["VersionName"])
+                    <br />
+                    <img src="~/Pictures/@Session["ImageLocation"]" style="height:250px; width:130px;" />
+                    <br />
+                    Please Note: We do not pay for devices that have been reported lost or stolen.
+                    <p>
+                        <input type="submit" class="button" value="Calculate your phone's value >>" style="width:100%" onclick=" return ValidateForm()" />
+                        <input type="reset" class="button" value="Reset Form" />
+                    </p>
+                </div>
+            </td>
+            <td style="text-align:left;">
                 <table style="width:80%; margin-left:auto; margin-right:auto;">
                     <tr>
                         <td>
@@ -36,8 +89,11 @@
                                 <div style="display:inline-block; width:50px;"></div>
                                 @foreach (var storage in ViewBag.Storage)
                                 {
-                                    <input id="@storage.StorageCapacityId" type="radio" name="capacity" value="@storage.StorageCapacityId" checked />@storage.Description @Html.Raw("&nbsp; &nbsp;")
+                                    <input id="@storage.StorageCapacityId" type="radio" name="capacity" value="@storage.StorageCapacityId" onchange="SetField('capacity')" />@storage.Description @Html.Raw("&nbsp; &nbsp;")
                                 }
+                                <br />
+                                <div style="display:inline-block; width:50px;"></div><div id="CapacityValidationMessage" name="CapacityValidationMessage" style="display:inline-block" class="text-danger"></div>
+                                <input type="hidden" name="hdCapacity" id="hdCapacity" />
                             </div>
                         </td>
                     </tr>
@@ -53,8 +109,12 @@
                                 <div style="display:inline-block; width:50px;"></div>
                                 @foreach (var carrier in ViewBag.Carriers)
                                 {
-                                    <input id="@carrier.CarrierId" type="radio" name="carriers" value="@carrier.CarrierId" checked />@carrier.CarrierName @Html.Raw("&nbsp; &nbsp;")
+                                    <input id="@carrier.CarrierId" type="radio" name="carriers" value="@carrier.CarrierId" onchange="SetField('carrier')" />@carrier.CarrierName @Html.Raw("&nbsp; &nbsp;")
                                 }
+                                <br />
+                                <div style="display:inline-block; width:50px;"></div>
+                                <div id="CarriersValidationMessage" name="CarriersValidationMessage" style="display:inline-block;" class="text-danger"></div>
+                                <input type="hidden" name="hdCarrier" id="hdCarrier" />
                             </div>
                         </td>
                     </tr>
@@ -118,14 +178,8 @@
                             }
                         }
                     }
-                    <tr>
-                        <td style="text-align:center">
-                            <input type="submit" class="button" value="Calculate your phone's value >>" style="width:100%" />
-                            <input type="reset" class="button" value="Reset Form" />
-                        </td>
-                    </tr>
                 </table>
-            }
-        </td>
-    </tr>
-</table>
+            </td>
+        </tr>
+    </table>
+}

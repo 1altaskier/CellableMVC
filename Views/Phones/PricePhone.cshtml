@@ -36,6 +36,8 @@
                 <tr>
                     <td style="text-align:center; vertical-align:top; width:30%">
                         <div style="height:100px;"></div>
+                        @Html.Raw(Session["PhoneBrandName"])
+                        <br />
                         @Session["VersionName"].ToString() @Html.Raw("(") @ViewBag.CapacityDesc @Html.Raw(")")
                         <br />
                         <img src="~/Pictures/@Session["ImageLocation"]" style="height:250px; width:130px;" />

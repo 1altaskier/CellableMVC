@@ -23,6 +23,14 @@
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v5.0"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <style>
+        .twitter-follow-button[style] { vertical-align: text-bottom !important; }
+        .twitter-mention-button[style] { vertical-align: text-bottom !important; }
+        .fb-like[style] { vertical-align: top !important; }
+
+        body.custom-background { background-color: #ffffff; background-image: url("http://phonexchange.com/wp-content/uploads/2015/04/DOWNTOWN-PORTLAND241.jpg"); background-position: center top; background-size: auto; background-repeat: no-repeat; background-attachment: fixed; }
+    </style>
+
     <script type="text/javascript">
         // Redirect User 1 Minute Before Session Timeout
         var sessionTimeoutWarning = @Session.Timeout- 1;
@@ -36,7 +44,7 @@
     </script>
 
 </head>
-<body>
+<body class="custom-background">
     <div id="fb-root"></div>
     <table style="position:fixed; top:0; width:100%; height:20px">
         <tr>
@@ -44,17 +52,33 @@
                 <table style="width:100%">
                     <tr style="vertical-align:middle;">
                         <td style="width:20%; text-align:center" class="Header"><h2>Cellable</h2></td>
-                        <td style="text-align:left; vertical-align:middle">
+                        <td style="text-align:left; vertical-align:middle; width:50%">
                             <div style="display: inline-block; width:80px">@Html.ActionLink("Home", "Index", "Home", new { }, new { @class = "NavLink" })</div>
                             <div style="display: inline-block; width:80px">@Html.ActionLink("About", "About", "Home", new { }, new { @class = "NavLink" })</div>
+                            @if (System.Web.HttpContext.Current.Session["LoggedInUser"] != null && Session["LoggedInUser"].ToString() != "")
+                            {
+                                <div style="display: inline-block; width:80px">@Html.ActionLink("Logout", "Cancel", "Users", new { }, new { @class = "NavLink" })</div>
+                            }
+                            else
+                            {
+                                <div style="display: inline-block; width:80px">@Html.ActionLink("Login", "Login", "Users", new { }, new { @class = "NavLink" })</div>
+                            }
                             <div style="display: inline-block; width:80px">@Html.ActionLink("Sell", "Phones", "Phones", new { }, new { @class = "NavLink" })</div>
+                            @if (System.Web.HttpContext.Current.Session["LoggedInUser"] != null && Session["LoggedInUser"].ToString() != "")
+                            {
+                                <div style="display: inline-block; width:80px">@Html.ActionLink("Tracking", "TrackProgress", "Users", new { }, new { @class = "NavLink" })</div>
+                            }
                         </td>
-                        <td style="width:7%; text-align:left">@Html.ActionLink("Register", "Register", "Users", new { }, new { @class = "NavLink" })</td>
-                        <td style="width:10%; text-align:left">@Html.ActionLink("Login", "Login", "Users", new { }, new { @class = "NavLink" })</td>
-                        @if (System.Web.HttpContext.Current.Session["LoggedInUser"] != null && Session["LoggedInUser"].ToString() != "")
-                        {
-                            <td style="width:10%; text-align:left"><i class="LoggedIn">Logged in as:<br />@Session["LoggedInUser"]</i></td>
-                        }
+                        @*<td style="width:7%; text-align:left">@Html.ActionLink("Register", "Register", "Users", new { }, new { @class = "NavLink" })</td>*@
+                        <td style="width:20%; text-align:left">
+                            <input type="search" id="search" name="search" placeholder="Search For Your Phone" style="width:400px">&nbsp;&nbsp;<i class="fa fa-search" style="color:lawngreen"></i>
+                        </td>
+                        <td style="width:10%; text-align:center;">
+                            @if (System.Web.HttpContext.Current.Session["LoggedInUser"] != null && Session["LoggedInUser"].ToString() != "")
+                            {
+                                <i class="LoggedIn">Logged in as:<br /><div style="color:lawngreen">@Session["LoggedInUser"]</div></i>
+                            }
+                        </td>
                     </tr>
                 </table>
             </td>
@@ -72,17 +96,22 @@
         <tr>
             <td style="text-align:left; width:5%;">
             </td>
-            <td style="text-align:left; width:25%;">
+            <td style="text-align:left; width:30%;">
                 <div class="Header">&copy; @DateTime.Now.Year - Cellable</div>
             </td>
             <td style="text-align:center; width:30%;">
                 @Html.ActionLink("Support", "Support", "Home", new { }, new { @class = "NavLink" })<div style="width:30px; display:inline-block"></div>@Html.ActionLink("About Us", "About", "Home", new { }, new { @class = "NavLink" })<div style="width:30px; display:inline-block"></div>@Html.ActionLink("Contact Us", "Contact", "Home", new { }, new { @class = "NavLink" })
             </td>
-            <td style="text-align:left; width:30%;">
-                <a href="https://twitter.com/TwitterDev?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow us on Twitter</a>
-                <a href="https://twitter.com/intent/tweet?screen_name=TwitterDev&ref_src=twsrc%5Etfw" class="twitter-mention-button" data-show-count="false">Mention us on Twitter</a>
-                <a href="https://www.facebook.com/CellableApp/" class="fb-like" data-layout="button_count" data-action="recommend" data-size="small" data-share="true"></a>
+            <td style="text-align:right; width:30%; height:40px;">
+                <a href="https://www.facebook.com/CellableApp/"><i class="fa fa-facebook" style="color:grey;"></i></a>
+                &nbsp;
+                <a href="https://twitter.com/Cellable"><i class="fa fa-twitter" style="color:grey"></i></a>
+                &nbsp;
+                <i class="fa fa-pinterest-p" style="color:grey"></i>
+                &nbsp;
+                <i class="fa fa-tumblr" style="color:grey"></i>
             </td>
+            <td style="width:5%"></td>
         </tr>
     </table>
     @Scripts.Render("~/bundles/jquery")
