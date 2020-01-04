@@ -13,6 +13,7 @@ namespace CellableMVC.Controllers
     {
         private string USPSAPIUserName = WebConfigurationManager.AppSettings["USPSAPIUserName"];
         private string USPSAPIPassword = WebConfigurationManager.AppSettings["USPSAPIPassword"];
+        private string AdminEmail = WebConfigurationManager.AppSettings["AdminEmail"];
 
         private CellableEntities db = new CellableEntities();
 
@@ -111,88 +112,94 @@ namespace CellableMVC.Controllers
             user.PermissionId = 2;
             user.ConfirmPassword = user.Password;
 
-            try
+            using (var dbContextTransaction = db.Database.BeginTransaction())
             {
-                db.Users.Add(user);
-                db.SaveChanges();
-
-
-                string paymentUserName = Request.Form["PaymentUserName"];
-                int paymentTypeId = int.Parse(Request.Form["PaymentTypes"].ToString());
-
-                // Set User Name
-                User sessionUser = db.Users.Find(user.UserId);
-                Session["LoggedInUser"] = sessionUser.UserName;
-
-                SaveUserPhone(user.UserId, paymentTypeId, paymentUserName);
-
-                // Send Confirmation Email(s)
-                EmailController email = new EmailController();
-                email.ConfirmationEmail("REPLACE");
-
-                return RedirectToAction("TrackProgress", "Users");
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Message = ex.Message  + "<br />" + ex.InnerException;
-                ViewBag.PaymentTypes = new SelectList(db.PaymentTypes, "PaymentTypeId", "PaymentType1", "-- How You Get Paid --");
-                ViewBag.State = new SelectList(db.States, "StateAbbrv", "StateName", "-- Select State --");
-                return View("Register");
-            }
-        }
-
-        public void SaveUserPhone(int userId, int paymentTypeId, string paymentUserName)
-        {
-            // Save User Phone
-            UserPhone userPhone = new UserPhone();
-            userPhone.UserId = userId;
-            userPhone.PhoneId = int.Parse(Session["PhoneBrand"].ToString());
-            userPhone.CarrierId = int.Parse(Session["Carrier"].ToString());
-            userPhone.VersionId = int.Parse(Session["VersionId"].ToString());
-            userPhone.CreateDate = DateTime.Now;
-            db.UserPhones.Add(userPhone);
-            db.SaveChanges();
-            var userPhoneId = userPhone.UserPhoneId;
-
-            // Save User Answers
-            foreach (var item in Session)
-            {
-                var temp = 0;
-                if (int.TryParse(item.ToString(), out temp))
+                try
                 {
-                    if (Session[item.ToString()].ToString() != "0.00" && Session[item.ToString()].ToString() != "0")
+                    // Save User Information
+                    db.Users.Add(user);
+                    db.SaveChanges();
+
+                    // Get Payment User Name & Payment Type
+                    string paymentUserName = Request.Form["PaymentUserName"];
+                    int paymentTypeId = int.Parse(Request.Form["PaymentTypes"].ToString());
+
+                    // Set User Name Session
+                    User sessionUser = db.Users.Find(user.UserId);
+                    Session["LoggedInUser"] = sessionUser.UserName;
+
+                    // Save User Phone
+                    UserPhone userPhone = new UserPhone();
+                    userPhone.UserId = user.UserId;
+                    userPhone.PhoneId = int.Parse(Session["PhoneBrand"].ToString());
+                    userPhone.CarrierId = int.Parse(Session["Carrier"].ToString());
+                    userPhone.VersionId = int.Parse(Session["VersionId"].ToString());
+                    userPhone.CreateDate = DateTime.Now;
+                    db.UserPhones.Add(userPhone);
+                    db.SaveChanges();
+                    var userPhoneId = userPhone.UserPhoneId;
+
+                    // Save User Answers
+                    foreach (var item in Session)
                     {
-                        UserAnswer userAnswer = new UserAnswer();
-                        userAnswer.Answer = true;
-                        userAnswer.PossibleDefectId = int.Parse(item.ToString());
-                        userAnswer.UserPhoneId = userPhoneId;
-                        db.UserAnswers.Add(userAnswer);
-                        db.SaveChanges();
+                        var temp = 0;
+                        if (int.TryParse(item.ToString(), out temp))
+                        {
+                            if (Session[item.ToString()].ToString() != "0.00" && Session[item.ToString()].ToString() != "0")
+                            {
+                                UserAnswer userAnswer = new UserAnswer();
+                                userAnswer.Answer = true;
+                                userAnswer.PossibleDefectId = int.Parse(item.ToString());
+                                userAnswer.UserPhoneId = userPhoneId;
+                                db.UserAnswers.Add(userAnswer);
+                                db.SaveChanges();
+                            }
+                        }
                     }
+
+                    // Create Order
+                    Order order = new Order();
+                    order.Amount = decimal.Parse(Session["Phone Value"].ToString());
+                    order.UserId = user.UserId;
+                    order.OrderStatusId = 1;
+                    if (Session["PromoCode"] != null)
+                    {
+                        order.PromoId = int.Parse(Session["PromoCode"].ToString());
+                    }
+                    else
+                    {
+                        order.PromoId = null;
+                    }
+                    order.UserPhoneId = userPhoneId;
+                    order.PaymentTypeId = paymentTypeId;
+                    order.PaymentUserName = paymentUserName;
+                    order.CreateDate = DateTime.Now;
+                    order.CreateBy = "System";
+                    db.Orders.Add(order);
+                    db.SaveChanges();
+                    var orderId = order.OrderID;
+
+                    // Send Confirmation Email(s)
+                    EmailController email = new EmailController();
+                    email.ConfirmationEmail("REPLACE");
+
+                    dbContextTransaction.Commit();
+
+                    return RedirectToAction("TrackProgress", "Users");
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
+
+                    ViewBag.Message = "An error was encountered while attempting to complete your transaction. " +
+                        "If the error continues, please contact us directly.<br />" +
+                        ex.Message;
+                    ViewBag.PaymentTypes = new SelectList(db.PaymentTypes, "PaymentTypeId", "PaymentType1", "-- How You Get Paid --");
+                    ViewBag.State = new SelectList(db.States, "StateAbbrv", "StateName", "-- Select State --");
+
+                    return View("Register");
                 }
             }
-
-            // Create Order
-            Order order = new Order();
-            order.Amount = decimal.Parse(Session["Phone Value"].ToString());
-            order.UserId = userId;
-            order.OrderStatusId = 1;
-            if(Session["PromoCode"] != null)
-            {
-                order.PromoId = int.Parse(Session["PromoCode"].ToString());
-            }
-            else
-            {
-                order.PromoId = null;
-            }
-            order.UserPhoneId = userPhoneId;
-            order.PaymentTypeId = paymentTypeId;
-            order.PaymentUserName = paymentUserName;
-            order.CreateDate = DateTime.Now;
-            order.CreateBy = "System";
-            db.Orders.Add(order);
-            db.SaveChanges();
-            var orderId = order.OrderID;
         }
 
         public ActionResult TrackProgress()
