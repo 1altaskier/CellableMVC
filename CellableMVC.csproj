@@ -459,6 +459,7 @@
     <Content Include="Views\Phones\PricePhone.cshtml" />
     <Content Include="Views\Users\View.cshtml" />
     <Content Include="Views\Users\TrackProgress.cshtml" />
+    <Content Include="Views\Phones\Carriers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

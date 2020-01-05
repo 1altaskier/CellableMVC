@@ -344,8 +344,8 @@ namespace CellableMVC.Mail
         private string GetURL()
         {
             string url = ProductionUrl;
-            //if (TestMode)
-            //    url = TestingUrl;
+            if (TestMode)
+                url = TestingUrl;
             return url;
         }
         #endregion

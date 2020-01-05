@@ -18,13 +18,39 @@ namespace CellableMVC.Controllers
             return View(phones);
         }
 
-        public ActionResult PhoneVersions(int? id)
+        public ActionResult Carriers(int? id)
+        {
+            Phone phoneBrand = db.Phones.Find(id);
+            Session["BrandId"] = id;
+            Session["BrandName"] = phoneBrand.Brand;
+
+            IList<Carrier> carriers = db.Carriers.ToList();
+
+            return View(carriers);
+        }
+
+        public ActionResult PhoneVersions(int? brandId, int? carrierId, string searchString = null)
         {
             // Initialize PhoneVersions Variable
             IList<PhoneVersion> phoneVersions = null;
 
-            // Get a list of Phone Versions to pass to the view
-            phoneVersions = db.PhoneVersions.ToList().Where(x => x.Phone.PhoneId == id).ToList();
+            if (searchString == null)
+            {
+                // Get entire list of Phone Versions to pass to the view
+                phoneVersions = db.PhoneVersions.ToList().Where(x => x.Phone.PhoneId == brandId).ToList();
+            }
+            else
+            {
+                // Get filtered Phone Versions list
+                phoneVersions = db.PhoneVersions.Where(x => x.Version.Contains(searchString)).ToList();
+            }
+
+
+            // Set the Carrier Session Variable
+            if (carrierId != null)
+            {
+                Session["Carrier"] = carrierId;
+            }
 
             return View(phoneVersions);
         }
@@ -33,7 +59,7 @@ namespace CellableMVC.Controllers
         {
             // Initialize Defects Variable
             IList<PossibleDefect> possibleDefects = null;
-            
+
             // Get a list of Defects to pass to the view
             possibleDefects = db.PossibleDefects.ToList().OrderBy(x => x.DefectGroup.DisplayOrder).Where(x => x.VersionId == id).ToList();
 
@@ -58,10 +84,6 @@ namespace CellableMVC.Controllers
             IList<StorageCapacity> storage = db.StorageCapacities.ToList();
             ViewBag.Storage = storage;
 
-            // Get List of Carriers
-            IList<Carrier> carriers = db.Carriers.ToList();
-            ViewBag.Carriers = carriers;
-
             return View(possibleDefects);
         }
 
@@ -76,9 +98,9 @@ namespace CellableMVC.Controllers
             {
                 if (item.ToString() != "__RequestVerificationToken" &&
                     item.ToString() != "id" &&
-                    item.ToString() != "capacity" && 
-                    item.ToString() != "carriers"  &&
-                    item.ToString() != "hdCarrier"  &&
+                    item.ToString() != "capacity" &&
+                    item.ToString() != "carriers" &&
+                    item.ToString() != "hdCarrier" &&
                     item.ToString() != "hdCapacity")
                 {
                     string defectField = Request.Form[item.ToString()];
@@ -94,19 +116,14 @@ namespace CellableMVC.Controllers
                 }
             }
 
-            if(!String.IsNullOrEmpty(Request.Form["capacity"]))
+            if (!String.IsNullOrEmpty(Request.Form["capacity"]))
             {
                 Session["Storage Capacity"] = Request.Form["capacity"];
             }
 
-            StorageCapacity capacity  = db.StorageCapacities.Find(int.Parse(Session["Storage Capacity"].ToString()));
+            StorageCapacity capacity = db.StorageCapacities.Find(int.Parse(Session["Storage Capacity"].ToString()));
             // For Description on Pricing Page
             ViewBag.CapacityDesc = capacity.Description;
-
-            if (!String.IsNullOrEmpty(Request.Form["carriers"]))
-            {
-                Session["Carrier"] = Request.Form["carriers"];
-            }
 
             if (Session["Phone Value"] == null)
             {
@@ -136,6 +153,11 @@ namespace CellableMVC.Controllers
             }
 
             return RedirectToAction("PricePhone", "Phones");
+        }
+
+        public ActionResult Search(string searchString)
+        {
+            return RedirectToAction("PhoneVersions");
         }
     }
 }

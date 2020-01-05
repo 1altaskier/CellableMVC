@@ -11,6 +11,7 @@
           </Key>
           <Property Name="CarrierId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CarrierName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ImageName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="DefectGroup">
           <Key>
@@ -434,6 +435,7 @@
           <Property Name="CarrierId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CarrierName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="UserPhones" Relationship="Self.FK_171" FromRole="Carrier" ToRole="UserPhone" />
+          <Property Name="ImageName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -884,6 +886,7 @@
           <EntitySetMapping Name="Carriers">
             <EntityTypeMapping TypeName="CellableModel.Carrier">
               <MappingFragment StoreEntitySet="Carrier">
+                <ScalarProperty Name="ImageName" ColumnName="ImageName" />
                 <ScalarProperty Name="CarrierId" ColumnName="CarrierId" />
                 <ScalarProperty Name="CarrierName" ColumnName="CarrierName" />
               </MappingFragment>

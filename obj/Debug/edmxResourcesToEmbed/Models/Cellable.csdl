@@ -7,6 +7,7 @@
     <Property Name="CarrierId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="CarrierName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="UserPhones" Relationship="Self.FK_171" FromRole="Carrier" ToRole="UserPhone" />
+    <Property Name="ImageName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Order">
     <Key>

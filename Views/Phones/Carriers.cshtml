@@ -1,0 +1,83 @@
+﻿@model IEnumerable<CellableMVC.Models.Carrier>
+
+@{
+    ViewBag.Title = "Carriers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table style="width:70%; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td>
+            <h4>Select your carrier</h4>
+            <hr />
+            <p>
+                You've decided to sell your @Session["BrandName"] phone. Plese select your carrier now.
+            </p>
+            <hr />
+            <table>
+                <tr>
+                    @foreach (var item in Model)
+                    {
+                        <td style="vertical-align:bottom;">
+                            <a href="@Url.Action("PhoneVersions", "Phones", new { brandId = Session["BrandId"], carrierId = item.CarrierId })" class="btn">
+                                <img src="~/Pictures/@item.ImageName" alt="@item.CarrierName">
+                            </a>
+                        </td>
+                    }
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align:center;">
+                        <p style="margin-top: 40px;">Other Carriers</p>
+                        <hr />
+                    </td>
+                </tr>
+            </table>            
+            <p class="cp-style">
+                This is a sample of text, discussing how selecting a carrier is going to effect choices. Kyle must fill in this text!
+            </p>
+        </td>
+    </tr>
+</table>
+
+<style>
+    .div1 {
+        margin-top: 250px;
+        text-align: center;
+    }
+
+    .btn {
+        margin-right: 50px;
+        width: 200px;
+        height: 100px;
+        border: 1px solid;
+        border-color: white;
+        font-size: 18px;
+        color: black;
+        border-radius: 8px;
+        background-color: white;
+        -webkit-transition-duration: 0.4s;
+        cursor: pointer;
+        box-shadow: 0 14px 18px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+
+        .btn:hover {
+            box-shadow: 0 14px 18px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+            color: none;
+            background-color: none;
+            font-size: 19px;
+            font-weight: 600;
+        }
+
+    .Vimg {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 500px;
+        position: relative;
+    }
+
+    .Atimg {
+        height: 150px;
+        width: 150px;
+        position: relative;
+    }
+</style>

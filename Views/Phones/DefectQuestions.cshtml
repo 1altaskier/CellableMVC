@@ -19,15 +19,6 @@
             isValid = true;
         }
 
-        if (document.getElementById("hdCarrier").value == "") {
-            document.getElementById("CarriersValidationMessage").innerHTML = "* Please Select Phone Carrier";
-            isValid = false
-        }
-        else {
-            document.getElementById("CarriersValidationMessage").innerHTML = "";
-            isValid = true;
-        }
-
         return isValid;
     }
 
@@ -35,10 +26,6 @@
         if (field == "capacity") {
             document.getElementById("hdCapacity").value = "GoodToGo";
             document.getElementById("CapacityValidationMessage").innerHTML = "";
-        }
-        if (field == "carrier") {
-            document.getElementById("hdCarrier").value = "GoodToGo";
-            document.getElementById("CarriersValidationMessage").innerHTML = "";
         }
     }
 </script>
@@ -94,27 +81,6 @@
                                 <br />
                                 <div style="display:inline-block; width:50px;"></div><div id="CapacityValidationMessage" name="CapacityValidationMessage" style="display:inline-block" class="text-danger"></div>
                                 <input type="hidden" name="hdCapacity" id="hdCapacity" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div style=" margin-right: 50px; height: 125px; border: medium solid #ccc; width: 600px; border-radius: 15px; margin-left: 24px;">
-                                <div style="text-align:left; background-color:lightgray;">
-                                    &nbsp;&nbsp;&nbsp;
-                                    <p style="text-align:left; background-color:lightgray; margin-top: -10px; width: 573px; margin-left: 17px; border-bottom: thin solid #ccc; ">
-                                        Carrier
-                                    </p>
-                                </div>
-                                <div style="display:inline-block; width:50px;"></div>
-                                @foreach (var carrier in ViewBag.Carriers)
-                                {
-                                    <input id="@carrier.CarrierId" type="radio" name="carriers" value="@carrier.CarrierId" onchange="SetField('carrier')" />@carrier.CarrierName @Html.Raw("&nbsp; &nbsp;")
-                                }
-                                <br />
-                                <div style="display:inline-block; width:50px;"></div>
-                                <div id="CarriersValidationMessage" name="CarriersValidationMessage" style="display:inline-block;" class="text-danger"></div>
-                                <input type="hidden" name="hdCarrier" id="hdCarrier" />
                             </div>
                         </td>
                     </tr>

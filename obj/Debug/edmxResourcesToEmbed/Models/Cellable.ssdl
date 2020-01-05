@@ -6,6 +6,7 @@
     </Key>
     <Property Name="CarrierId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CarrierName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ImageName" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="DefectGroup">
     <Key>

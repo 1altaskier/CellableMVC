@@ -22,6 +22,7 @@ namespace CellableMVC.Models
     
         public int CarrierId { get; set; }
         public string CarrierName { get; set; }
+        public string ImageName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserPhone> UserPhones { get; set; }
