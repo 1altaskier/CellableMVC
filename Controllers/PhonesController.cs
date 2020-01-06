@@ -3,26 +3,58 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using CellableMVC.Helpers;
 
 namespace CellableMVC.Controllers
 {
     public class PhonesController : Controller
     {
         private CellableEntities db = new CellableEntities();
+        private IncomingPhone phone = new IncomingPhone();
 
         // GET: Phones
         public ActionResult Phones()
         {
+            // Clear Previously Set Phone Related Session Variables
+            Session["BrandId"] = null;
+            Session["BrandName"] = null;
+            Session["VersionId"] = null;
+            Session["VersionName"] = null;
+            Session["BaseCost"] = null;
+            Session["Phone Value"] = null;
+            Session["ImageLocation"] = null;
+            Session["PhoneBrandName"] = null;
+            Session["PromoCode"] = null;
+            Session["PromoValue"] = null;
+
+            // Same as Above, Except Using IncomingPhone Class
+            phone.BrandId = null;
+            phone.BrandName = null;
+            phone.VersionId = null;
+            phone.VersionName = null;
+            phone.BaseCost = null;
+            phone.PhoneValue = null;
+            phone.ImageLocation = null;
+            phone.PhoneBrandName = null;
+            phone.PromoCode = null;
+            phone.PromoValue = null;
+
             var phones = db.Phones.ToList();
 
             return View(phones);
         }
 
-        public ActionResult Carriers(int? id)
+        public ActionResult Carriers(int? id, int? versionId, string versionName = null)
         {
             Phone phoneBrand = db.Phones.Find(id);
             Session["BrandId"] = id;
             Session["BrandName"] = phoneBrand.Brand;
+
+            if (versionId != null)
+            {
+                Session["VersionId"] = versionId;
+                Session["VersionName"] = versionName;
+            }
 
             IList<Carrier> carriers = db.Carriers.ToList();
 
@@ -142,6 +174,7 @@ namespace CellableMVC.Controllers
                     Promo promo = db.Promos.FirstOrDefault(x => x.PromoCode == PromoCode && (x.StartDate < DateTime.Today && x.EndDate > DateTime.Today));
 
                     var promoDiscount = decimal.Parse(Session["Phone Value"].ToString()) * promo.Discount;
+                    Session["PromoCodeId"] = promo.PromoId;
                     Session["PromoCode"] = PromoCode;
                     Session["PromoValue"] = promo.Discount;
                     Session["Phone Value"] = decimal.Parse(Session["Phone Value"].ToString()) + promoDiscount;
@@ -155,9 +188,15 @@ namespace CellableMVC.Controllers
             return RedirectToAction("PricePhone", "Phones");
         }
 
-        public ActionResult Search(string searchString)
+        public ActionResult SearchResults(string searchString)
         {
-            return RedirectToAction("PhoneVersions");
+            IList<PhoneVersion> versions = db.PhoneVersions
+                                            .ToList()
+                                            .Where(x => x.Version.ToLower().Contains(searchString.ToLower())
+                                                || x.Phone.Brand.ToLower().Contains(searchString.ToLower()))
+                                            .ToList();
+
+            return View(versions);
         }
     }
 }

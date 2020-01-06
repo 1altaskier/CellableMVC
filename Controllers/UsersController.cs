@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using CellableMVC.Helpers;
 
 namespace CellableMVC.Controllers
 {
@@ -16,6 +17,8 @@ namespace CellableMVC.Controllers
         private string AdminEmail = WebConfigurationManager.AppSettings["AdminEmail"];
 
         private CellableEntities db = new CellableEntities();
+
+        private LoggedInUser loggedInUser = new LoggedInUser();
 
         [HttpPost]
         public JsonResult UserExists(string UserName)
@@ -95,15 +98,119 @@ namespace CellableMVC.Controllers
         // GET: Users/Create
         public ActionResult Register()
         {
+            if (Session["LoggedInUser"] != null)
+            {
+                return RedirectToAction("ReturningUser");
+            }
             ViewBag.PaymentTypes = new SelectList(db.PaymentTypes, "PaymentTypeId", "PaymentType1", "-- How You Get Paid --");
             ViewBag.State = new SelectList(db.States, "StateAbbrv", "StateName", "-- Select State --");
 
             return View();
         }
 
+        public ActionResult ReturningUser()
+        {
+            IList<PossibleDefect> defects = db.PossibleDefects.ToList();
+            ViewBag.PossibleDefects = defects;
+
+            ViewBag.PaymentTypes = new SelectList(db.PaymentTypes, "PaymentTypeId", "PaymentType1", "-- How You Get Paid --");
+
+            User user = db.Users.Find(int.Parse(Session["LoggedInUserId"].ToString()));
+
+            return View(user);
+        }
+
+        public ActionResult UpdateReturningUser(string errMsg = null)
+        {
+            LoggedInUser loggedInUser = new LoggedInUser();
+
+            // Get User Info From DB
+            User user = db.Users.Find(int.Parse(Session["LoggedInUserId"].ToString()));
+
+            // Find User's Payment Type
+            //Order order = db.Orders.FirstOrDefault(x => x.UserId == user.UserId);
+            //var paymentType = order.PaymentTypeId;
+
+            // Find User's State
+            var state = user.State;
+
+            // Create Drop Down List(s)
+            //ViewBag.PaymentTypes = new SelectList(db.PaymentTypes, "PaymentTypeId", "PaymentType1", paymentType);
+            ViewBag.State = new SelectList(db.States, "StateAbbrv", "StateName", state);
+
+            ViewBag.Message = errMsg;
+
+            return View(user);
+        }
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register([Bind(Include = "UserId,UserName,Password,PaymentTypes,FirstName,LastName,Email,Address,Address2,City,State,Zip,PhoneNumber")] User user)
+        public ActionResult UpdateUser([Bind(Include = "UserId,NewPassword,OldPassword,FirstName,LastName,Email,Address,Address2,City,State,Zip,PhoneNumber")] User user, string OldPassword = null, string NewPassword = null)
+        {
+            // Validate Old Password
+            bool passwordsMatch = false;
+            if (!String.IsNullOrEmpty(NewPassword))
+            {
+                User validateUser = db.Users.Find(int.Parse(user.UserId.ToString()));
+                if (validateUser.Password == OldPassword)
+                {
+                    passwordsMatch = true;
+                }
+                else
+                {
+                    string errMsg = "Password Not Changed - Old Password Incorrect";
+                    return RedirectToAction("UpdateReturningUser", "Users", new { errMsg } );
+                }
+            }
+
+            try
+            {
+                // Update User Information
+                var updateUser = new User()
+                {
+                    UserId = int.Parse(user.UserId.ToString())
+                            ,Password = NewPassword
+                            ,FirstName = user.FirstName
+                            ,LastName = user.LastName
+                            ,Email = user.Email
+                            ,Address = user.Address
+                            ,Address2 = user.Address2
+                            ,City = user.City
+                            ,State = user.State
+                            ,Zip = user.Zip
+                };
+
+                using (var db = new CellableEntities())
+                {
+                    db.Users.Attach(updateUser);
+                    if (!String.IsNullOrEmpty(NewPassword) && passwordsMatch)
+                    {
+                        db.Entry(updateUser).Property(x => x.Password).IsModified = true;
+                    }
+                    db.Entry(updateUser).Property(x => x.FirstName).IsModified = true;
+                    db.Entry(updateUser).Property(x => x.LastName).IsModified = true;
+                    db.Entry(updateUser).Property(x => x.Email).IsModified = true;
+                    db.Entry(updateUser).Property(x => x.Address).IsModified = true;
+                    db.Entry(updateUser).Property(x => x.Address2).IsModified = true;
+                    db.Entry(updateUser).Property(x => x.City).IsModified = true;
+                    db.Entry(updateUser).Property(x => x.State).IsModified = true;
+                    db.Entry(updateUser).Property(x => x.Zip).IsModified = true;
+                    db.Configuration.ValidateOnSaveEnabled = false;
+                    db.SaveChanges();
+                }
+
+                return RedirectToAction("ReturningUser");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message("Error encountered while updating user:<br />" + ex.Message);
+                return RedirectToAction("UpdateReturningUser");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register([Bind(Include = "UserId,UserName,Password,PaymentTypes,FirstName,LastName,Email,Address,Address2,City,State,Zip,PhoneNumber")] User user, string UserExists = null)
         {
             // Insert Additional Data into Model
             user.CreatedBy = "System";
@@ -116,21 +223,29 @@ namespace CellableMVC.Controllers
             {
                 try
                 {
-                    // Save User Information
-                    db.Users.Add(user);
-                    db.SaveChanges();
+                    if (UserExists == null)
+                    {
+                        // Save User Information
+                        db.Users.Add(user);
+                        db.SaveChanges();
+                        Session["LoggedInUserId"] = user.UserId;
+                    }
 
                     // Get Payment User Name & Payment Type
                     string paymentUserName = Request.Form["PaymentUserName"];
                     int paymentTypeId = int.Parse(Request.Form["PaymentTypes"].ToString());
 
-                    // Set User Name Session
-                    User sessionUser = db.Users.Find(user.UserId);
+                    // Set User Name Session Variables
+                    User sessionUser = db.Users.Find(int.Parse(Session["LoggedInUserId"].ToString()));
+
+                    // Set User Name Session Variables
                     Session["LoggedInUser"] = sessionUser.UserName;
+                    loggedInUser.UserId = sessionUser.UserId;
+                    loggedInUser.UserName = sessionUser.UserName;
 
                     // Save User Phone
                     UserPhone userPhone = new UserPhone();
-                    userPhone.UserId = user.UserId;
+                    userPhone.UserId = sessionUser.UserId;
                     userPhone.PhoneId = int.Parse(Session["PhoneBrand"].ToString());
                     userPhone.CarrierId = int.Parse(Session["Carrier"].ToString());
                     userPhone.VersionId = int.Parse(Session["VersionId"].ToString());
@@ -160,11 +275,11 @@ namespace CellableMVC.Controllers
                     // Create Order
                     Order order = new Order();
                     order.Amount = decimal.Parse(Session["Phone Value"].ToString());
-                    order.UserId = user.UserId;
+                    order.UserId = sessionUser.UserId;
                     order.OrderStatusId = 1;
                     if (Session["PromoCode"] != null)
                     {
-                        order.PromoId = int.Parse(Session["PromoCode"].ToString());
+                        order.PromoId = int.Parse(Session["PromoCodeId"].ToString());
                     }
                     else
                     {

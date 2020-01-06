@@ -1,0 +1,201 @@
+﻿@model CellableMVC.Models.User
+
+@{
+    ViewBag.Title = "ReturningUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table style="width:70%; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td>
+            <h4>Registered User Information</h4>
+            <hr />
+
+            <table style="width:100%; margin-right:auto; margin-left:auto;">
+                <tr>
+                    <td style="vertical-align:top; text-align:center;">
+                        @using (Html.BeginForm("UpdateReturningUser", "Users", new { }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="Update" class="PromoCode" />
+                        }
+                    </td>
+                    <td style="vertical-align:top;">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.Raw("Name")
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.UserName)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.UserName)
+                            </dd>
+                            <dd>
+                                @Html.DisplayFor(model => model.Email)
+                            </dd>
+                        </dl>
+                    </td>
+                    <td style="vertical-align:top;">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Address)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Address)
+                                @if (Model.Address2 != null)
+                                {
+                                    @Html.Raw("<br />")@Html.DisplayFor(model => model.Address2)
+                                }
+                                <br />
+                                @Html.DisplayFor(model => model.City), @Html.DisplayNameFor(model => model.State) @Html.DisplayFor(model => model.Zip)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.PhoneNumber)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.PhoneNumber)
+                            </dd>
+                        </dl>
+                    </td>
+                    <td style="vertical-align:middle;">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.Raw("Created On")
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.CreateDate)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.LastLogin)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.LastLogin)
+                            </dd>
+                        </dl>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <h4>Order Details</h4>
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top; border-right:solid; border-right-color:lightgrey; border-right-width:1px;">
+                        @using (Html.BeginForm("Register", "Users", new { }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" id="UserExists" name="UserExists" value="true" />
+                            <table>
+                                <tr>
+                                    <td style="width:100%; text-align:left; padding:10px;">
+                                        <i class="text-danger">*</i>&nbsp;Payment Method:
+                                        <br />
+                                        @Html.DropDownList("PaymentTypes", null, "-- How You Get Paid --", htmlAttributes: new { @class = "form-control", onchange = "valid_form()" })
+                                        <div id="PaymentValidationMessage" class="text-danger"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:100%; text-align:left; padding:10px;">
+                                        <i class="text-danger">*</i>&nbsp;Payment User Name:
+                                        <br />
+                                        <input type="text" id="PaymentUserName" name="PaymentUserName" class="form-control" onchange="valid_form()" />
+                                        <div id="PaymentUserNameValidationMessage" class="text-danger"></div>
+                                        <br />
+                                        <input type="submit" name="submit" id="submit" value="Complete Order" class="PromoCode" />
+                                        <input type="button" name="reset" id="reset" value="Cancel" class="PromoCode" />
+                                    </td>
+                                </tr>
+                            </table>
+                        }
+                    </td>
+                    <td colspan="3" style="vertical-align:top;">
+                        <table style="width:80%; margin-left:auto; margin-right:auto; font-family:'HP Simplified'">
+                            <tr>
+                                <td style="text-align:center; vertical-align:top; width:30%; vertical-align:top;">
+                                    @Html.Raw(Session["PhoneBrandName"])
+                                    <br />
+                                    @Session["VersionName"].ToString() @Html.Raw("(") @ViewBag.CapacityDesc @Html.Raw(")")
+                                    <br />
+                                    <img src="~/Pictures/@Session["ImageLocation"]" style="height:250px; width:130px;" />
+                                    <br />
+                                    Please Note: We do not pay for devices that have been reported lost or stolen.
+                                </td>
+                                <td style="width:30%; vertical-align:top;">
+                                    <table style="width:100%; left:auto; right:auto;">
+                                        <tr>
+                                            <td style="text-align:center" colspan="3">
+                                                <div style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: green; font-size: 55px;">
+                                                    $@decimal.Truncate(decimal.Parse(Session["Phone Value"].ToString()))
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center; background-color:lightgrey" colspan="3">
+                                                <b>Your Phone Details</b><br />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:3px; text-align:right; font-weight:bold">
+                                                Phone's Base Value:
+                                            </td>
+                                            <td style="width:25px; text-align:right; color:forestgreen; font-weight:bold">$</td>
+                                            <td style="padding:3px; text-align:right; color:forestgreen; font-weight:bold">
+                                                @decimal.Round(decimal.Parse(Session["BaseCost"].ToString()), 2)
+                                            </td>
+                                        </tr>
+                                        @foreach (var defect in ViewBag.PossibleDefects)
+                                        {
+                                            foreach (var item in Session)
+                                            {
+                                                var temp = 0;
+                                                if (int.TryParse(item.ToString(), out temp))
+                                                {
+                                                    if (defect.PossibleDefectId == int.Parse(item.ToString()) && (Session[item.ToString()].ToString() != "0.00" && Session[item.ToString()].ToString() != "0"))
+                                                    {
+                                                        @Html.Raw("<tr><td style='padding:3px; text-align:right;'>")
+                                                        if (defect.DefectName == "No")
+                                                        {
+                                                            @defect.DefectGroup.GroupName;
+                                                        }
+                                                        else
+                                                        {
+                                                            @defect.DefectName;
+                                                        }
+                                                        @Html.Raw(": </td><td style='width:25px; text-align:right; color:red;'>- $</td><td style='padding:3px; text-align:right; color:red;'>") @Session[@item.ToString()] @Html.Raw("</td></tr>")
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                        @if (Session["PromoCode"] != null)
+                                        {
+                                            @Html.Raw("<tr>")
+                                            @Html.Raw("<td  style='padding:3px; text-align:right;'>Promo Code Applied:</td>")
+                                            @Html.Raw("<td style='width:25px; text-align:right; color:forestgreen;'>+</td>")
+                                            @Html.Raw("<td style='width:25px; text-align:right; color:forestgreen;'>" + Session["PromoValue"] + "%</td>")
+                                            @Html.Raw("</tr>")
+                                        }
+                                        <tr>
+                                            <td style="padding:3px; text-align:right; font-weight:bold; border-top:solid; border-top-color:black; border-top-width:1px">
+                                                Phone Value:
+                                            </td>
+                                            <td style="width:25px; text-align:right; color:forestgreen; font-weight:bold; border-top:solid; border-top-color:black; border-top-width:1px">$</td>
+                                            <td style="padding:3px; text-align:right; color:forestgreen; font-weight:bold; border-top:solid; border-top-color:black; border-top-width:1px">
+                                                @decimal.Round(decimal.Parse(@Session["Phone Value"].ToString()), 2)
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

@@ -18,6 +18,10 @@ textarea {
     max-width: 280px;
 }
 
+.PromoCode:hover {
+    box-shadow: 0 2px 3px 0 lawngreen, 0 2px 3px 0 rgba(0,0,0,0.19);
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
     .jumbotron {

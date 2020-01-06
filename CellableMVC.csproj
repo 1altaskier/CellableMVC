@@ -136,6 +136,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\EmailController.cs" />
+    <Compile Include="Helpers\IncomingPhone.cs" />
+    <Compile Include="Helpers\User.cs" />
     <Compile Include="Mail\Address.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -460,6 +462,9 @@
     <Content Include="Views\Users\View.cshtml" />
     <Content Include="Views\Users\TrackProgress.cshtml" />
     <Content Include="Views\Phones\Carriers.cshtml" />
+    <Content Include="Views\Phones\SearchResults.cshtml" />
+    <Content Include="Views\Users\ReturningUser.cshtml" />
+    <Content Include="Views\Users\UpdateReturningUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

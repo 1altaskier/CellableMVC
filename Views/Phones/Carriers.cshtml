@@ -19,9 +19,18 @@
                     @foreach (var item in Model)
                     {
                         <td style="vertical-align:bottom;">
-                            <a href="@Url.Action("PhoneVersions", "Phones", new { brandId = Session["BrandId"], carrierId = item.CarrierId })" class="btn">
-                                <img src="~/Pictures/@item.ImageName" alt="@item.CarrierName">
-                            </a>
+                            @if (Session["VersionId"] == null)
+                            {
+                                <a href="@Url.Action("PhoneVersions", "Phones", new { brandId = Session["BrandId"], carrierId = item.CarrierId })" class="btn">
+                                    <img src="~/Pictures/@item.ImageName" alt="@item.CarrierName">
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("DefectQuestions", "Phones", new { id = int.Parse(Session["VersionId"].ToString()) })" class="btn">
+                                    <img src="~/Pictures/@item.ImageName" alt="@item.CarrierName">
+                                </a>
+                            }
                         </td>
                     }
                 </tr>
@@ -31,7 +40,7 @@
                         <hr />
                     </td>
                 </tr>
-            </table>            
+            </table>
             <p class="cp-style">
                 This is a sample of text, discussing how selecting a carrier is going to effect choices. Kyle must fill in this text!
             </p>
