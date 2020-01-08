@@ -55,7 +55,7 @@
                         <tr>
                             <td style="width:10%; text-align:right; padding:10px;"> <i class="text-danger">*</i>&nbsp;User Name:</td>
                             <td style="width:20%; padding:10px;">
-                                <input type="text" class="form-control" name="userName" value="" autofocus>
+                                <input type="text" class="form-control" name="userName" value="@ViewBag.UserName" autofocus>
                                 <ASP:RequiredFieldValidator ControlToValidate="userName"
                                                             Display="Static" ErrorMessage="Please Enter User Name" runat="server"
                                                             ID="vUserName" />
@@ -64,7 +64,7 @@
                         <tr>
                             <td style="width:10%; padding:5px; text-align:right;"><i class="text-danger">*</i>&nbsp;Password:</td>
                             <td style="width:20%; padding:10px;">
-                                <input id="password" type="password" class="form-control" name="password">
+                                <input id="password" type="password" class="form-control" name="password" value="@ViewBag.Password">
                                 <div id="PasswordEye">
                                     <i class="fa fa-eye-slash input-field" onclick="togglePassword()"></i>
                                 </div>
@@ -74,11 +74,12 @@
                             </td>
                         </tr>
                         <tr>
-                                <td style="width:10%; padding:10px;"></td>
-                                <td style="width:20%; padding:10px; vertical-align:top">
-
-                                    <input type="checkbox" id="rememberMe" name="rememberMe" class="btn btn-default" value="true" /> Remember Me&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Forgot Password?
-                                </td>
+                            <td style="width:10%; padding:10px;"></td>
+                            <td style="width:20%; padding:10px; vertical-align:top">
+                                <input type="checkbox" id="rememberMe" name="rememberMe" class="btn btn-default" value="true"
+                                       @if (ViewBag.Password != null) { @Html.Raw(" checked") ; } /> 
+                                Remember Me&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Forgot Password?
+                            </td>
                         </tr>
                         <tr>
                             <td style="width:10%; text-align:right; padding:10px;"></td>

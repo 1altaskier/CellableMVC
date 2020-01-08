@@ -334,6 +334,7 @@ namespace CellableMVC.Controllers
 
             List<vmOrderDetails> orderDetailsVMlist = new List<vmOrderDetails>();
 
+            // Refer to DB/GetOrderDetails.sql
             var results = (from o in db.Orders.DefaultIfEmpty()
                            join up in db.UserPhones on o.UserId equals up.UserId into userPhoneGrp
                                 from up in userPhoneGrp.DefaultIfEmpty()
@@ -389,6 +390,13 @@ namespace CellableMVC.Controllers
 
         public ActionResult Login()
         {
+            HttpCookie userCookie = Request.Cookies["UserCookie"];
+            if (userCookie != null)
+            {
+                ViewBag.UserName = Request.Cookies["UserCookie"]["UserName"];
+                ViewBag.Password = Request.Cookies["UserCookie"]["Password"];
+            }
+
             return View();
         }
 

@@ -7,6 +7,7 @@ using System.Web.Security;
 using System.Security.Cryptography;
 using System.Text;
 using CellableMVC.Helpers;
+using System.Web;
 
 namespace EF_CRUD.Controllers
 {
@@ -16,7 +17,7 @@ namespace EF_CRUD.Controllers
         private LoggedInUser loggedInUser = new LoggedInUser();
 
         [ValidateAntiForgeryToken]
-        public ActionResult UserLogin([Bind(Include = "userName,password,rememberMe")]string userName, string password)
+        public ActionResult UserLogin([Bind(Include = "userName,password,rememberMe")]string userName, string password, bool rememberMe = false)
         {
             User user = new User();
 
@@ -48,16 +49,19 @@ namespace EF_CRUD.Controllers
                     db.SaveChanges();
                 }
 
-                var rememberMe = false;
                 // Check if the user wants to be remembered
                 if (rememberMe)
                 {
-                    //cookie["UserName"] = "";
-                    //cookie.Expires = DateTime.Now.AddDays(90);
-                    //Response.Cookies.Add(cookie);
+                    HttpCookie UserCookie = new HttpCookie("UserCookie");
+                    UserCookie["UserName"] = userName;
+                    UserCookie["Password"] = password;
+                    UserCookie.Expires = DateTime.Now.AddDays(90);
+                    Response.Cookies.Add(UserCookie);
                 }
                 else
                 {
+                    Response.Cookies["UserCookie"].Expires = DateTime.Now.AddDays(-1);
+
                     // Set the cookie as normal
                     FormsAuthentication.SetAuthCookie(userName, false);
                 }
