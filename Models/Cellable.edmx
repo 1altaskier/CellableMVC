@@ -346,6 +346,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetOrderDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="CellableModelStoreContainer">
           <EntitySet Name="Carrier" EntityType="Self.Carrier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DefectGroup" EntityType="Self.DefectGroup" Schema="dbo" store:Type="Tables" />
@@ -855,6 +858,9 @@
             <End Role="DefectGroup" EntitySet="DefectGroups" />
             <End Role="PossibleDefect" EntitySet="PossibleDefects" />
           </AssociationSet>
+          <FunctionImport Name="GetOrderDetails" EntitySet="Orders" ReturnType="Collection(CellableModel.Order)">
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="DefectGroup">
           <Key>
@@ -877,6 +883,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="GetOrderDetails_Result">
+          <Property Type="Int32" Name="OrderID" Nullable="false" />
+          <Property Type="Decimal" Name="Amount" Nullable="false" Precision="19" />
+          <Property Type="String" Name="Phone" Nullable="true" MaxLength="101" />
+          <Property Type="String" Name="StatusType" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PromoCode" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="PromoName" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="Discount" Nullable="true" Precision="3" Scale="2" />
+          <Property Type="String" Name="PaymentType" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PaymentUserName" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="CreateDate" Nullable="false" Precision="23" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1060,6 +1078,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetOrderDetails" FunctionName="CellableModel.Store.GetOrderDetails">
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -1074,7 +1094,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

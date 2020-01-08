@@ -12,6 +12,8 @@ namespace CellableMVC.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class CellableEntities : DbContext
     {
@@ -41,5 +43,23 @@ namespace CellableMVC.Models
         public virtual DbSet<UserAnswer> UserAnswers { get; set; }
         public virtual DbSet<UserPhone> UserPhones { get; set; }
         public virtual DbSet<DefectGroup> DefectGroups { get; set; }
+    
+        public virtual ObjectResult<Order> GetOrderDetails(Nullable<int> userId)
+        {
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Order>("GetOrderDetails", userIdParameter);
+        }
+    
+        public virtual ObjectResult<Order> GetOrderDetails(Nullable<int> userId, MergeOption mergeOption)
+        {
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Order>("GetOrderDetails", mergeOption, userIdParameter);
+        }
     }
 }

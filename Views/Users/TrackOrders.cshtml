@@ -1,0 +1,82 @@
+﻿@model IEnumerable<CellableMVC.Models.vmOrderDetails>
+
+@{
+    ViewBag.Title = "TrackOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>TrackOrders</h2>
+
+<table class="table">
+    <tr style="background-color:black; color:lawngreen">
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            Phone
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StatusType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PromoCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PromoName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Discount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentUserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Brand) @Html.DisplayFor(modelItem => item.Version)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PromoCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PromoName)
+            </td>
+            <td>
+                @{ 
+                    if (item.PromoName != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Discount); @Html.Raw("%");
+                    }
+                    else
+                    {
+                        @Html.Raw("---");
+                    }
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentUserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDate)
+            </td>
+        </tr>
+    }
+</table>

@@ -341,6 +341,9 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="GetOrderDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UserId" Type="int" Mode="In" />
+  </Function>
   <EntityContainer Name="CellableModelStoreContainer">
     <EntitySet Name="Carrier" EntityType="Self.Carrier" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DefectGroup" EntityType="Self.DefectGroup" Schema="dbo" store:Type="Tables" />

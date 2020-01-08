@@ -177,6 +177,9 @@
     <Compile Include="Models\DefectGroup.cs">
       <DependentUpon>Cellable.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GetOrderDetails_Result.cs">
+      <DependentUpon>Cellable.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Order.cs">
       <DependentUpon>Cellable.tt</DependentUpon>
     </Compile>
@@ -220,6 +223,7 @@
     <Compile Include="Models\UserPhone.cs">
       <DependentUpon>Cellable.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\vmOrderDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -460,11 +464,11 @@
     <Content Include="Views\Phones\DefectQuestions.cshtml" />
     <Content Include="Views\Phones\PricePhone.cshtml" />
     <Content Include="Views\Users\View.cshtml" />
-    <Content Include="Views\Users\TrackProgress.cshtml" />
     <Content Include="Views\Phones\Carriers.cshtml" />
     <Content Include="Views\Phones\SearchResults.cshtml" />
     <Content Include="Views\Users\ReturningUser.cshtml" />
     <Content Include="Views\Users\UpdateReturningUser.cshtml" />
+    <Content Include="Views\Users\TrackOrders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

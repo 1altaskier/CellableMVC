@@ -178,5 +178,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="GetOrderDetails" FunctionName="CellableModel.Store.GetOrderDetails" />
   </EntityContainerMapping>
 </Mapping>

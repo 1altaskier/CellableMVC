@@ -62,7 +62,7 @@ namespace EF_CRUD.Controllers
                     FormsAuthentication.SetAuthCookie(userName, false);
                 }
 
-                return RedirectToAction("TrackProgress", "Users");
+                return RedirectToAction("TrackOrders", "Users");
             }
             else
             {

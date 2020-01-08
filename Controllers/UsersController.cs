@@ -7,6 +7,8 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using CellableMVC.Helpers;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace CellableMVC.Controllers
 {
@@ -142,7 +144,7 @@ namespace CellableMVC.Controllers
 
             return View(user);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UpdateUser([Bind(Include = "UserId,NewPassword,OldPassword,FirstName,LastName,Email,Address,Address2,City,State,Zip,PhoneNumber")] User user, string OldPassword = null, string NewPassword = null)
@@ -159,7 +161,7 @@ namespace CellableMVC.Controllers
                 else
                 {
                     string errMsg = "Password Not Changed - Old Password Incorrect";
-                    return RedirectToAction("UpdateReturningUser", "Users", new { errMsg } );
+                    return RedirectToAction("UpdateReturningUser", "Users", new { errMsg });
                 }
             }
 
@@ -169,15 +171,24 @@ namespace CellableMVC.Controllers
                 var updateUser = new User()
                 {
                     UserId = int.Parse(user.UserId.ToString())
-                            ,Password = NewPassword
-                            ,FirstName = user.FirstName
-                            ,LastName = user.LastName
-                            ,Email = user.Email
-                            ,Address = user.Address
-                            ,Address2 = user.Address2
-                            ,City = user.City
-                            ,State = user.State
-                            ,Zip = user.Zip
+                            ,
+                    Password = NewPassword
+                            ,
+                    FirstName = user.FirstName
+                            ,
+                    LastName = user.LastName
+                            ,
+                    Email = user.Email
+                            ,
+                    Address = user.Address
+                            ,
+                    Address2 = user.Address2
+                            ,
+                    City = user.City
+                            ,
+                    State = user.State
+                            ,
+                    Zip = user.Zip
                 };
 
                 using (var db = new CellableEntities())
@@ -300,7 +311,7 @@ namespace CellableMVC.Controllers
 
                     dbContextTransaction.Commit();
 
-                    return RedirectToAction("TrackProgress", "Users");
+                    return RedirectToAction("TrackOrders", "Users");
                 }
                 catch (Exception ex)
                 {
@@ -317,18 +328,64 @@ namespace CellableMVC.Controllers
             }
         }
 
-        public ActionResult TrackProgress()
+        public ActionResult TrackOrders()
         {
-            IList<Order> order = db.Orders.ToList().Where(x => x.User.UserName == Session["LoggedInUser"].ToString()).ToList();
+            int userId = int.Parse(Session["LoggedInUserId"].ToString());
 
-            //var result = new USPSManager().GetTrackingInfo(USPSAPIUserName, USPSAPIPassword, "EJ958083578US");
+            List<vmOrderDetails> orderDetailsVMlist = new List<vmOrderDetails>();
 
-            //string output = trackingInfo.TrackPackage("");
+            var results = (from o in db.Orders.DefaultIfEmpty()
+                           join up in db.UserPhones on o.UserId equals up.UserId into userPhoneGrp
+                                from up in userPhoneGrp.DefaultIfEmpty()
+                           join pv in db.PhoneVersions on up.VersionId equals pv.VersionId into phoneVersionsGrp
+                                from pv in phoneVersionsGrp.DefaultIfEmpty()
+                           join os in db.OrderStatus on o.OrderStatusId equals os.OrderStatusId into orderStatusGrp
+                                from os in orderStatusGrp.DefaultIfEmpty()
+                           join pt in db.PaymentTypes on o.PaymentTypeId equals pt.PaymentTypeId into paymentTypesGrp
+                                from pt in paymentTypesGrp.DefaultIfEmpty()
+                           join p in db.Promos on o.PromoId equals p.PromoId into promosGrp
+                                from p in promosGrp.DefaultIfEmpty()
+                           join ph in db.Phones on pv.PhoneId equals ph.PhoneId into phonesGrp
+                                from ph in phonesGrp.DefaultIfEmpty()
+                           where o.UserId == userId && up.UserPhoneId == o.UserPhoneId
 
-            //ViewBag.USPSInfo = Mail.TrackingInfo();
+                           select new vmOrderDetails()
+                           {
+                               OrderId = o.OrderID,
+                               Amount = o.Amount,
+                               Brand = ph.Brand,
+                               Version = pv.Version,
+                               StatusType = os.StatusType,
+                               PromoCode = p.PromoCode,
+                               PromoName = p.PromoName,
+                               Discount = p.Discount,
+                               PaymentType = pt.PaymentType1,
+                               PaymentUserName = o.PaymentUserName,
+                               CreateDate = o.CreateDate
+                           }).ToList();
 
-            return View(order);
+
+            foreach (var item in results)
+            {
+                vmOrderDetails vmDetails = new vmOrderDetails();
+
+                vmDetails.OrderId = item.OrderId;
+                vmDetails.Amount = item.Amount;
+                vmDetails.Brand = item.Brand;
+                vmDetails.Version = item.Version;
+                vmDetails.StatusType = item.StatusType;
+                vmDetails.PromoCode = item.PromoCode;
+                vmDetails.PromoName = item.PromoName;
+                vmDetails.Discount = item.Discount;
+                vmDetails.PaymentType = item.PaymentType;
+                vmDetails.PaymentUserName = item.PaymentUserName;
+                vmDetails.CreateDate = item.CreateDate;
+                orderDetailsVMlist.Add(vmDetails);
+            }
+
+            return View(orderDetailsVMlist);
         }
+
 
         public ActionResult Login()
         {
