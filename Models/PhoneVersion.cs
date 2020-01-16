@@ -27,6 +27,9 @@ namespace CellableMVC.Models
         public string ImageName { get; set; }
         public Nullable<int> PhoneId { get; set; }
         public Nullable<int> StorageCapacityId { get; set; }
+        public Nullable<int> Views { get; set; }
+        public Nullable<int> Purchases { get; set; }
+        public Nullable<bool> Active { get; set; }
     
         public virtual Phone Phone { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

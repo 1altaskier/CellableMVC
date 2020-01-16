@@ -10,11 +10,9 @@
 namespace CellableMVC.Models
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class GetOrderDetails_Result
     {
-        [Key]
         public int OrderID { get; set; }
         public decimal Amount { get; set; }
         public string Phone { get; set; }

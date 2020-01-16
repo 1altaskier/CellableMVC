@@ -5,8 +5,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>TrackOrders</h2>
+<script>
+    function popupWindow(trackingNumber, win, w, h) {
+        const y = win.top.outerHeight / 2 + win.top.screenY - (h / 2);
+        const x = win.top.outerWidth / 2 + win.top.screenX - (w / 2);
+        return win.open("/Mail/_USPSTrackingMessage?trackingNumber=" + trackingNumber, "USPS Tracking", 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + y + ', left=' + x);
+    }
+</script>
 
+<h2>TrackOrders</h2>
+<input type="button" onclick="openModalDialog()" value="Button" />
 <table class="table">
     <tr style="background-color:black; color:lawngreen">
         <th>
@@ -45,64 +53,64 @@
     @foreach (var item in Model)
     {
         if (count > 0) { count = 0; } else { count++; }
-<tr @if (count == 0) { @Html.Raw("style='background-color:lightgrey'") ; }>
-    <td>
-        @Html.DisplayFor(modelItem => item.Brand) @Html.DisplayFor(modelItem => item.Version)
-    </td>
-    <td>
-        $@Html.DisplayFor(modelItem => item.Amount)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.StatusType)
-    </td>
-    <td>
-        @{
-            if (item.PromoName != null)
-            {
-                @Html.DisplayFor(modelItem => item.PromoCode);
-            }
-            else
-            {
-                @Html.Raw("---");
-            }
-        }
-    </td>
-    <td>
-        @{
-            if (item.PromoName != null)
-            {
-                @Html.DisplayFor(modelItem => item.PromoName);
-            }
-            else
-            {
-                @Html.Raw("---");
-            }
-        }
-    </td>
-    <td>
-        @{
-            if (item.PromoName != null)
-            {
-                @Html.DisplayFor(modelItem => item.Discount); @Html.Raw("%");
-            }
-            else
-            {
-                @Html.Raw("---");
-            }
-        }
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.PaymentType)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.PaymentUserName)
-    </td>
-    <td>
-        EJ958083578US
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.CreateDate)
-    </td>
-</tr>
+        <tr @if (count == 0) { @Html.Raw("style='background-color:lightgrey'") ; }>
+            <td>
+                @Html.DisplayFor(modelItem => item.Brand) @Html.DisplayFor(modelItem => item.Version)
+            </td>
+            <td>
+                $@Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusType)
+            </td>
+            <td>
+                @{
+                    if (item.PromoName != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.PromoCode);
+                    }
+                    else
+                    {
+                        @Html.Raw("---");
+                    }
+                }
+            </td>
+            <td>
+                @{
+                    if (item.PromoName != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.PromoName);
+                    }
+                    else
+                    {
+                        @Html.Raw("---");
+                    }
+                }
+            </td>
+            <td>
+                @{
+                    if (item.PromoName != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Discount); @Html.Raw("%");
+                    }
+                    else
+                    {
+                        @Html.Raw("---");
+                    }
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentUserName)
+            </td>
+            <td>
+                <div onclick="popupWindow('EJ958083578US', window, 400, 400)" style="color:blue; cursor:pointer;">EJ958083578US</div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDate)
+            </td>
+        </tr>
     }
 </table>

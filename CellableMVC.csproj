@@ -137,6 +137,7 @@
   <ItemGroup>
     <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Helpers\IncomingPhone.cs" />
+    <Compile Include="Helpers\MailHelper.cs" />
     <Compile Include="Helpers\User.cs" />
     <Compile Include="Mail\Address.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -469,6 +470,7 @@
     <Content Include="Views\Users\ReturningUser.cshtml" />
     <Content Include="Views\Users\UpdateReturningUser.cshtml" />
     <Content Include="Views\Users\TrackOrders.cshtml" />
+    <Content Include="Views\Shared\_USPSTrackingMessage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

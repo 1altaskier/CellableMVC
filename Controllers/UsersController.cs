@@ -98,12 +98,14 @@ namespace CellableMVC.Controllers
         }
 
         // GET: Users/Create
-        public ActionResult Register()
+        public ActionResult Register(string msg = null)
         {
             if (Session["LoggedInUser"] != null)
             {
                 return RedirectToAction("ReturningUser");
             }
+
+            ViewBag.Message = msg;
             ViewBag.PaymentTypes = new SelectList(db.PaymentTypes, "PaymentTypeId", "PaymentType1", "-- How You Get Paid --");
             ViewBag.State = new SelectList(db.States, "StateAbbrv", "StateName", "-- Select State --");
 
@@ -129,15 +131,8 @@ namespace CellableMVC.Controllers
             // Get User Info From DB
             User user = db.Users.Find(int.Parse(Session["LoggedInUserId"].ToString()));
 
-            // Find User's Payment Type
-            //Order order = db.Orders.FirstOrDefault(x => x.UserId == user.UserId);
-            //var paymentType = order.PaymentTypeId;
-
-            // Find User's State
-            var state = user.State;
-
             // Create Drop Down List(s)
-            //ViewBag.PaymentTypes = new SelectList(db.PaymentTypes, "PaymentTypeId", "PaymentType1", paymentType);
+            var state = user.State;
             ViewBag.State = new SelectList(db.States, "StateAbbrv", "StateName", state);
 
             ViewBag.Message = errMsg;
@@ -229,6 +224,13 @@ namespace CellableMVC.Controllers
             user.LastLogin = DateTime.UtcNow;
             user.PermissionId = 2;
             user.ConfirmPassword = user.Password;
+
+            // Validate Mailing Address
+            MailController mail = new MailController();
+            if (!mail.ValidateAddress(Request.Form["address"], Request.Form["city"], Request.Form["state"]))
+            {
+                return RedirectToAction("Register", new { msg = "USPS Validation - Mailing Address Not Found" });
+            }
 
             using (var dbContextTransaction = db.Database.BeginTransaction())
             {
@@ -383,6 +385,8 @@ namespace CellableMVC.Controllers
                 vmDetails.CreateDate = item.CreateDate;
                 orderDetailsVMlist.Add(vmDetails);
             }
+
+            ViewBag.TrackingInfo = MailHelper.TrackingMessage;
 
             return View(orderDetailsVMlist);
         }

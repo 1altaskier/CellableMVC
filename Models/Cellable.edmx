@@ -76,6 +76,9 @@
           <Property Name="ImageName" Type="nvarchar" MaxLength="50" />
           <Property Name="PhoneId" Type="int" />
           <Property Name="StorageCapacityId" Type="int" />
+          <Property Name="Views" Type="int" />
+          <Property Name="Purchases" Type="int" />
+          <Property Name="Active" Type="bit" />
         </EntityType>
         <EntityType Name="PossibleDefects">
           <Key>
@@ -322,18 +325,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PhoneVersion_StorageCapacity">
-          <End Role="StorageCapacity" Type="Self.StorageCapacity" Multiplicity="0..1" />
-          <End Role="PhoneVersion" Type="Self.PhoneVersion" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StorageCapacity">
-              <PropertyRef Name="StorageCapacityId" />
-            </Principal>
-            <Dependent Role="PhoneVersion">
-              <PropertyRef Name="StorageCapacityId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PossibleDefects_DefectGroup">
           <End Role="DefectGroup" Type="Self.DefectGroup" Multiplicity="0..1" />
           <End Role="PossibleDefects" Type="Self.PossibleDefects" Multiplicity="*" />
@@ -417,10 +408,6 @@
           <AssociationSet Name="FK_Orders_Promos" Association="Self.FK_Orders_Promos">
             <End Role="Promos" EntitySet="Promos" />
             <End Role="Orders" EntitySet="Orders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PhoneVersion_StorageCapacity" Association="Self.FK_PhoneVersion_StorageCapacity">
-            <End Role="StorageCapacity" EntitySet="StorageCapacity" />
-            <End Role="PhoneVersion" EntitySet="PhoneVersion" />
           </AssociationSet>
           <AssociationSet Name="FK_PossibleDefects_DefectGroup" Association="Self.FK_PossibleDefects_DefectGroup">
             <End Role="DefectGroup" EntitySet="DefectGroup" />
@@ -508,6 +495,9 @@
           <NavigationProperty Name="PossibleDefects" Relationship="Self.FK_125" FromRole="PhoneVersion" ToRole="PossibleDefects" />
           <NavigationProperty Name="UserPhones" Relationship="Self.FK_174" FromRole="PhoneVersion" ToRole="UserPhone" />
           <NavigationProperty Name="StorageCapacity" Relationship="Self.FK_PhoneVersion_StorageCapacity" FromRole="PhoneVersion" ToRole="StorageCapacity" />
+          <Property Name="Views" Type="Int32" />
+          <Property Name="Purchases" Type="Int32" />
+          <Property Name="Active" Type="Boolean" />
         </EntityType>
         <EntityType Name="PossibleDefect">
           <Key>
@@ -859,7 +849,7 @@
             <End Role="PossibleDefect" EntitySet="PossibleDefects" />
           </AssociationSet>
           <FunctionImport Name="GetOrderDetails" EntitySet="Orders" ReturnType="Collection(CellableModel.Order)">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="DefectGroup">
@@ -963,6 +953,9 @@
           <EntitySetMapping Name="PhoneVersions">
             <EntityTypeMapping TypeName="CellableModel.PhoneVersion">
               <MappingFragment StoreEntitySet="PhoneVersion">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Purchases" ColumnName="Purchases" />
+                <ScalarProperty Name="Views" ColumnName="Views" />
                 <ScalarProperty Name="VersionId" ColumnName="VersionId" />
                 <ScalarProperty Name="Version" ColumnName="Version" />
                 <ScalarProperty Name="BaseCost" ColumnName="BaseCost" />

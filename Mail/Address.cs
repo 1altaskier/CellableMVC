@@ -269,5 +269,10 @@ namespace CellableMVC.Mail
             sb.Append("</Address>");
             return sb.ToString();
         }
+
+        public static implicit operator Address(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

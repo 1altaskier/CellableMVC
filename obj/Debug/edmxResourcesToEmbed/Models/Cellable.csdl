@@ -77,6 +77,9 @@
     <NavigationProperty Name="PossibleDefects" Relationship="Self.FK_125" FromRole="PhoneVersion" ToRole="PossibleDefects" />
     <NavigationProperty Name="UserPhones" Relationship="Self.FK_174" FromRole="PhoneVersion" ToRole="UserPhone" />
     <NavigationProperty Name="StorageCapacity" Relationship="Self.FK_PhoneVersion_StorageCapacity" FromRole="PhoneVersion" ToRole="StorageCapacity" />
+    <Property Name="Views" Type="Int32" />
+    <Property Name="Purchases" Type="Int32" />
+    <Property Name="Active" Type="Boolean" />
   </EntityType>
   <EntityType Name="PossibleDefect">
     <Key>

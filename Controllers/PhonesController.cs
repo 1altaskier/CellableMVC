@@ -93,10 +93,21 @@ namespace CellableMVC.Controllers
             IList<PossibleDefect> possibleDefects = null;
 
             // Get a list of Defects to pass to the view
-            possibleDefects = db.PossibleDefects.ToList().OrderBy(x => x.DefectGroup.DisplayOrder).Where(x => x.VersionId == id).ToList();
+            possibleDefects = db.PossibleDefects.ToList().OrderBy(x => x.DefectGroupId).Where(x => x.VersionId == id).ToList();
 
             // Get the Version Info for this Particular Phone
             PhoneVersion phoneVersion = db.PhoneVersions.Find(id);
+
+            // Update Phone Version View Count to DB
+            if(phoneVersion.Views == null)
+            {
+                phoneVersion.Views = 1;
+            }
+            else
+            {
+                phoneVersion.Views = phoneVersion.Views + 1;
+            }
+            db.SaveChanges();
 
             Session["PhoneBrand"] = phoneVersion.PhoneId;
             Session["VersionName"] = phoneVersion.Version;

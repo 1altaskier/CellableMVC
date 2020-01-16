@@ -11,7 +11,7 @@ namespace CellableMVC.Mail
         private string USPSAPIUserName = WebConfigurationManager.AppSettings["USPSAPIUserName"];
         private string USPSAPIPassword = WebConfigurationManager.AppSettings["USPSAPIPassword"];
         private const string ProductionUrl = "http://production.shippingapis.com/ShippingAPI.dll";
-        private const string TestingUrl = "http://stg-production.shippingapis.com/ShippingAPI.dll";
+        private const string TestingUrl = "https://secure.shippingapis.com/ShippingAPI.dll";
         private WebClient web;
         private string _userid;
         #endregion
@@ -65,11 +65,20 @@ namespace CellableMVC.Mail
         /// </summary>
         /// <param name="address">Address object to be validated</param>
         /// <returns>Validated Address</returns>
-        public Address ValidateAddress(Address address)
+        public bool ValidateAddress(string USPSAPIUserName, Address address)
         {
             try
             {
-                string validateUrl = "?API=Verify&XML=<AddressValidateRequest USERID='" + USPSAPIUserName + "' PASSWORD='" + USPSAPIPassword + "'><Address1>" + address.Address1 + "</Address1><Address2>" + address.Address2 + "</Address2><City>" + address.City + "</City><State>" + address.State + "</State><Zip5>" + address.Zip + "</Zip5><Zip4>" + address.ZipPlus4 + "</Zip4></Address></AddressValidateRequest>";
+                string validateUrl = "?API=Verify&XML=<AddressValidateRequest USERID='" + USPSAPIUserName + "'>" +
+                                        "<Address>" +
+                                            "<Address1></Address1>" +
+                                            "<Address2>" + address.Address2  + "</Address2>" +
+                                            "<City>" + address.City + "</City>" +
+                                            "<State>" + address.State + "</State>" +
+                                            "<Zip5>" + address.Zip + "</Zip5>" +
+                                            "<Zip4></Zip4>" +
+                                        "</Address>" +
+                                    "</AddressValidateRequest>";
                 string url = GetURL() + validateUrl;
                 url = String.Format(url, _userid, address.ID.ToString(), address.Address1, address.Address2, address.City, address.State, address.Zip, address.ZipPlus4);
                 string addressxml = web.DownloadString(url);
@@ -79,16 +88,18 @@ namespace CellableMVC.Mail
                     int idx2 = addressxml.IndexOf("</Description>");
                     int l = addressxml.Length;
                     string errDesc = addressxml.Substring(idx1, idx2 - idx1);
-                    throw new USPSManagerException(errDesc);
+                    Address invalidAddress = new Address();
+                    return false;
                 }
 
-                return Address.FromXml(addressxml);
+                return true;
             }
             catch (WebException ex)
             {
                 throw new USPSManagerException(ex);
             }
         }
+
         /// <summary>
         /// Get the zip code by providing an Address object with a city and state
         /// </summary>
@@ -184,14 +195,18 @@ namespace CellableMVC.Mail
         #endregion
 
         #region Tracking Methods
-        public TrackingInfo GetTrackingInfo(string USPSAPIUserName, string USPSAPIPassword, string TrackingNumber)
+        public string GetTrackingInfo(string USPSAPIUserName, string USPSAPIPassword, string TrackingNumber)
         {
             try
             {
-                string trackurl = "?API=TrackV2&XML=<TrackRequest USERID='" + USPSAPIUserName + "' PASSWORD='" + USPSAPIPassword + "'><TrackID ID='" + TrackingNumber + "'></TrackID></TrackRequest>";
+                string trackurl = "?API=TrackV2&XML=<TrackRequest USERID='" + USPSAPIUserName + "' >" +
+                                        "<TrackID ID='" + TrackingNumber + "' />" +
+                                   "</TrackRequest>";
+
                 string url = GetURL() + trackurl;
                 url = String.Format(url, _userid, TrackingNumber);
                 string xml = web.DownloadString(url);
+
                 if (xml.Contains("<Error>"))
                 {
                     try
@@ -200,15 +215,16 @@ namespace CellableMVC.Mail
                         int idx2 = xml.IndexOf("</Description>");
                         int l = xml.Length;
                         string errDesc = xml.Substring(idx1, idx2 - idx1);
-                        //throw new USPSManagerException(errDesc);
+
+                        return errDesc;
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
-                        return TrackingInfo.FromXml(ex.ToString());
+                        return ex.ToString();
                     }
                 }
 
-                return TrackingInfo.FromXml(xml);
+                return xml;
             }
             catch (WebException ex)
             {

@@ -6,7 +6,7 @@ GO
 CREATE PROCEDURE CreateVersionDefectTemplate 
 	-- Add the parameters for the stored procedure here
 	@NewVersionID int,
-	@TemplateVersionID int
+	@TemplateVersionID int = 1
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from

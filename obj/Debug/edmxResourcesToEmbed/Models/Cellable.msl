@@ -63,6 +63,9 @@
     <EntitySetMapping Name="PhoneVersions">
       <EntityTypeMapping TypeName="CellableModel.PhoneVersion">
         <MappingFragment StoreEntitySet="PhoneVersion">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Purchases" ColumnName="Purchases" />
+          <ScalarProperty Name="Views" ColumnName="Views" />
           <ScalarProperty Name="VersionId" ColumnName="VersionId" />
           <ScalarProperty Name="Version" ColumnName="Version" />
           <ScalarProperty Name="BaseCost" ColumnName="BaseCost" />

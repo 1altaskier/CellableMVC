@@ -1,6 +1,7 @@
 ﻿using CellableMVC.Mail;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using CellableMVC.Helpers;
 
 namespace CellableMVC.Controllers
 {
@@ -9,23 +10,34 @@ namespace CellableMVC.Controllers
         private string USPSAPIUserName = WebConfigurationManager.AppSettings["USPSAPIUserName"];
         private string USPSAPIPassword = WebConfigurationManager.AppSettings["USPSAPIPassword"];
 
-        // GET: Mail
-        public void ValidateAddress(string address, string city, string state)
+        public ActionResult _USPSTrackingMessage(string trackingNumber)
         {
+            USPSManager mgr = new USPSManager(USPSAPIUserName, true);
+            string msg = mgr.GetTrackingInfo(USPSAPIUserName, USPSAPIPassword, trackingNumber);
+
+            MailHelper.TrackingMessage = msg;
+
+            return View();
+        }
+
+        // GET: Mail
+        public bool ValidateAddress(string address, string city, string state)
+        {
+            bool valid = true;
+
             ///Create a new instance of the USPS Manager class
             ///The constructor takes 2 arguments, the first is
             ///your USPS Web Tools User ID and the second is 
             ///true if you want to use the USPS Test Servers.
-            USPSManager m = new USPSManager(USPSAPIUserName, true);
+            USPSManager mgr = new USPSManager(USPSAPIUserName, true);
             Address a = new Address();
-            a.Address2 = "6406 Ivy Lane";
-            a.City = "Greenbelt";
-            a.State = "MD";
+            a.Address2 = address;
+            a.City = city;
+            a.State = state;
 
-            ///By calling ValidateAddress on the USPSManager object,
-            ///you get an Address object that has been validated by the
-            ///USPS servers
-            Address validatedAddress = m.ValidateAddress(a);
+            valid = mgr.ValidateAddress(USPSAPIUserName, a);
+
+            return valid;
         }
 
         public void GetZipCode(string address, string city, string state)
@@ -47,11 +59,16 @@ namespace CellableMVC.Controllers
             string outState = a.State;
         }
 
-        public void TrackPackage(string trackingNumber)
-        {
-            USPSManager m = new USPSManager(USPSAPIUserName, true);
-            TrackingInfo t = m.GetTrackingInfo(USPSAPIUserName, USPSAPIPassword, "EJ958083578US");
-        }
+        //public ActionResult TrackPackage(string trackingNumber)
+        //{
+        //    USPSManager mgr = new USPSManager(USPSAPIUserName, true);
+        //    string msg = mgr.GetTrackingInfo(USPSAPIUserName, USPSAPIPassword, trackingNumber);
+
+        //    Helpers.MailHelper mail = new Helpers.MailHelper();
+        //    mail.TrackingMessage = msg;
+
+        //    return RedirectToAction("TrackOrders", "Users", new { } );
+        //}
 
         public void GetShippingLabel()
         {

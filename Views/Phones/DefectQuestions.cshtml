@@ -84,7 +84,6 @@
                             </div>
                         </td>
                     </tr>
-                    @{var lastGroupId = 0; }
                     @foreach (var group in Model)
                     {
                         if (group.DefectGroup.GroupName == "Default")
@@ -111,8 +110,14 @@
                                 </td>
                             </tr>
                         }
-                        else
+                    }
+                    @{var lastGroupId = 0; }
+                    @foreach (var group in Model)
+                    {
+                        // Don't Display Default Groups
+                        if (group.DefectGroup.GroupName != "Default")
                         {
+                            // Don't Repeat an Already Created Group
                             if (lastGroupId != group.DefectGroup.DefectGroupId)
                             {
                                 lastGroupId = group.DefectGroup.DefectGroupId;
