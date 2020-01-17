@@ -105,7 +105,7 @@ namespace CellableMVC.Controllers
             }
             else
             {
-                phoneVersion.Views = phoneVersion.Views + 1;
+                phoneVersion.Views += 1;
             }
             db.SaveChanges();
 

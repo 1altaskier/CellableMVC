@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using CellableMVC.Helpers;
 using System.Data.SqlClient;
 using System.Data;
+using System.Data.Entity;
 
 namespace CellableMVC.Controllers
 {
@@ -314,6 +315,21 @@ namespace CellableMVC.Controllers
                     db.Orders.Add(order);
                     db.SaveChanges();
                     var orderId = order.OrderID;
+
+                    // Get the Version Info for this Particular Phone
+                    PhoneVersion phoneVersion = db.PhoneVersions.Find(int.Parse(Session["VersionId"].ToString()));
+
+                    // Update Phone Version View Count to DB
+                    if (phoneVersion.Purchases == null)
+                    {
+                        phoneVersion.Purchases = 1;
+                    }
+                    else
+                    {
+                        phoneVersion.Purchases += 1;
+                    }
+                    db.Entry(phoneVersion).State = EntityState.Modified;
+                    db.SaveChanges();
 
                     // Send Confirmation Email(s)
                     EmailController email = new EmailController();
