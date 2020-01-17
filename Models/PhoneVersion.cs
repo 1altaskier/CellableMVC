@@ -19,6 +19,7 @@ namespace CellableMVC.Models
         {
             this.PossibleDefects = new HashSet<PossibleDefect>();
             this.UserPhones = new HashSet<UserPhone>();
+            this.VersionCapacities = new HashSet<VersionCapacity>();
         }
     
         public int VersionId { get; set; }
@@ -37,5 +38,7 @@ namespace CellableMVC.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserPhone> UserPhones { get; set; }
         public virtual StorageCapacity StorageCapacity { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VersionCapacity> VersionCapacities { get; set; }
     }
 }

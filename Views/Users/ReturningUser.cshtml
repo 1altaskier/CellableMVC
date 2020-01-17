@@ -107,7 +107,7 @@
                                         <div id="PaymentUserNameValidationMessage" class="text-danger"></div>
                                         <br />
                                         <input type="submit" name="submit" id="submit" value="Complete Order" class="PromoCode" />
-                                        <input type="button" name="reset" id="reset" value="Cancel" class="PromoCode" />
+                                        <input type="button" name="reset" id="reset" value="Cancel" class="PromoCode" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" />
                                     </td>
                                 </tr>
                             </table>

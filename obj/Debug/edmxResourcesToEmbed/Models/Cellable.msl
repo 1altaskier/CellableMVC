@@ -182,5 +182,14 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <FunctionImportMapping FunctionImportName="GetOrderDetails" FunctionName="CellableModel.Store.GetOrderDetails" />
+    <EntitySetMapping Name="VersionCapacities">
+      <EntityTypeMapping TypeName="CellableModel.VersionCapacity">
+        <MappingFragment StoreEntitySet="VersionCapacity">
+          <ScalarProperty Name="StorageCapacityId" ColumnName="StorageCapacityId" />
+          <ScalarProperty Name="VersionId" ColumnName="VersionId" />
+          <ScalarProperty Name="VersionCapacityId" ColumnName="VersionCapacityId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

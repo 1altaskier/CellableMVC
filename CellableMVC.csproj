@@ -224,6 +224,9 @@
     <Compile Include="Models\UserPhone.cs">
       <DependentUpon>Cellable.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\VersionCapacity.cs">
+      <DependentUpon>Cellable.tt</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\vmOrderDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

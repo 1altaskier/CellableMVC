@@ -35,7 +35,7 @@
 
                     <td style="text-align:center; padding:6px">
                         <a class="btn btn-default" href="@Url.Action("Carriers", "Phones", new { id = item.PhoneId, versionId = item.VersionId } )">
-                            <img src="~/Pictures/@item.ImageName" alt="@item.ImageName" style="height:250px; width:130px;" />
+                            <img src="~/Pictures/Phones/@item.ImageName" alt="@item.ImageName" style="height:250px; width:130px;" />
                         </a>
                         <br />
                         @Html.DisplayFor(modelItem => item.Phone.Brand)

@@ -36,6 +36,9 @@
         <AssociationConnector Association="CellableModel.FK_137" ManuallyRouted="false" />
         <EntityTypeShape EntityType="CellableModel.DefectGroup" Width="1.5" PointX="10.375" PointY="5.875" />
         <AssociationConnector Association="CellableModel.FK_PossibleDefects_DefectGroup" />
+        <EntityTypeShape EntityType="CellableModel.VersionCapacity" Width="1.5" PointX="8.25" PointY="0.75" />
+        <AssociationConnector Association="CellableModel.FK_VersionCapacity_PhoneVersion" />
+        <AssociationConnector Association="CellableModel.FK_VersionCapacity_StorageCapacity" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

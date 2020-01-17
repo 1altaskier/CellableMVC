@@ -169,6 +169,14 @@
           <Property Name="VersionId" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="VersionCapacity">
+          <Key>
+            <PropertyRef Name="VersionCapacityId" />
+          </Key>
+          <Property Name="VersionCapacityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VersionId" Type="int" Nullable="false" />
+          <Property Name="StorageCapacityId" Type="int" Nullable="false" />
+        </EntityType>
         <Association Name="FK__PhoneVers__Phone__5070F446">
           <End Role="Phones" Type="Self.Phones" Multiplicity="0..1" />
           <End Role="PhoneVersion" Type="Self.PhoneVersion" Multiplicity="*" />
@@ -337,6 +345,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_VersionCapacity_PhoneVersion">
+          <End Role="PhoneVersion" Type="Self.PhoneVersion" Multiplicity="1" />
+          <End Role="VersionCapacity" Type="Self.VersionCapacity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhoneVersion">
+              <PropertyRef Name="VersionId" />
+            </Principal>
+            <Dependent Role="VersionCapacity">
+              <PropertyRef Name="VersionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VersionCapacity_StorageCapacity">
+          <End Role="StorageCapacity" Type="Self.StorageCapacity" Multiplicity="1" />
+          <End Role="VersionCapacity" Type="Self.VersionCapacity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StorageCapacity">
+              <PropertyRef Name="StorageCapacityId" />
+            </Principal>
+            <Dependent Role="VersionCapacity">
+              <PropertyRef Name="StorageCapacityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="GetOrderDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
@@ -357,6 +389,7 @@
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserAnswers" EntityType="Self.UserAnswers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserPhone" EntityType="Self.UserPhone" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VersionCapacity" EntityType="Self.VersionCapacity" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__PhoneVers__Phone__5070F446" Association="Self.FK__PhoneVers__Phone__5070F446">
             <End Role="Phones" EntitySet="Phones" />
             <End Role="PhoneVersion" EntitySet="PhoneVersion" />
@@ -412,6 +445,14 @@
           <AssociationSet Name="FK_PossibleDefects_DefectGroup" Association="Self.FK_PossibleDefects_DefectGroup">
             <End Role="DefectGroup" EntitySet="DefectGroup" />
             <End Role="PossibleDefects" EntitySet="PossibleDefects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VersionCapacity_PhoneVersion" Association="Self.FK_VersionCapacity_PhoneVersion">
+            <End Role="PhoneVersion" EntitySet="PhoneVersion" />
+            <End Role="VersionCapacity" EntitySet="VersionCapacity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VersionCapacity_StorageCapacity" Association="Self.FK_VersionCapacity_StorageCapacity">
+            <End Role="StorageCapacity" EntitySet="StorageCapacity" />
+            <End Role="VersionCapacity" EntitySet="VersionCapacity" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -498,6 +539,7 @@
           <Property Name="Views" Type="Int32" />
           <Property Name="Purchases" Type="Int32" />
           <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="VersionCapacities" Relationship="CellableModel.FK_VersionCapacity_PhoneVersion" FromRole="PhoneVersion" ToRole="VersionCapacity" />
         </EntityType>
         <EntityType Name="PossibleDefect">
           <Key>
@@ -541,6 +583,7 @@
           <Property Name="StorageCapacity1" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PhoneVersions" Relationship="Self.FK_PhoneVersion_StorageCapacity" FromRole="StorageCapacity" ToRole="PhoneVersion" />
           <Property Name="Description" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="VersionCapacities" Relationship="CellableModel.FK_VersionCapacity_StorageCapacity" FromRole="StorageCapacity" ToRole="VersionCapacity" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -851,6 +894,15 @@
           <FunctionImport Name="GetOrderDetails" EntitySet="Orders" ReturnType="Collection(CellableModel.Order)">
           <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="VersionCapacities" EntityType="CellableModel.VersionCapacity" />
+          <AssociationSet Name="FK_VersionCapacity_PhoneVersion" Association="CellableModel.FK_VersionCapacity_PhoneVersion">
+            <End Role="PhoneVersion" EntitySet="PhoneVersions" />
+            <End Role="VersionCapacity" EntitySet="VersionCapacities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VersionCapacity_StorageCapacity" Association="CellableModel.FK_VersionCapacity_StorageCapacity">
+            <End Role="StorageCapacity" EntitySet="StorageCapacities" />
+            <End Role="VersionCapacity" EntitySet="VersionCapacities" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="DefectGroup">
           <Key>
@@ -885,6 +937,40 @@
           <Property Type="String" Name="PaymentUserName" Nullable="true" MaxLength="50" />
           <Property Type="DateTime" Name="CreateDate" Nullable="false" Precision="23" />
         </ComplexType>
+        <EntityType Name="VersionCapacity">
+          <Key>
+            <PropertyRef Name="VersionCapacityId" />
+          </Key>
+          <Property Name="VersionCapacityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VersionId" Type="Int32" Nullable="false" />
+          <Property Name="StorageCapacityId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PhoneVersion" Relationship="CellableModel.FK_VersionCapacity_PhoneVersion" FromRole="VersionCapacity" ToRole="PhoneVersion" />
+          <NavigationProperty Name="StorageCapacity" Relationship="CellableModel.FK_VersionCapacity_StorageCapacity" FromRole="VersionCapacity" ToRole="StorageCapacity" />
+        </EntityType>
+        <Association Name="FK_VersionCapacity_PhoneVersion">
+          <End Type="CellableModel.PhoneVersion" Role="PhoneVersion" Multiplicity="1" />
+          <End Type="CellableModel.VersionCapacity" Role="VersionCapacity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhoneVersion">
+              <PropertyRef Name="VersionId" />
+            </Principal>
+            <Dependent Role="VersionCapacity">
+              <PropertyRef Name="VersionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VersionCapacity_StorageCapacity">
+          <End Type="CellableModel.StorageCapacity" Role="StorageCapacity" Multiplicity="1" />
+          <End Type="CellableModel.VersionCapacity" Role="VersionCapacity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StorageCapacity">
+              <PropertyRef Name="StorageCapacityId" />
+            </Principal>
+            <Dependent Role="VersionCapacity">
+              <PropertyRef Name="StorageCapacityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1073,6 +1159,15 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="GetOrderDetails" FunctionName="CellableModel.Store.GetOrderDetails">
           </FunctionImportMapping>
+          <EntitySetMapping Name="VersionCapacities">
+            <EntityTypeMapping TypeName="CellableModel.VersionCapacity">
+              <MappingFragment StoreEntitySet="VersionCapacity">
+                <ScalarProperty Name="StorageCapacityId" ColumnName="StorageCapacityId" />
+                <ScalarProperty Name="VersionId" ColumnName="VersionId" />
+                <ScalarProperty Name="VersionCapacityId" ColumnName="VersionCapacityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -1087,7 +1182,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

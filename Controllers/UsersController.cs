@@ -119,6 +119,10 @@ namespace CellableMVC.Controllers
 
             ViewBag.PaymentTypes = new SelectList(db.PaymentTypes, "PaymentTypeId", "PaymentType1", "-- How You Get Paid --");
 
+            StorageCapacity capacity = db.StorageCapacities.Find(int.Parse(Session["Storage Capacity"].ToString()));
+            // For Description on Pricing Page
+            ViewBag.CapacityDesc = capacity.Description;
+
             User user = db.Users.Find(int.Parse(Session["LoggedInUserId"].ToString()));
 
             return View(user);
@@ -226,11 +230,15 @@ namespace CellableMVC.Controllers
             user.ConfirmPassword = user.Password;
 
             // Validate Mailing Address
-            MailController mail = new MailController();
-            if (!mail.ValidateAddress(Request.Form["address"], Request.Form["city"], Request.Form["state"]))
+            if(Request.Form["address"] != null)
             {
-                return RedirectToAction("Register", new { msg = "USPS Validation - Mailing Address Not Found" });
+                MailController mail = new MailController();
+                if (!mail.ValidateAddress(Request.Form["address"], Request.Form["city"], Request.Form["state"]))
+                {
+                    return RedirectToAction("Register", new { msg = "USPS Validation - Mailing Address Not Found" });
+                }
             }
+
 
             using (var dbContextTransaction = db.Database.BeginTransaction())
             {

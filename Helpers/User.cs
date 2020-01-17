@@ -1,7 +1,9 @@
-﻿using System;
+﻿using CellableMVC.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace CellableMVC.Helpers
 {
@@ -9,5 +11,7 @@ namespace CellableMVC.Helpers
     {
         public int? UserId { get; set; }
         public string UserName { get; set; }
+
+        public SelectList StorageCapacities { get; set; }
     }
 }

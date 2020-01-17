@@ -99,7 +99,7 @@ namespace CellableMVC.Controllers
             PhoneVersion phoneVersion = db.PhoneVersions.Find(id);
 
             // Update Phone Version View Count to DB
-            if(phoneVersion.Views == null)
+            if (phoneVersion.Views == null)
             {
                 phoneVersion.Views = 1;
             }
@@ -123,9 +123,24 @@ namespace CellableMVC.Controllers
             ViewBag.ImageLocation = phoneVersion.ImageName;
             ViewBag.VersionName = phoneVersion.Version;
 
-            // Get List of Storage Capacities
-            IList<StorageCapacity> storage = db.StorageCapacities.ToList();
-            ViewBag.Storage = storage;
+            ViewBag.Capacities = db.StorageCapacities.ToList();
+            ViewBag.PhoneCapacities = db.VersionCapacities.Where(x => x.VersionId == phoneVersion.VersionId).ToList();
+
+
+            //var context = new CellableEntities();
+            //using (context)
+            //{
+            //    var storage = (from vc in db.VersionCapacities.DefaultIfEmpty()
+            //                   join sc in db.StorageCapacities on vc.StorageCapacityId equals sc.StorageCapacityId into capacitiesGrp
+            //                   from sc in capacitiesGrp.DefaultIfEmpty()
+            //                   where vc.VersionId == phoneVersion.VersionId
+            //                   select new { vc.StorageCapacityId, sc.Description }).ToList();
+
+            //    ViewBag.Storage = storage;
+
+            //    LoggedInUser u = new LoggedInUser();
+            //    u.StorageCapacities = storage;
+            //}
 
             return View(possibleDefects);
         }

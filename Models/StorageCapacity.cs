@@ -18,6 +18,7 @@ namespace CellableMVC.Models
         public StorageCapacity()
         {
             this.PhoneVersions = new HashSet<PhoneVersion>();
+            this.VersionCapacities = new HashSet<VersionCapacity>();
         }
     
         public int StorageCapacityId { get; set; }
@@ -26,5 +27,7 @@ namespace CellableMVC.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PhoneVersion> PhoneVersions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VersionCapacity> VersionCapacities { get; set; }
     }
 }

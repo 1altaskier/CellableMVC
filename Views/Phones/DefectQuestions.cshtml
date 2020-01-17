@@ -74,9 +74,15 @@
                                     </p>
                                 </div>
                                 <div style="display:inline-block; width:50px;"></div>
-                                @foreach (var storage in ViewBag.Storage)
+                                @foreach (var capacities in ViewBag.Capacities)
                                 {
-                                    <input id="@storage.StorageCapacityId" type="radio" name="capacity" value="@storage.StorageCapacityId" onchange="SetField('capacity')" />@storage.Description @Html.Raw("&nbsp; &nbsp;")
+                                    foreach (var versionCapacities in ViewBag.PhoneCapacities)
+                                    {
+                                        if (capacities.StorageCapacityId == versionCapacities.StorageCapacityId)
+                                        {
+                                            <input id="@capacities.StorageCapacityId" type="radio" name="capacity" value="@capacities.StorageCapacityId" onchange="SetField('capacity')" />@capacities.Description @Html.Raw("&nbsp; &nbsp;")
+                                        }
+                                    }
                                 }
                                 <br />
                                 <div style="display:inline-block; width:50px;"></div><div id="CapacityValidationMessage" name="CapacityValidationMessage" style="display:inline-block" class="text-danger"></div>
