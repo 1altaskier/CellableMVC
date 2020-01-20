@@ -206,6 +206,9 @@
       <DependentUpon>Cellable.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\SlideShow.cs">
+      <DependentUpon>Cellable.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\State.cs">
       <DependentUpon>Cellable.tt</DependentUpon>
     </Compile>

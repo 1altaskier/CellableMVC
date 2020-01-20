@@ -97,6 +97,14 @@
     <Property Name="EndDate" Type="date" Nullable="false" />
     <Property Name="Discount" Type="decimal" Precision="3" Scale="2" Nullable="false" />
   </EntityType>
+  <EntityType Name="SlideShow">
+    <Key>
+      <PropertyRef Name="SlideId" />
+    </Key>
+    <Property Name="SlideId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ImageName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
+  </EntityType>
   <EntityType Name="States">
     <Key>
       <PropertyRef Name="StateID" />
@@ -386,6 +394,7 @@
     <EntitySet Name="PhoneVersion" EntityType="Self.PhoneVersion" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PossibleDefects" EntityType="Self.PossibleDefects" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Promos" EntityType="Self.Promos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SlideShow" EntityType="Self.SlideShow" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="States" EntityType="Self.States" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="StorageCapacity" EntityType="Self.StorageCapacity" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />

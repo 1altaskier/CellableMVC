@@ -445,6 +445,7 @@
       <End Role="VersionCapacity" EntitySet="VersionCapacities" />
     </AssociationSet>
     <EntitySet Name="SystemSettings" EntityType="CellableModel.SystemSetting" />
+    <EntitySet Name="SlideShows" EntityType="CellableModel.SlideShow" />
   </EntityContainer>
   <EntityType Name="DefectGroup">
     <Key>
@@ -520,5 +521,13 @@
     <Property Name="SettingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Value" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="SlideShow">
+    <Key>
+      <PropertyRef Name="SlideId" />
+    </Key>
+    <Property Name="SlideId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ImageName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>
