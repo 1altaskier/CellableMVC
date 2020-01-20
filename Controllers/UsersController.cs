@@ -161,6 +161,24 @@ namespace CellableMVC.Controllers
             return View(user);
         }
 
+        public ActionResult DeleteUser()
+        {
+            int userId = int.Parse(Session["LoggedInUserId"].ToString());
+
+            try
+            {
+                User user = db.Users.Find(userId);
+                db.Users.Remove(user);
+                db.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                return RedirectToAction("ReturningUser", new { msg = "Error Encountered:<br />" + ex.Message});
+            }
+
+            return RedirectToAction("Index","Home");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UpdateUser([Bind(Include = "UserId,NewPassword,OldPassword,FirstName,LastName,Email,Address,Address2,City,State,Zip,PhoneNumber")] User user, string OldPassword = null, string NewPassword = null)

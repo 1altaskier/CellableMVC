@@ -6,28 +6,87 @@
 
 <script type="text/javascript">
     function togglePassword() {
-        const password = document.getElementById("password");
-        const confirmPassword = document.getElementById("confirmPassword");
-        const Password1Div = document.getElementById("Password1");
-        const Password2Div = document.getElementById("Password2");
+        const password = document.getElementById("Password");
+        const password1 = document.getElementById("Password1");
+        const confirmPassword = document.getElementById("ConfirmPassword");
+        const password2 = document.getElementById("Password2");
 
         if (password.type === "password") {
             password.type = "text";
-            confirmPassword.type = "text"
-            Password1Div.innerHTML = "<i class='fa fa-eye input-field' onclick='togglePassword()'></i>"
-            Password2Div.innerHTML = "<i class='fa fa-eye input-field' onclick='togglePassword()'></i>"
+            confirmPassword.type = "text";
+            Password1.innerHTML = "<i class='fa fa-eye input-field' onclick='togglePassword()' style='right:5px;'></i>"
+            Password2.innerHTML = "<i class='fa fa-eye input-field' onclick='togglePassword()' style='right:5px;'></i>"
         } else {
             password.type = "password";
-            confirmPassword.type = "password"
-            Password1Div.innerHTML = "<i class='fa fa-eye-slash input-field' onclick='togglePassword()'></i>"
-            Password2Div.innerHTML = "<i class='fa fa-eye-slash input-field' onclick='togglePassword()'></i>"
+            confirmPassword.type = "password";
+            password1.innerHTML = "<i class='fa fa-eye-slash input-field' onclick='togglePassword()' style='right:5px;'></i>"
+            password2.innerHTML = "<i class='fa fa-eye-slash input-field' onclick='togglePassword()' style='right:5px;'></i>"
         }
     };
 
     function valid_form() {
+        var state = document.getElementById("State").value;
+        var newPassword = document.getElementById("Password").value;
+        var confirmPassword = document.getElementById("ConfirmPassword").value;
+        var email = document.getElementById("Email").value;
+
+        // Custom "Forced" Validation For Password
+        if (newPassword.value == "") {
+            document.getElementById("NewPasswordValidationMessage").innerHTML = "Password is required";
+            valid = false;
+        }
+        else {
+            document.getElementById("NewPasswordValidationMessage").innerHTML = "";
+            valid = true;
+        }
+
+        // Custom "Forced" Validation For Confirm Password
+        if (confirmPassword.value == "") {
+            document.getElementById("ConfirmPasswordValidationMessage").innerHTML = "Please confirm password";
+            valid = false;
+        }
+        else {
+            document.getElementById("ConfirmPasswordValidationMessage").innerHTML = "";
+            valid = true;
+        }
+
+        if (newPassword.length < 8) {
+            document.getElementById("NewPasswordValidationMessage").innerHTML = "Password must be at least 8 characters";
+            valid = false;
+        }
+        else {
+            document.getElementById("NewPasswordValidationMessage").innerHTML = "";
+            valid = true;
+        }
+        if (confirmPassword == "") {
+            document.getElementById("ConfirmPasswordValidationMessage").innerHTML = "Please confirm new password";
+            valid = false;
+        }
+        else {
+            document.getElementById("ConfirmPasswordValidationMessage").innerHTML = "";
+            valid = true;
+        }
+        if (newPassword != confirmPassword) {
+            document.getElementById("PasswordMatchValidationMessage").innerHTML = "Passwords do not match";
+            valid = false;
+        }
+        else {
+            document.getElementById("PasswordMatchValidationMessage").innerHTML = "";
+            valid = true;
+        }
+
+        if (email == "") {
+            document.getElementById("EmailValidationMessage").innerHTML = "Mail is required";
+            valid = false;
+        }
+        else {
+            document.getElementById("EmailValidationMessage").innerHTML = "";
+            valid = true;
+        }
+
         // Custom "Forced" Validation For State
         if (document.getElementById("State").value == "") {
-            document.getElementById("StateValidationMessage").innerHTML = "Please Select State";
+            document.getElementById("StateValidationMessage").innerHTML = "State is required";
             valid = false;
         }
         else {
@@ -42,6 +101,7 @@
 @using (Html.BeginForm("CreateUser", "Users", new { }))
 {
     @Html.AntiForgeryToken()
+
     <table style="width:70%; margin-left:auto; margin-right:auto;">
         <tr>
             <td>
@@ -50,106 +110,169 @@
                 <p>
                     @ViewBag.Text
                 </p>
-                <div style="text-align:center" class="text-danger">@ViewBag.Message</div>
-                <table style="width:100%">
+                @Html.HiddenFor(model => model.UserId)
+                <table style="width:100%; margin-left:auto; margin-right:auto; padding:10px">
                     <tr>
-                        <td style="width:10%; text-align:right; padding:10px;"> <i class="text-danger">*</i>&nbsp;User Name:</td>
-                        <td style="width:20%; padding:10px;">
-                            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", autofocus = true } })
-                            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                        <td style="vertical-align:top; border-right-color:black; border-right-style:solid; border-right-width:1px;">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <input type="submit" id="submit" name="submit" value="Submit" class="PromoCode" onclick="valid_form()" />
+                                        <input type="button" id="cancel" name="cancel" value="Cancel" class="PromoCode" onclick="@("window.location.href='" + @Url.Action("Cancel", "Users") + "'");" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p></p>
+                                        <div class="text-danger">@ViewBag.Message</div>
+                                        <div>@Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })</div>
+                                        <div id="NewPasswordValidationMessage" name="NewPasswordValidationMessage" class="text-danger"></div>
+                                        <div id="ConfirmPasswordValidationMessage" name="ConfirmPasswordValidationMessage" class="text-danger"></div>
+                                        <div id="PasswordMatchValidationMessage" name="PasswordMatchValidationMessage" class="text-danger"></div>
+                                        <div>@Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })</div>
+                                        <div>@Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })</div>
+                                        <div>@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })</div>
+                                        <div>@Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })</div>
+                                        <div>@Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })</div>
+                                        <div>@Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })</div>
+                                        <div id="StateValidationMessage" class="text-danger"></div>
+                                    <div>@Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger" })</div>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
-                    </tr>
-                    <tr>
-                        <td style="width:10%; padding:5px; text-align:right; padding:5px;"><i class="text-danger">*</i>&nbsp;Password:</td>
-                        <td style="width:20%; padding:10px;">
-                            <input id="password" type="password" class="form-control" name="password">
-                            <div id="Password1">
-                                <i class="fa fa-eye-slash input-field" onclick="togglePassword()"></i>
-                            </div>
-                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        <td style="vertical-align:top; border-right-color:black; border-right-style:solid; border-right-width:1px; padding:20px;">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <b>
+                                                <i class="text-danger">*</i>&nbsp;@Html.Label("User Name")
+                                            </b>
+                                            <br />
+                                            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", autofocus = true } })
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <b>
+                                                <i class="text-danger">*</i>&nbsp;@Html.Label("Password")
+                                            </b>
+                                            <br />
+                                            <input type="password" name="Password" id="Password" class="form-control" onchange="return valid_form()" />
+                                            <div id="Password1">
+                                                <i class="fa fa-eye-slash input-field" onclick="togglePassword()" style="right:5px;"></i>
+                                            </div>
+                                            
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <b>
+                                                <i class="text-danger">*</i>&nbsp;@Html.Label("Confirm Password")
+                                            </b>
+                                            <br />
+                                            <input type="password" name="ConfirmPassword" id="ConfirmPassword" class="form-control" onchange="return valid_form()" />
+                                            <div id="Password2">
+                                                <i class="fa fa-eye-slash input-field" onclick="togglePassword()" style="right:5px;"></i>
+                                            </div>
+                                            
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr><td></td></tr>
+                            </table>
                         </td>
-                    </tr>
-                    <tr>
-                        <td style="width:10%; padding:5px; text-align:right; padding:5px;"><i class="text-danger">*</i>&nbsp;Confirm Password:</td>
-                        <td style="width:20%; padding:10px;">
-                            <input id="confirmPassword" type="password" class="form-control" name="confirmPassword">
-                            <div id="Password2">
-                                <i class="fa fa-eye-slash input-field" onclick="togglePassword()"></i>
-                            </div>
-                            @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;First Name:</td>
-                        <td style="width:20%; padding:10px;">
-                            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;Last Name:</td>
-                        <td style="width:20%; padding:10px;">
-                            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;Email:</td>
-                        <td style="width:20%; padding:10px;">
-                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;Phone Number:</td>
-                        <td style="width:20%; padding:10px;">
-                            @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;Address:</td>
-                        <td style="width:20%; padding:10px;">
-                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:10%; text-align:right; padding:10px;">Apt/Ste #:</td>
-                        <td style="width:20%; padding:10px;">
-                            @Html.EditorFor(model => model.Address2, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Address2, "", new { @class = "text-danger" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;City:</td>
-                        <td style="width:20%; padding:10px;">
-                            @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;State:</td>
-                        <td style="width:20%; padding:10px;">
-                            @Html.DropDownList("State", null, "-- Select State --", htmlAttributes: new { @class = "form-control", onchange = "valid_form()" })
-                            <div id="StateValidationMessage" class="text-danger"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;Zip:</td>
-                        <td style="width:20%; padding:10px;">
-                            @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:10%; text-align:right; padding:10px;"></td>
-                        <td style="width:20%; padding:10px;">
-                            <input type="submit" value="Create" class="button" onclick="return valid_form()" />
-                            <input type="reset" value="Reset" class="button" />
+                        <td style="vertical-align:top; padding:20px;">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <b><i class="text-danger">*</i>&nbsp;@Html.Label("First Name")</b>
+                                        <br />
+                                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                        
+                                    </td>
+                                    <td>
+                                        <b>
+                                            <i class="text-danger">*</i>&nbsp;@Html.Label("Last Name")
+                                        </b>
+                                        <br />@Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <b><i class="text-danger">*</i>&nbsp;@Html.Label("Email")</b>
+                                        <br />
+                                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                        
+                                    </td>
+                                    <td>
+                                        <b>
+                                            <i class="text-danger">*</i>&nbsp;@Html.Label("Phone Number")
+                                        </b>
+                                        <br />
+                                        @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <b><i class="text-danger">*</i>&nbsp;@Html.Label("Street Address")</b>
+                                        <br />
+                                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                                        
+                                    </td>
+                                    <td>
+                                        <b>
+                                            @Html.Label("Apt/Ste")
+                                        </b>
+                                        <br />
+                                        @Html.EditorFor(model => model.Address2, new { htmlAttributes = new { @class = "form-control" } })
+                                    </td>
+                                </tr>
+                            </table>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <b><i class="text-danger">*</i>&nbsp;@Html.Label("City")</b>
+                                        <br />
+                                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                                        
+                                    </td>
+                                    <td>
+                                        <b>
+                                            <i class="text-danger">*</i>&nbsp;@Html.Label("State")
+                                        </b>
+                                        <br />
+                                        @Html.DropDownList("State", null, "-- Select State --", htmlAttributes: new { @class = "form-control", onchange = "valid_form()" })
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <b>
+                                            <i class="text-danger">*</i>&nbsp;@Html.Label("Zip")
+                                        </b>
+                                        <br />
+                                        @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control" } })
+                                        
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                 </table>
+                <hr />
             </td>
         </tr>
     </table>

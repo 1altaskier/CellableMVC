@@ -12,6 +12,7 @@
             <p>
                 @ViewBag.Text
             </p>
+            <div class="text-danger">@Request["msg"]</div>
             <table style="width:100%; margin-right:auto; margin-left:auto;">
                 <tr>
                     <td style="vertical-align:top; text-align:center;">
@@ -108,7 +109,7 @@
                                         <div id="PaymentUserNameValidationMessage" class="text-danger"></div>
                                         <br />
                                         <input type="submit" name="submit" id="submit" value="Complete Order" class="PromoCode" />
-                                        <input type="button" name="reset" id="reset" value="Cancel" class="PromoCode" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" />
+                                        <input type="button" name="reset" id="reset" value="Cancel" class="PromoCode" onclick="@("window.location.href='" + @Url.Action("DeleteUser", "Users") + "'");" />
                                     </td>
                                 </tr>
                             </table>
