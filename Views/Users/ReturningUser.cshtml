@@ -4,6 +4,35 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script type="text/javascript">
+    function valid_form() {
+        var paymentType = document.getElementById("PaymentTypes").value;
+        var paymentUserName = document.getElementById("PaymentUserName").value;
+
+        // Custom "Forced" Validation For Password
+        if (paymentType == "") {
+            document.getElementById("PaymentValidationMessage").innerHTML = "Payment Type is required";
+            valid = false;
+        }
+        else {
+            document.getElementById("PaymentValidationMessage").innerHTML = "";
+            valid = true;
+        }
+
+        // Custom "Forced" Validation For Confirm Password
+        if (paymentUserName == "") {
+            document.getElementById("PaymentUserNameValidationMessage").innerHTML = "Payment User Name is required";
+            valid = false;
+        }
+        else {
+            document.getElementById("PaymentUserNameValidationMessage").innerHTML = "";
+            valid = true;
+        }
+
+        return valid;
+    }
+</script>
+
 <table style="width:70%; margin-left:auto; margin-right:auto;">
     <tr>
         <td>
@@ -12,7 +41,7 @@
             <p>
                 @ViewBag.Text
             </p>
-            <div class="text-danger">@Request["msg"]</div>
+            @*<div class="text-danger">@Request["msg"]</div>*@
             <table style="width:100%; margin-right:auto; margin-left:auto;">
                 <tr>
                     <td style="vertical-align:top; text-align:center;">
@@ -88,7 +117,7 @@
                 </tr>
                 <tr>
                     <td style="vertical-align:top; border-right:solid; border-right-color:lightgrey; border-right-width:1px;">
-                        @using (Html.BeginForm("Register", "Users", new { }))
+                        @using (Html.BeginForm("Register", "Users", new { user = User }))
                         {
                             @Html.AntiForgeryToken()
                             <input type="hidden" id="UserExists" name="UserExists" value="true" />
@@ -108,7 +137,7 @@
                                         <input type="text" id="PaymentUserName" name="PaymentUserName" class="form-control" onchange="valid_form()" />
                                         <div id="PaymentUserNameValidationMessage" class="text-danger"></div>
                                         <br />
-                                        <input type="submit" name="submit" id="submit" value="Complete Order" class="PromoCode" />
+                                        <input type="submit" name="submit" id="submit" value="Complete Order" class="PromoCode" onclick="return valid_form()" />
                                         <input type="button" name="reset" id="reset" value="Cancel" class="PromoCode" onclick="@("window.location.href='" + @Url.Action("DeleteUser", "Users") + "'");" />
                                     </td>
                                 </tr>

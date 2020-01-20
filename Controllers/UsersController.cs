@@ -165,18 +165,24 @@ namespace CellableMVC.Controllers
         {
             int userId = int.Parse(Session["LoggedInUserId"].ToString());
 
-            try
+            // See if User has any previously sold phones
+            IList<UserPhone> userPhones = db.UserPhones.Where(x => x.UserId == userId).ToList();
+
+            if (userPhones == null)
             {
-                User user = db.Users.Find(userId);
-                db.Users.Remove(user);
-                db.SaveChanges();
-            }
-            catch(Exception ex)
-            {
-                return RedirectToAction("ReturningUser", new { msg = "Error Encountered:<br />" + ex.Message});
+                try
+                {
+                    User user = db.Users.Find(userId);
+                    db.Users.Remove(user);
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    return RedirectToAction("ReturningUser", new { msg = "Error Encountered:<br />" + ex.Message });
+                }
             }
 
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Cancel", "Users");
         }
 
         [HttpPost]
