@@ -1,7 +1,6 @@
 ﻿@model CellableMVC.Models.User
 
 @{
-    ViewBag.Title = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -36,38 +35,21 @@
             valid = true;
         }
 
-        //// Custom "Forced" Validation For Payment Types
-        if (document.getElementById("PaymentTypes").value == "") {
-            document.getElementById("PaymentValidationMessage").innerHTML = "Please Select Payment Type";
-            valid = false;
-        }
-        else {
-            document.getElementById("PaymentValidationMessage").innerHTML = "";
-            valid = true;
-        }
-
-        //// Custom "Forced" Validation For Payment User Name
-        if (document.getElementById("PaymentUserName").value == "") {
-            document.getElementById("PaymentUserNameValidationMessage").innerHTML = "Payment User Name is Required";
-            valid = false;
-        }
-        else {
-            document.getElementById("PaymentUserNameValidationMessage").innerHTML = "";
-            valid = true;
-        }
-
         return valid;
     }
 </script>
 
-@using (Html.BeginForm("Register", "Users", new { }))
+@using (Html.BeginForm("CreateUser", "Users", new { }))
 {
     @Html.AntiForgeryToken()
     <table style="width:70%; margin-left:auto; margin-right:auto;">
         <tr>
             <td>
-                <h4>Register New User</h4>
+                <h4>@ViewBag.Title</h4>
                 <hr />
+                <p>
+                    @ViewBag.Text
+                </p>
                 <div style="text-align:center" class="text-danger">@ViewBag.Message</div>
                 <table style="width:100%">
                     <tr>
@@ -95,20 +77,6 @@
                                 <i class="fa fa-eye-slash input-field" onclick="togglePassword()"></i>
                             </div>
                             @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;Payment Method:</td>
-                        <td style="width:20%; padding:10px;">
-                            @Html.DropDownList("PaymentTypes", null, "-- How You Get Paid --", htmlAttributes: new { @class = "form-control", onchange = "valid_form()" })
-                            <div id="PaymentValidationMessage" class="text-danger"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:10%; text-align:right; padding:10px;"><i class="text-danger">*</i>&nbsp;Payment User Name:</td>
-                        <td style="width:20%; padding:10px;">
-                            <input type="text" id="PaymentUserName" name="PaymentUserName" class="form-control" onchange="valid_form()" />
-                            <div id="PaymentUserNameValidationMessage" class="text-danger"></div>
                         </td>
                     </tr>
                     <tr>
@@ -182,6 +150,13 @@
                         </td>
                     </tr>
                 </table>
+            </td>
+        </tr>
+    </table>
+    <table style="width:70%; margin-left:auto; margin-right:auto;">
+        <tr>
+            <td style="text-align:center; vertical-align:bottom; height:150px;">
+                @ViewBag.Footer
             </td>
         </tr>
     </table>

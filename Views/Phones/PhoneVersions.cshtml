@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<CellableMVC.Models.PhoneVersion>
 
 @{
-    ViewBag.Title = "Phone Versions";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,35 +10,14 @@
     }
 </script>
 
-@*@using (Html.BeginForm("Index", "PhoneVersions", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        <table>
-            <tr style="padding:2px">
-                <td style="width:45%; padding:2px">
-                    <button onclick="location.href='@Url.Action("Create", "PhoneVersions")';return false;" class="btn btn-default">New Version</button>
-                </td>
-                <td style="width:15%; padding:2px">
-                    @Html.DropDownList("brandId", new SelectList(ViewBag.PhoneBrands, "PhoneId", "Brand", @ViewBag.BrandId), "-- Filter Brand --", new { onchange = "this.form.submit();", @class = "form-control" })
-                </td>
-                <td style="width:15%; padding:2px">
-                    @Html.DropDownList("StorageCapacityId", new SelectList(ViewBag.StorageCapacities, "StorageCapacityId", "StorageCapacity1", @ViewBag.StorageCapacityId), "-- Filter GB --", new { onchange = "this.form.submit();", @class = "form-control" })
-                </td>
-                <td style="width:15%; padding:2px">
-                    <input type="text" id="searchString" name="searchString" class="form-control" placeholder="Search" value="@ViewBag.SearchString" />
-                </td>
-                <td style="width:10%; padding:2px">
-                    <button type="submit" name="submit" id="submit" value="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                    <button type="submit" name="submit" id="reset" value="reset" class="btn btn-default" onclick="location.href='@Url.Action("Index", "PhoneVersions")';return false;"><i class="fa fa-undo"></i></button>
-                </td>
-            </tr>
-        </table>
-    }*@
-
 <table style="width:70%; margin-left:auto; margin-right:auto;">
     <tr>
         <td>
-            <h4>Sell Your broken or used phone for cash</h4>
+            <h4>@ViewBag.Title</h4>
             <hr />
+            <p>
+                @ViewBag.Text
+            </p>
             <div class="text-danger" style="text-align:center">@Request.Params["msg"]</div>
             <table style="width:80%; margin-left:auto; margin-right:auto;">
                 @{
@@ -64,7 +42,7 @@
                     }
 
                     <td style="text-align:center; padding:6px">
-                        <a class="btn btn-default" href="@Url.Action("DefectQuestions", "Phones", new { id = item.VersionId } )" >
+                        <a class="btn btn-default" href="@Url.Action("DefectQuestions", "Phones", new { id = item.VersionId } )">
                             <img src="~/Pictures/Phones/@item.ImageName" alt="@item.ImageName" style="height:250px; width:130px;" />
                         </a>
                         <br />
@@ -85,6 +63,13 @@
                     @Html.Raw("<div style='width:100%; text-align:center;' class='text-danger'>No Records Found</div>");
                 }
             </table>
+        </td>
+    </tr>
+</table>
+<table style="width:70%; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td style="text-align:center; vertical-align:bottom; height:150px;">
+            @ViewBag.Footer
         </td>
     </tr>
 </table>

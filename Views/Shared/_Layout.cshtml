@@ -104,7 +104,11 @@
                 <div class="Header">&copy; @DateTime.Now.Year - Cellable</div>
             </td>
             <td style="text-align:center; width:30%;">
-                @Html.ActionLink("Support", "Support", "Home", new { }, new { @class = "NavLink" })<div style="width:30px; display:inline-block"></div>@Html.ActionLink("About Us", "About", "Home", new { }, new { @class = "NavLink" })<div style="width:30px; display:inline-block"></div>@Html.ActionLink("Contact Us", "Contact", "Home", new { }, new { @class = "NavLink" })
+                <a href="mailto:admin@cellable.com" class="NavLink">Support</a>
+                <div style="width:30px; display:inline-block"></div>
+                @Html.ActionLink("About Us", "About", "Home", new { }, new { @class = "NavLink" })
+                <div style="width:30px; display:inline-block"></div>
+                @Html.ActionLink("Contact Us", "Contact", "Home", new { }, new { @class = "NavLink" })
             </td>
             <td style="text-align:right; width:30%; height:40px;">
                 <a href="https://www.facebook.com/CellableApp/"><i class="fa fa-facebook" style="color:grey;"></i></a>

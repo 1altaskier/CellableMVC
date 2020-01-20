@@ -1,19 +1,15 @@
-﻿@{
-    ViewBag.Title = "About";
-}
-
-<table style="width:70%; margin-left:auto; margin-right:auto;">
+﻿<table style="width:70%; margin-left:auto; margin-right:auto;">
     <tr>
         <td>
-            <h4>About Cellable</h4>
+            <h4>@ViewBag.Title</h4>
             <hr />
             <table style="width:100%">
                 <tr>
                     <td>
-                        <img src="~/Pictures/mont.jpg" alt="mountains" height: 100px; style=" height: 400px; width: 1200px; margin-top: 5px; " />
+                        <img src="~/Pictures/@ViewBag.Image" alt="mountains" height: 100px; style=" height: 400px; width: 1200px; margin-top: 5px; " />
                         <hr />
                         <br />
-                        <p style="text-align: center; font-family:cursive; font-size: medium; "> This is who we are, what we stand for</p>
+                        <p style="text-align: center; font-family:cursive; font-size: medium; ">@ViewBag.Text</p>
                     </td>
                 </tr>
             </table>

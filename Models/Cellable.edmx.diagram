@@ -39,6 +39,7 @@
         <EntityTypeShape EntityType="CellableModel.VersionCapacity" Width="1.5" PointX="8.25" PointY="0.75" />
         <AssociationConnector Association="CellableModel.FK_VersionCapacity_PhoneVersion" />
         <AssociationConnector Association="CellableModel.FK_VersionCapacity_StorageCapacity" />
+        <EntityTypeShape EntityType="CellableModel.SystemSetting" Width="1.5" PointX="10.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -215,6 +215,9 @@
     <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>Cellable.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SystemSetting.cs">
+      <DependentUpon>Cellable.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\User.cs">
       <DependentUpon>Cellable.tt</DependentUpon>
     </Compile>

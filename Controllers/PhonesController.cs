@@ -39,6 +39,14 @@ namespace CellableMVC.Controllers
             phone.PromoCode = null;
             phone.PromoValue = null;
 
+            var title = db.SystemSettings.Find(15);
+            var text = db.SystemSettings.Find(21);
+            var footer = db.SystemSettings.Find(22);
+
+            ViewBag.Title = title.Value;
+            ViewBag.Text = text.Value;
+            ViewBag.Footer = footer.Value;
+
             var phones = db.Phones.ToList();
 
             return View(phones);
@@ -55,6 +63,14 @@ namespace CellableMVC.Controllers
                 Session["VersionId"] = versionId;
                 Session["VersionName"] = versionName;
             }
+
+            var title = db.SystemSettings.Find(43);
+            var text = db.SystemSettings.Find(16);
+            var footer = db.SystemSettings.Find(20);
+
+            ViewBag.Title = title.Value;
+            ViewBag.Text = text.Value;
+            ViewBag.Footer = footer.Value;
 
             IList<Carrier> carriers = db.Carriers.ToList();
 
@@ -77,12 +93,19 @@ namespace CellableMVC.Controllers
                 phoneVersions = db.PhoneVersions.Where(x => x.Version.Contains(searchString)).ToList();
             }
 
-
             // Set the Carrier Session Variable
             if (carrierId != null)
             {
                 Session["Carrier"] = carrierId;
             }
+
+            var title = db.SystemSettings.Find(25);
+            var text = db.SystemSettings.Find(23);
+            var footer = db.SystemSettings.Find(24);
+
+            ViewBag.Title = title.Value;
+            ViewBag.Text = text.Value;
+            ViewBag.Footer = footer.Value;
 
             return View(phoneVersions);
         }
@@ -126,21 +149,13 @@ namespace CellableMVC.Controllers
             ViewBag.Capacities = db.StorageCapacities.ToList();
             ViewBag.PhoneCapacities = db.VersionCapacities.Where(x => x.VersionId == phoneVersion.VersionId).ToList();
 
+            var title = db.SystemSettings.Find(26);
+            var text = db.SystemSettings.Find(44);
+            var footer = db.SystemSettings.Find(45);
 
-            //var context = new CellableEntities();
-            //using (context)
-            //{
-            //    var storage = (from vc in db.VersionCapacities.DefaultIfEmpty()
-            //                   join sc in db.StorageCapacities on vc.StorageCapacityId equals sc.StorageCapacityId into capacitiesGrp
-            //                   from sc in capacitiesGrp.DefaultIfEmpty()
-            //                   where vc.VersionId == phoneVersion.VersionId
-            //                   select new { vc.StorageCapacityId, sc.Description }).ToList();
-
-            //    ViewBag.Storage = storage;
-
-            //    LoggedInUser u = new LoggedInUser();
-            //    u.StorageCapacities = storage;
-            //}
+            ViewBag.Title = title.Value;
+            ViewBag.Text = text.Value;
+            ViewBag.Footer = footer.Value;
 
             return View(possibleDefects);
         }
@@ -188,6 +203,14 @@ namespace CellableMVC.Controllers
                 Session["Phone Value"] = baseCost;
             }
 
+            var title = db.SystemSettings.Find(27);
+            var text = db.SystemSettings.Find(28);
+            var footer = db.SystemSettings.Find(29);
+
+            ViewBag.Title = title.Value;
+            ViewBag.Text = text.Value;
+            ViewBag.Footer = footer.Value;
+
             return View(defects);
         }
 
@@ -216,6 +239,14 @@ namespace CellableMVC.Controllers
 
         public ActionResult SearchResults(string searchString)
         {
+            var title = db.SystemSettings.Find(46);
+            var text = db.SystemSettings.Find(47);
+            var footer = db.SystemSettings.Find(48);
+
+            ViewBag.Title = title.Value;
+            ViewBag.Text = text.Value;
+            ViewBag.Footer = footer.Value;
+
             IList<PhoneVersion> versions = db.PhoneVersions
                                             .ToList()
                                             .Where(x => x.Version.ToLower().Contains(searchString.ToLower())

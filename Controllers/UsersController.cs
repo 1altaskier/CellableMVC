@@ -110,6 +110,14 @@ namespace CellableMVC.Controllers
             ViewBag.PaymentTypes = new SelectList(db.PaymentTypes, "PaymentTypeId", "PaymentType1", "-- How You Get Paid --");
             ViewBag.State = new SelectList(db.States, "StateAbbrv", "StateName", "-- Select State --");
 
+            var title = db.SystemSettings.Find(30);
+            var text = db.SystemSettings.Find(31);
+            var footer = db.SystemSettings.Find(32);
+
+            ViewBag.Title = title.Value;
+            ViewBag.Text = text.Value;
+            ViewBag.Footer = footer.Value;
+
             return View();
         }
 
@@ -125,6 +133,14 @@ namespace CellableMVC.Controllers
             ViewBag.CapacityDesc = capacity.Description;
 
             User user = db.Users.Find(int.Parse(Session["LoggedInUserId"].ToString()));
+
+            var title = db.SystemSettings.Find(36);
+            var text = db.SystemSettings.Find(37);
+            var footer = db.SystemSettings.Find(38);
+
+            ViewBag.Title = title.Value;
+            ViewBag.Text = text.Value;
+            ViewBag.Footer = footer.Value;
 
             return View(user);
         }
@@ -165,31 +181,32 @@ namespace CellableMVC.Controllers
                 }
             }
 
+            // Validate Mailing Address
+            if (Request.Form["address"] != null)
+            {
+                MailController mail = new MailController();
+                if (!mail.ValidateAddress(Request.Form["address"], Request.Form["city"], Request.Form["state"]))
+                {
+                    return RedirectToAction("UpdateReturningUser", "Users", new { msg = "USPS Validation - Mailing Address Not Found" });
+                }
+            }
+
             try
             {
                 // Update User Information
                 var updateUser = new User()
                 {
                     UserId = int.Parse(user.UserId.ToString())
-                            ,
-                    Password = NewPassword
-                            ,
-                    FirstName = user.FirstName
-                            ,
-                    LastName = user.LastName
-                            ,
-                    Email = user.Email
-                            ,
-                    Address = user.Address
-                            ,
-                    Address2 = user.Address2
-                            ,
-                    City = user.City
-                            ,
-                    State = user.State
-                            ,
-                    Zip = user.Zip
-                };
+                            ,Password = NewPassword
+                            ,FirstName = user.FirstName
+                            ,LastName = user.LastName
+                            ,Email = user.Email
+                            ,Address = user.Address
+                            ,Address2 = user.Address2
+                            ,City = user.City
+                            ,State = user.State
+                            ,Zip = user.Zip
+                            ,LastLogin = DateTime.UtcNow};
 
                 using (var db = new CellableEntities())
                 {
@@ -206,6 +223,7 @@ namespace CellableMVC.Controllers
                     db.Entry(updateUser).Property(x => x.City).IsModified = true;
                     db.Entry(updateUser).Property(x => x.State).IsModified = true;
                     db.Entry(updateUser).Property(x => x.Zip).IsModified = true;
+                    db.Entry(updateUser).Property(x => x.LastLogin).IsModified = true;
                     db.Configuration.ValidateOnSaveEnabled = false;
                     db.SaveChanges();
                 }
@@ -221,7 +239,7 @@ namespace CellableMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register([Bind(Include = "UserId,UserName,Password,PaymentTypes,FirstName,LastName,Email,Address,Address2,City,State,Zip,PhoneNumber")] User user, string UserExists = null)
+        public ActionResult CreateUser(User user, string UserExists = null)
         {
             // Insert Additional Data into Model
             user.CreatedBy = "System";
@@ -231,7 +249,7 @@ namespace CellableMVC.Controllers
             user.ConfirmPassword = user.Password;
 
             // Validate Mailing Address
-            if(Request.Form["address"] != null)
+            if (Request.Form["address"] != null)
             {
                 MailController mail = new MailController();
                 if (!mail.ValidateAddress(Request.Form["address"], Request.Form["city"], Request.Form["state"]))
@@ -240,19 +258,32 @@ namespace CellableMVC.Controllers
                 }
             }
 
+            try
+            {
+                if (UserExists == null)
+                {
+                    // Save User Information
+                    db.Users.Add(user);
+                    db.SaveChanges();
+                    Session["LoggedInUserId"] = user.UserId;
+                }
+            }
+            catch(Exception ex)
+            {
+                return RedirectToAction("Register", new { msg = "Error Creating User - " + ex.Message });
+            }
 
+            return RedirectToAction("ReturningUser"); ;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register([Bind(Include = "UserId,UserName,Password,PaymentTypes,FirstName,LastName,Email,Address,Address2,City,State,Zip,PhoneNumber")] User user, string UserExists = null)
+        {
             using (var dbContextTransaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    if (UserExists == null)
-                    {
-                        // Save User Information
-                        db.Users.Add(user);
-                        db.SaveChanges();
-                        Session["LoggedInUserId"] = user.UserId;
-                    }
-
                     // Get Payment User Name & Payment Type
                     string paymentUserName = Request.Form["PaymentUserName"];
                     int paymentTypeId = int.Parse(Request.Form["PaymentTypes"].ToString());
@@ -411,6 +442,14 @@ namespace CellableMVC.Controllers
             }
 
             ViewBag.TrackingInfo = MailHelper.TrackingMessage;
+
+            var title = db.SystemSettings.Find(33);
+            var text = db.SystemSettings.Find(34);
+            var footer = db.SystemSettings.Find(35);
+
+            ViewBag.Title = title.Value;
+            ViewBag.Text = text.Value;
+            ViewBag.Footer = footer.Value;
 
             return View(orderDetailsVMlist);
         }
