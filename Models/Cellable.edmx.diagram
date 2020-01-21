@@ -41,6 +41,7 @@
         <AssociationConnector Association="CellableModel.FK_VersionCapacity_StorageCapacity" />
         <EntityTypeShape EntityType="CellableModel.SystemSetting" Width="1.5" PointX="10.375" PointY="8.75" />
         <EntityTypeShape EntityType="CellableModel.SlideShow" Width="1.5" PointX="7.375" PointY="11.75" />
+        <EntityTypeShape EntityType="CellableModel.Testimonial" Width="1.5" PointX="9.375" PointY="11.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

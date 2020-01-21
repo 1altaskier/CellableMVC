@@ -139,6 +139,16 @@
     <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="Value" Type="nvarchar" MaxLength="2000" Nullable="false" />
   </EntityType>
+  <EntityType Name="Testimonials">
+    <Key>
+      <PropertyRef Name="TestimonialId" />
+    </Key>
+    <Property Name="TestimonialId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Text" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="Rating" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+  </EntityType>
   <EntityType Name="User">
     <Key>
       <PropertyRef Name="UserId" />
@@ -399,6 +409,7 @@
     <EntitySet Name="StorageCapacity" EntityType="Self.StorageCapacity" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SystemSettings" EntityType="Self.SystemSettings" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Testimonials" EntityType="Self.Testimonials" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserAnswers" EntityType="Self.UserAnswers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserPhone" EntityType="Self.UserPhone" Schema="dbo" store:Type="Tables" />

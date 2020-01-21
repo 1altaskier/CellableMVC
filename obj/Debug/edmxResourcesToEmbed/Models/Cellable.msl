@@ -209,5 +209,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Testimonials">
+      <EntityTypeMapping TypeName="CellableModel.Testimonial">
+        <MappingFragment StoreEntitySet="Testimonials">
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Rating" ColumnName="Rating" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="TestimonialId" ColumnName="TestimonialId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
