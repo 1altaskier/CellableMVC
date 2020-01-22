@@ -3,13 +3,27 @@
         <td>
             <h4>@ViewBag.Title</h4>
             <hr />
+            @ViewBag.Text
             <table style="width:100%">
                 <tr>
                     <td>
+                        <table style="width:60%; margin-left:auto; margin-right:auto;">
+                            <tr><td style="height:20px;"></td></tr>
+                            <tr>
+                                <td>
+                                    @ViewBag.Body
+                                </td>
+                            </tr>
+                            <tr><td style="height:20px;"></td></tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:100%; text-align:center;">
                         <img src="~/Pictures/@ViewBag.Image" alt="mountains" height: 100px; style=" height: 400px; width: 1200px; margin-top: 5px; " />
                         <hr />
                         <br />
-                        <p style="text-align: center; font-family:cursive; font-size: medium; ">@ViewBag.Text</p>
+                        <p>@ViewBag.Footer</p>
                     </td>
                 </tr>
             </table>

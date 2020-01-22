@@ -30,11 +30,13 @@ namespace CellableMVC.Controllers
         {
             var title = db.SystemSettings.Find(39);
             var text = db.SystemSettings.Find(40);
+            var body = db.SystemSettings.Find(49);
             var footer = db.SystemSettings.Find(41);
             var image = db.SystemSettings.Find(42);
 
             ViewBag.Title = title.Value;
             ViewBag.Text = text.Value;
+            ViewBag.Body = body.Value;
             ViewBag.Footer = footer.Value;
             ViewBag.Image = image.Value;
 

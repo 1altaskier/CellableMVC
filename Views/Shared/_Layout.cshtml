@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>Cellable - @ViewBag.Title</title>
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -51,7 +51,7 @@
             <td colspan="4" style="background-color:black; height:80px;">
                 <table style="width:100%">
                     <tr style="vertical-align:middle;">
-                        <td style="width:20%; text-align:center" class="Header"><h2>Cellable</h2></td>
+                        <td style="width:20%; text-align:center;" class="Header"><h2>@Html.ActionLink("Cellable", "Index", "Home", new { }, new { style = "color:lawngreen;" })</h2></td>
                         <td style="text-align:left; vertical-align:middle; width:50%">
                             <div style="display: inline-block; width:80px">@Html.ActionLink("Home", "Index", "Home", new { }, new { @class = "NavLink" })</div>
                             <div style="display: inline-block; width:80px">@Html.ActionLink("About", "About", "Home", new { }, new { @class = "NavLink" })</div>
