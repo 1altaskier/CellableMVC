@@ -1,0 +1,111 @@
+﻿@model CellableMVC.Models.Testimonial
+
+@{
+    Layout = null;
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+@Styles.Render("~/Content/css")
+
+<style>
+    .checked {
+        color: orange;
+    }
+
+    .PromoCode:hover {
+        box-shadow: 0 2px 3px 0 lawngreen, 0 2px 3px 0 rgba(0,0,0,0.19);
+    }
+</style>
+
+<script type="text/javascript">
+    function CheckStar(control) {
+        var one = document.getElementById("1");
+        var two = document.getElementById("2");
+        var three = document.getElementById("3");
+        var four = document.getElementById("4");
+        var five = document.getElementById("5");
+        var stars = document.getElementById("Stars");
+
+        switch (control.id) {
+            case "1":
+                one.innerHTML = "<span class='fa fa-star checked'></span>";
+                two.innerHTML = "<span class='fa fa-star'></span>";
+                three.innerHTML = "<span class='fa fa-star'></span>";
+                four.innerHTML = "<span class='fa fa-star'></span>";
+                five.innerHTML = "<span class='fa fa-star'></span>";
+                stars.value = "1";
+                break;
+            case "2":
+                one.innerHTML = "<span class='fa fa-star checked'></span>";
+                two.innerHTML = "<span class='fa fa-star checked'></span>";
+                three.innerHTML = "<span class='fa fa-star'></span>";
+                four.innerHTML = "<span class='fa fa-star'></span>";
+                five.innerHTML = "<span class='fa fa-star'></span>";
+                stars.value = "2";
+                break;
+            case "3":
+                one.innerHTML = "<span class='fa fa-star checked'></span>";
+                two.innerHTML = "<span class='fa fa-star checked'></span>";
+                three.innerHTML = "<span class='fa fa-star checked'></span>";
+                four.innerHTML = "<span class='fa fa-star'></span>";
+                five.innerHTML = "<span class='fa fa-star'></span>";
+                stars.value = "3";
+                break;
+            case "4":
+                one.innerHTML = "<span class='fa fa-star checked'></span>";
+                two.innerHTML = "<span class='fa fa-star checked'></span>";
+                three.innerHTML = "<span class='fa fa-star checked'></span>";
+                four.innerHTML = "<span class='fa fa-star checked'></span>";
+                five.innerHTML = "<span class='fa fa-star'></span>";
+                stars.value = "4";
+                break;
+            case "5":
+                one.innerHTML = "<span class='fa fa-star checked'></span>";
+                two.innerHTML = "<span class='fa fa-star checked'></span>";
+                three.innerHTML = "<span class='fa fa-star checked'></span>";
+                four.innerHTML = "<span class='fa fa-star checked'></span>";
+                five.innerHTML = "<span class='fa fa-star checked'></span>";
+                stars.value = "5";
+                break;
+        }
+    }
+
+    function CloseWindow() {
+
+    }
+</script>
+
+@using (Html.BeginForm("SaveTestimonial", "Users"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>How did we do?</h4>
+        <hr />
+        <p>
+            Take a second to rate our service and leave a comment
+        </p>
+        <div id="1" name="1" style="display:inline-block;" onclick="CheckStar(this)"><span class="fa fa-star"></span></div>
+        <div id="2" name="2" style="display:inline-block;" onclick="CheckStar(this)"><span class="fa fa-star"></span></div>
+        <div id="3" name="3" style="display:inline-block;" onclick="CheckStar(this)"><span class="fa fa-star"></span></div>
+        <div id="4" name="4" style="display:inline-block;" onclick="CheckStar(this)"><span class="fa fa-star"></span></div>
+        <div id="5" name="5" style="display:inline-block;" onclick="CheckStar(this)"><span class="fa fa-star"></span></div>
+        @Html.Hidden("Stars")
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <b>Comment</b>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit" class="PromoCode" />
+                <input type="button" value="Cancel" class="PromoCode" />
+            </div>
+        </div>
+    </div>
+}

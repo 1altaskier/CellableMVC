@@ -4,7 +4,82 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+    .checked {
+        color: orange;
+    }
+
+    .PromoCode:hover {
+        box-shadow: 0 2px 3px 0 lawngreen, 0 2px 3px 0 rgba(0,0,0,0.19);
+    }
+</style>
+
+<script type="text/javascript">
+    function CheckStar(control) {
+        var one = document.getElementById("1");
+        var two = document.getElementById("2");
+        var three = document.getElementById("3");
+        var four = document.getElementById("4");
+        var five = document.getElementById("5");
+        var stars = document.getElementById("Stars");
+
+        switch (control.id) {
+            case "1":
+                one.innerHTML = "<span class='fa fa-star checked'></span>";
+                two.innerHTML = "<span class='fa fa-star'></span>";
+                three.innerHTML = "<span class='fa fa-star'></span>";
+                four.innerHTML = "<span class='fa fa-star'></span>";
+                five.innerHTML = "<span class='fa fa-star'></span>";
+                stars.value = "1";
+                break;
+            case "2":
+                one.innerHTML = "<span class='fa fa-star checked'></span>";
+                two.innerHTML = "<span class='fa fa-star checked'></span>";
+                three.innerHTML = "<span class='fa fa-star'></span>";
+                four.innerHTML = "<span class='fa fa-star'></span>";
+                five.innerHTML = "<span class='fa fa-star'></span>";
+                stars.value = "2";
+                break;
+            case "3":
+                one.innerHTML = "<span class='fa fa-star checked'></span>";
+                two.innerHTML = "<span class='fa fa-star checked'></span>";
+                three.innerHTML = "<span class='fa fa-star checked'></span>";
+                four.innerHTML = "<span class='fa fa-star'></span>";
+                five.innerHTML = "<span class='fa fa-star'></span>";
+                stars.value = "3";
+                break;
+            case "4":
+                one.innerHTML = "<span class='fa fa-star checked'></span>";
+                two.innerHTML = "<span class='fa fa-star checked'></span>";
+                three.innerHTML = "<span class='fa fa-star checked'></span>";
+                four.innerHTML = "<span class='fa fa-star checked'></span>";
+                five.innerHTML = "<span class='fa fa-star'></span>";
+                stars.value = "4";
+                break;
+            case "5":
+                one.innerHTML = "<span class='fa fa-star checked'></span>";
+                two.innerHTML = "<span class='fa fa-star checked'></span>";
+                three.innerHTML = "<span class='fa fa-star checked'></span>";
+                four.innerHTML = "<span class='fa fa-star checked'></span>";
+                five.innerHTML = "<span class='fa fa-star checked'></span>";
+                stars.value = "5";
+                break;
+        }
+    }
+
+    $(window).on('load', function () {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const newOrder = urlParams.has('NewOrder')
+
+        if (newOrder) {
+            $('#myModal').modal('show');
+        }
+    });
+
     function popupWindow(trackingNumber, win, w, h) {
         const y = win.top.outerHeight / 2 + win.top.screenY - (h / 2);
         const x = win.top.outerWidth / 2 + win.top.screenX - (w / 2);
@@ -17,6 +92,35 @@
 <p>
     @ViewBag.Text
 </p>
+
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">How did we do?</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Please take a moment to rate our service and leave a comment.</p>
+                @using (Html.BeginForm("SaveTestimonial", "Users"))
+                {
+                    <div class="form-group">
+                        <div id="1" name="1" style="display:inline-block;" onclick="CheckStar(this)"><span class="fa fa-star"></span></div>
+                        <div id="2" name="2" style="display:inline-block;" onclick="CheckStar(this)"><span class="fa fa-star"></span></div>
+                        <div id="3" name="3" style="display:inline-block;" onclick="CheckStar(this)"><span class="fa fa-star"></span></div>
+                        <div id="4" name="4" style="display:inline-block;" onclick="CheckStar(this)"><span class="fa fa-star"></span></div>
+                        <div id="5" name="5" style="display:inline-block;" onclick="CheckStar(this)"><span class="fa fa-star"></span></div>
+                        @Html.Hidden("Stars")
+                    </div>
+                    <div class="form-group">
+                        <input type="Text" id="Comment" name="Comment" class="form-control" placeholder="Comment">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
 
 <table class="table">
     <tr style="background-color:black; color:lawngreen">

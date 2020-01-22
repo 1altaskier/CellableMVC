@@ -10,6 +10,7 @@ using CellableMVC.Helpers;
 using System.Data.SqlClient;
 using System.Data;
 using System.Data.Entity;
+using CellableMVC.Controllers;
 
 namespace CellableMVC.Controllers
 {
@@ -221,16 +222,27 @@ namespace CellableMVC.Controllers
                 var updateUser = new User()
                 {
                     UserId = int.Parse(user.UserId.ToString())
-                            ,Password = NewPassword
-                            ,FirstName = user.FirstName
-                            ,LastName = user.LastName
-                            ,Email = user.Email
-                            ,Address = user.Address
-                            ,Address2 = user.Address2
-                            ,City = user.City
-                            ,State = user.State
-                            ,Zip = user.Zip
-                            ,LastLogin = DateTime.UtcNow};
+                            ,
+                    Password = NewPassword
+                            ,
+                    FirstName = user.FirstName
+                            ,
+                    LastName = user.LastName
+                            ,
+                    Email = user.Email
+                            ,
+                    Address = user.Address
+                            ,
+                    Address2 = user.Address2
+                            ,
+                    City = user.City
+                            ,
+                    State = user.State
+                            ,
+                    Zip = user.Zip
+                            ,
+                    LastLogin = DateTime.UtcNow
+                };
 
                 using (var db = new CellableEntities())
                 {
@@ -292,7 +304,7 @@ namespace CellableMVC.Controllers
                     Session["LoggedInUserId"] = user.UserId;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return RedirectToAction("Register", new { msg = "Error Creating User - " + ex.Message });
             }
@@ -392,7 +404,7 @@ namespace CellableMVC.Controllers
 
                     dbContextTransaction.Commit();
 
-                    return RedirectToAction("TrackOrders", "Users");
+                    return RedirectToAction("TrackOrders", "Users", new { NewOrder = "true" });
                 }
                 catch (Exception ex)
                 {
@@ -418,17 +430,17 @@ namespace CellableMVC.Controllers
             // Refer to DB/GetOrderDetails.sql
             var results = (from o in db.Orders.DefaultIfEmpty()
                            join up in db.UserPhones on o.UserId equals up.UserId into userPhoneGrp
-                                from up in userPhoneGrp.DefaultIfEmpty()
+                           from up in userPhoneGrp.DefaultIfEmpty()
                            join pv in db.PhoneVersions on up.VersionId equals pv.VersionId into phoneVersionsGrp
-                                from pv in phoneVersionsGrp.DefaultIfEmpty()
+                           from pv in phoneVersionsGrp.DefaultIfEmpty()
                            join os in db.OrderStatus on o.OrderStatusId equals os.OrderStatusId into orderStatusGrp
-                                from os in orderStatusGrp.DefaultIfEmpty()
+                           from os in orderStatusGrp.DefaultIfEmpty()
                            join pt in db.PaymentTypes on o.PaymentTypeId equals pt.PaymentTypeId into paymentTypesGrp
-                                from pt in paymentTypesGrp.DefaultIfEmpty()
+                           from pt in paymentTypesGrp.DefaultIfEmpty()
                            join p in db.Promos on o.PromoId equals p.PromoId into promosGrp
-                                from p in promosGrp.DefaultIfEmpty()
+                           from p in promosGrp.DefaultIfEmpty()
                            join ph in db.Phones on pv.PhoneId equals ph.PhoneId into phonesGrp
-                                from ph in phonesGrp.DefaultIfEmpty()
+                           from ph in phonesGrp.DefaultIfEmpty()
                            where o.UserId == userId && up.UserPhoneId == o.UserPhoneId
 
                            select new vmOrderDetails()
@@ -478,6 +490,67 @@ namespace CellableMVC.Controllers
             return View(orderDetailsVMlist);
         }
 
+        public ActionResult Testimonial()
+        {
+            return View();
+        }
+
+        public ActionResult SaveTestimonial()
+        {
+            if (Request["Stars"] != "" || Request["Stars"] != null)
+            {
+                Testimonial testimonial = new Testimonial();
+                testimonial.Rating = int.Parse(Request["Stars"].ToString());
+                testimonial.Text = Request["Comment"];
+                testimonial.CreateDate = DateTime.Now;
+                testimonial.UserId = int.Parse(Session["LoggedInUserId"].ToString());
+                db.Testimonials.Add(testimonial);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("TrackOrders");
+        }
+
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        public ActionResult ResetPassword(string Email, string NewPassword)
+        {
+            // Validate User Email
+            var userRec = db.Users.SingleOrDefault(x => x.Email == Email);
+
+            if (userRec != null)
+            {
+                // Find User
+                User user = db.Users.Find(userRec.UserId);
+
+                try
+                {
+                    if (!String.IsNullOrEmpty(NewPassword))
+                    {
+                        // Update Password
+                        user.Password = NewPassword;
+                        db.Entry(user).Property(x => x.Password).IsModified = true;
+                        db.Configuration.ValidateOnSaveEnabled = false;
+                        db.SaveChanges();
+
+                        // Delete Remember Me Cookie
+                        Response.Cookies["UserCookie"].Expires = DateTime.Now.AddDays(-1);
+
+                        // Redirect to Login Page
+                        return RedirectToAction("Login", "Users");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return RedirectToAction("ForgotPassword", new { email = Email, msg = "Error encountered while updating user password:<br />" + ex.Message });
+                }
+            }
+
+            return RedirectToAction("ForgotPassword", new { email = Email, msg = "User Not Found" });
+        }
 
         public ActionResult Login()
         {

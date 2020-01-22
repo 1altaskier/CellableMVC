@@ -64,7 +64,6 @@ C:\Projects\GIT Repositories\CellableMVC\bin\System.Web.WebPages.Razor.xml
 C:\Projects\GIT Repositories\CellableMVC\bin\Newtonsoft.Json.xml
 C:\Projects\GIT Repositories\CellableMVC\bin\Antlr3.Runtime.pdb
 C:\Projects\GIT Repositories\CellableMVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Projects\GIT Repositories\CellableMVC\obj\Debug\CellableMVC.csprojAssemblyReference.cache
 C:\Projects\GIT Repositories\CellableMVC\obj\Debug\CellableMVC.csproj.CopyComplete
 C:\Projects\GIT Repositories\CellableMVC\obj\Debug\CellableMVC.dll
 C:\Projects\GIT Repositories\CellableMVC\obj\Debug\CellableMVC.pdb
@@ -86,3 +85,4 @@ C:\Projects\GIT Repositories\CellableMVC\bin\System.Web.Http.WebHost.dll
 C:\Projects\GIT Repositories\CellableMVC\bin\System.Net.Http.Formatting.xml
 C:\Projects\GIT Repositories\CellableMVC\bin\System.Web.Http.xml
 C:\Projects\GIT Repositories\CellableMVC\bin\System.Web.Http.WebHost.xml
+C:\Projects\GIT Repositories\CellableMVC\obj\Debug\CellableMVC.csprojAssemblyReference.cache

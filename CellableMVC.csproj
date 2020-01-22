@@ -483,6 +483,8 @@
     <Content Include="Views\Users\UpdateReturningUser.cshtml" />
     <Content Include="Views\Users\TrackOrders.cshtml" />
     <Content Include="Views\Shared\_USPSTrackingMessage.cshtml" />
+    <Content Include="Views\Users\Testimonial.cshtml" />
+    <Content Include="Views\Users\ForgotPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
