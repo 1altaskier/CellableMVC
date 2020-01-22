@@ -56,11 +56,12 @@
                 </div>
                 <div class="modal-body">
                     <p>Please enter your email address</p>
-                    @using (Html.BeginForm("SendEmail", "Email"))
+                    @using (Html.BeginForm("Login", "Users"))
                     {
                         @Html.Hidden("type", "Password")
+                        @Html.Hidden("resetPassword", "true")
                         <div class="form-group">
-                            <input type="Text" id="toEmail" name="toEmail" class="form-control" placeholder="Email">
+                            <input type="Text" id="Email" name="Email" class="form-control" placeholder="Email">
                             <br />
                             <input type="Text" id="ConfirmEmail" name="ConfirmEmail" class="form-control" placeholder="Confirm Email">
                         </div>
@@ -70,7 +71,7 @@
             </div>
         </div>
     </div>
-
+    
     @using (Html.BeginForm("UserLogin", "Authentication"))
     {
         @Html.AntiForgeryToken()
@@ -80,6 +81,12 @@
                     <h4>User Login</h4>
                     <hr />
                     <table style="width:100%">
+                        <tr>
+                            <td style="margin-left:250px; text-align:center;" class="text-danger" colspan="2">
+                                <div style="margin-left:-120px;">@ViewBag.Message
+                                @Request.Params["msg"]</div>
+                            </td>
+                        </tr>
                         <tr>
                             <td style="width:10%; text-align:right; padding:10px;"> <i class="text-danger">*</i>&nbsp;User Name:</td>
                             <td style="width:20%; padding:10px;">
@@ -114,8 +121,6 @@
                             <td style="width:20%; padding:10px;">
                                 <input type="submit" value="Login" class="button" onclick="return valid_form()" />
                                 <input type="reset" value="Reset" class="button" />
-                                <br />
-                                <div class="text-danger">@Request.Params["msg"]</div>
                             </td>
                         </tr>
                     </table>

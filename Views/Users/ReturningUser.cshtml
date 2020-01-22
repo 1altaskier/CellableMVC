@@ -120,7 +120,8 @@
                         @using (Html.BeginForm("Register", "Users", new { user = User }))
                         {
                             @Html.AntiForgeryToken()
-                            <input type="hidden" id="UserExists" name="UserExists" value="true" />
+                            @Html.Hidden("userEmail", Model.Email)
+                            @Html.Hidden("UserExists", true)
                             <table>
                                 <tr>
                                     <td style="width:100%; text-align:left; padding:10px;">

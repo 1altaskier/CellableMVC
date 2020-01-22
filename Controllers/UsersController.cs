@@ -314,7 +314,7 @@ namespace CellableMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register([Bind(Include = "UserId,UserName,Password,PaymentTypes,FirstName,LastName,Email,Address,Address2,City,State,Zip,PhoneNumber")] User user, string UserExists = null)
+        public ActionResult Register([Bind(Include = "UserId,UserName,Password,PaymentTypes,FirstName,LastName,Email,Address,Address2,City,State,Zip,PhoneNumber")] User user, string UserExists = null, string userEmail = null)
         {
             using (var dbContextTransaction = db.Database.BeginTransaction())
             {
@@ -400,7 +400,7 @@ namespace CellableMVC.Controllers
 
                     // Send Confirmation Email(s)
                     EmailController email = new EmailController();
-                    email.ConfirmationEmail("REPLACE");
+                    email.SendEmail("Confirm", userEmail);
 
                     dbContextTransaction.Commit();
 
@@ -540,7 +540,7 @@ namespace CellableMVC.Controllers
                         Response.Cookies["UserCookie"].Expires = DateTime.Now.AddDays(-1);
 
                         // Redirect to Login Page
-                        return RedirectToAction("Login", "Users");
+                        return RedirectToAction("Login", "Users", new { resetSuccess = true });
                     }
                 }
                 catch (Exception ex)
@@ -552,8 +552,21 @@ namespace CellableMVC.Controllers
             return RedirectToAction("ForgotPassword", new { email = Email, msg = "User Not Found" });
         }
 
-        public ActionResult Login()
+        public ActionResult Login(bool resetPassword = false, bool resetSuccess = false)
         {
+            if (resetPassword)
+            {
+                EmailController email = new EmailController();
+                email.SendEmail("Password", Request["Email"]);
+
+                ViewBag.Message = "A password reset email has been sent to your inbox.";
+            }
+
+            if (resetSuccess)
+            {
+                ViewBag.Message = "Your password has been successfully rest.";
+            }
+
             HttpCookie userCookie = Request.Cookies["UserCookie"];
             if (userCookie != null)
             {

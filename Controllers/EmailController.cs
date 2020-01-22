@@ -196,7 +196,7 @@ namespace CellableMVC.Controllers
 
             // Get Web Site's Base URL
             string baseUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            baseUrl.Replace("/Email/SendEmail", "/User/ForgotPassword");
+            string url = baseUrl.Replace("/Users/Login", "/Users/ForgotPassword");
 
             HTML = "<html>" +
                         "<head>" +
@@ -210,7 +210,7 @@ namespace CellableMVC.Controllers
                                     "<p>" +
                                     "Click this link to reset your password using our secure server." +
                                     "<p>" +
-                                    "<a href='" + baseUrl + "?email=" + userEmail + "'> Reset Password</a>" +
+                                    "<a href='" + url + "?email=" + userEmail + "'> Reset Password</a>" +
                                     "<p>" +
                                     "If clicking on the link doesn't work, copy and paste it into the address window of your browser or retype it there." +
                                     "<p>" +
