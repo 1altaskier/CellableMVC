@@ -9,9 +9,9 @@
 
 namespace CellableMVC.Models
 {
-    using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class OrderStatu
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,7 +20,10 @@ namespace CellableMVC.Models
             this.Orders = new HashSet<Order>();
         }
     
+        [Display(Name = "Order Status ID")]
         public int OrderStatusId { get; set; }
+
+        [Display(Name = "Status Type")]
         public string StatusType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

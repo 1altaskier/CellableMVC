@@ -9,9 +9,9 @@
 
 namespace CellableMVC.Models
 {
-    using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Carrier
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,9 +19,13 @@ namespace CellableMVC.Models
         {
             this.UserPhones = new HashSet<UserPhone>();
         }
-    
+
+        [Display(Name = "Carrier ID")]
         public int CarrierId { get; set; }
+
+        [Display(Name = "Carrier Name")]
         public string CarrierName { get; set; }
+
         public string ImageName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

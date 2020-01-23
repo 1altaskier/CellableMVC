@@ -11,7 +11,8 @@ namespace CellableMVC.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class PhoneVersion
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,15 +22,27 @@ namespace CellableMVC.Models
             this.UserPhones = new HashSet<UserPhone>();
             this.VersionCapacities = new HashSet<VersionCapacity>();
         }
-    
+
+        [Display(Name = "Version ID")]
         public int VersionId { get; set; }
+
         public string Version { get; set; }
+
+        [Display(Name = "Base Cost")]
         public Nullable<decimal> BaseCost { get; set; }
+
+        [Display(Name = "Image")]
         public string ImageName { get; set; }
+
+        [Display(Name = "Phone ID")]
         public Nullable<int> PhoneId { get; set; }
+
         public Nullable<int> StorageCapacityId { get; set; }
+
         public Nullable<int> Views { get; set; }
+
         public Nullable<int> Purchases { get; set; }
+
         public Nullable<bool> Active { get; set; }
     
         public virtual Phone Phone { get; set; }

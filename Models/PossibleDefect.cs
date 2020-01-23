@@ -11,7 +11,8 @@ namespace CellableMVC.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class PossibleDefect
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,12 +20,20 @@ namespace CellableMVC.Models
         {
             this.UserAnswers = new HashSet<UserAnswer>();
         }
-    
+
+        [Display(Name = "Possible Defect ID")]
         public int PossibleDefectId { get; set; }
+
+        [Display(Name = "Defect Name")]
         public string DefectName { get; set; }
+
+        [Display(Name = "Defect Cost")]
         public decimal DefectCost { get; set; }
+
         public int VersionId { get; set; }
+
         public Nullable<int> DefectGroupId { get; set; }
+
         public string GroupImage { get; set; }
     
         public virtual PhoneVersion PhoneVersion { get; set; }

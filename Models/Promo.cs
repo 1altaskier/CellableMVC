@@ -11,7 +11,8 @@ namespace CellableMVC.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Promo
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,12 +20,22 @@ namespace CellableMVC.Models
         {
             this.Orders = new HashSet<Order>();
         }
-    
+
+        [Display(Name = "Promo ID")]
         public int PromoId { get; set; }
+
+        [Display(Name = "Promo Code")]
         public string PromoCode { get; set; }
+
+        [Display(Name = "Promo Name")]
         public string PromoName { get; set; }
+
+        [Display(Name = "Start Date")]
         public System.DateTime StartDate { get; set; }
+
+        [Display(Name = "End Date")]
         public System.DateTime EndDate { get; set; }
+
         public decimal Discount { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

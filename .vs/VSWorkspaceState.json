@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Controllers",
+    "\\Helpers",
+    "\\Models",
+    "\\Temp",
+    "\\Views",
+    "\\Views\\Home",
+    "\\Views\\Phones",
+    "\\Views\\Shared",
+    "\\Views\\Users"
+  ],
+  "SelectedNode": "\\Models\\PhoneVersion.cs",
+  "PreviewInSolutionExplorer": false
+}

@@ -10,18 +10,35 @@
 namespace CellableMVC.Models
 {
     using System;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class GetOrderDetails_Result
     {
+        [Display(Name = "Order ID")]
         public int OrderID { get; set; }
+
         public decimal Amount { get; set; }
+
         public string Phone { get; set; }
+
+        [Display(Name = "Status Type")]
         public string StatusType { get; set; }
+
+        [Display(Name = "Promo Code")]
         public string PromoCode { get; set; }
+
+        [Display(Name = "Promo Name")]
         public string PromoName { get; set; }
+
         public Nullable<decimal> Discount { get; set; }
+
+        [Display(Name = "Payment Type")]
         public string PaymentType { get; set; }
+
+        [Display(Name = "Payment User Name")]
         public string PaymentUserName { get; set; }
+
+        [Display(Name = "Create Date")]
         public System.DateTime CreateDate { get; set; }
     }
 }

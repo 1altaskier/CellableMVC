@@ -15,6 +15,7 @@ namespace CellableMVC.Models
             this.UserPhones = new HashSet<UserPhone>();
         }
 
+        [Display(Name = "User ID")]
         public int UserId { get; set; }
 
         [Required(ErrorMessage = "User Name is required")]
@@ -31,7 +32,7 @@ namespace CellableMVC.Models
         [StringLength(255, ErrorMessage = "Password must be at least 8 characters", MinimumLength = 8)]
         [DataType(DataType.Password)]
         [NotMapped] // Does not effect database
-        [System.ComponentModel.DataAnnotations.CompareAttribute("Password", ErrorMessage = "Passwords do not match")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Passwords do not match")]
         public string ConfirmPassword { get; set; }
 
         public int PermissionId { get; set; }
