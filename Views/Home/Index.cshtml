@@ -4,6 +4,46 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+        .slider-frame {
+            overflow: hidden;
+            height: 400px;
+            width: 1200px;
+            margin-left: 200px;
+            margin-top: 20px;
+        }
+        /*--------------------------------------------SLIDE ANIMATION------------------------------------------------------------------------------------------*/
+        @@-webkit-keyframes slide-animation{
+            0% {left:0px;}
+            10% {left:0px;}
+            20% {left:1200px;}
+            30% {left:1200px;}
+            40% {left:2400px;}
+            50% {left:2400px;}
+            60% {left:1200px;}
+            70% {left:1200px;}
+            80% {left: 0px;}
+            90% {left: 0px;}
+            100% {left: 0px;}
+        }
+        .slider-images {
+            width: 3600px;
+            height: 400px;
+            position: relative;
+            margin: 0 0 0 -2400px;
+            -webkit-animation-name: slide-animation;
+            -webkit-animation-duration: 33s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-animation-play-state: running;
+        }
+        .img-container {
+            height: 400px;
+            width: 1200px;
+            position: relative;
+            float: left;
+        }
+</style>
+
 <div style="height:50px"></div>
 <table style="width:100%;">
     <tr>
@@ -24,7 +64,19 @@
     </tr>
     <tr>
         <td style="width:100%; text-align:center" colspan="2">
-            <a href="/Phones/Phones/"><img src="~/Pictures/@ViewBag.Slide1 "></a>
+            <div class="slider-frame">
+                <div class="slider-images">
+                    <div class="img-container">
+                        <img src="~/Pictures/android-live-wallpaper-featured-800x400.jpg" />
+                    </div>
+                    <div class="img-container">
+                        <img src="~/Pictures/CellphoneLouvre.png" />
+                    </div>
+                    <div class="img-container">
+                        <img src="~/Pictures/cellback.jpg" />
+                    </div>
+                </div>
+            </div>
         </td>
     </tr>
     <tr><td style="height:50px"></td></tr>
