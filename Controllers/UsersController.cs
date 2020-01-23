@@ -398,11 +398,11 @@ namespace CellableMVC.Controllers
                     db.Entry(phoneVersion).State = EntityState.Modified;
                     db.SaveChanges();
 
+                    dbContextTransaction.Commit();
+
                     // Send Confirmation Email(s)
                     EmailController email = new EmailController();
-                    email.SendEmail("Confirm", userEmail);
-
-                    dbContextTransaction.Commit();
+                    email.SendEmail(orderId, "Confirm", userEmail);
 
                     return RedirectToAction("TrackOrders", "Users", new { NewOrder = "true" });
                 }
@@ -557,7 +557,7 @@ namespace CellableMVC.Controllers
             if (resetPassword)
             {
                 EmailController email = new EmailController();
-                email.SendEmail("Password", Request["Email"]);
+                email.SendEmail(null, "Password", Request["Email"]);
 
                 ViewBag.Message = "A password reset email has been sent to your inbox.";
             }

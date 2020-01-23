@@ -1,5 +1,8 @@
-﻿using System;
+﻿using CellableMVC.Helpers;
+using CellableMVC.Models;
+using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Web.Configuration;
@@ -15,10 +18,13 @@ namespace CellableMVC.Controllers
         int SMTPPort = int.Parse(System.Configuration.ConfigurationManager.AppSettings["SMTPPort"]);
         string SMTPUserName = System.Configuration.ConfigurationManager.AppSettings["SMTPUserName"];
         string SMTPPassword = System.Configuration.ConfigurationManager.AppSettings["SMTPPassword"];
-
+        string CellableAddress = System.Configuration.ConfigurationManager.AppSettings["PostalAddress"];
         private string confirmationEmail = WebConfigurationManager.AppSettings["confirmationEmail"];
 
-        public void SendEmail(string type, string toEmail)
+        private CellableEntities db = new CellableEntities();
+        private LoggedInUser loggedInUser = new LoggedInUser();
+
+        public void SendEmail(int? orderId, string type, string toEmail)
         {
             string HTMLBody = "";
             string subject = "";
@@ -28,7 +34,7 @@ namespace CellableMVC.Controllers
                 switch (type)
                 {
                     case "Confirm":
-                        HTMLBody = BuildHTML();
+                        HTMLBody = BuildHTML(orderId);
                         subject = "Cellable Confirmation";
                         break;
                     case "Password":
@@ -59,133 +65,198 @@ namespace CellableMVC.Controllers
                 // Send Confirmation Email
                 client.Send(mail);
             }
-            catch(Exception ex)
-            {
-                ViewBag.Message = "Error Encountered: " + ex.Message + "<br />" + ex.InnerException;
-            }
-        }
-
-        public void ConfirmationEmail(string EmailAddress)
-        {
-            try
-            {
-                EmailAddress = "cellablewebdev@gmail.com";
-
-                string HTMLBody = BuildHTML();
-
-                // Create the Mail Message
-                MailMessage mail = new MailMessage(FromEmailAddress, EmailAddress, "Cellable Confirmation ", HTMLBody);
-                // Bcc
-                mail.Bcc.Add(confirmationEmail);
-                // Add Label as Attachment
-                mail.Attachments.Add(new Attachment(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Pictures/SampleMailingLabel.png")));
-                mail.IsBodyHtml = true;
-
-                var client = new SmtpClient(SMTPHost, SMTPPort)
-                {
-                    Credentials = new NetworkCredential(SMTPUserName, SMTPPassword),
-                    EnableSsl = true
-                };
-
-                // Send Confirmation Email
-                client.Send(mail);
-            }
             catch (Exception ex)
             {
                 ViewBag.Message = "Error Encountered: " + ex.Message + "<br />" + ex.InnerException;
             }
         }
 
-        public void ResetPassword(string Email)
+        protected string BuildHTML(int? orderId)
         {
-            try
+            string firstName = "";
+            string lastName = "";
+            string email = "";
+            string oId = "";
+            string amount = "";
+            string paymentType = "";
+            string paymentUserName = "";
+            string phoneVersion = "";
+
+            var results = (from o in db.Orders.DefaultIfEmpty()
+                           join up in db.UserPhones on o.UserId equals up.UserId into userPhoneGrp
+                           from up in userPhoneGrp.DefaultIfEmpty()
+                           join pv in db.PhoneVersions on up.VersionId equals pv.VersionId into phoneVersionsGrp
+                           from pv in phoneVersionsGrp.DefaultIfEmpty()
+                           join os in db.OrderStatus on o.OrderStatusId equals os.OrderStatusId into orderStatusGrp
+                           from os in orderStatusGrp.DefaultIfEmpty()
+                           join pt in db.PaymentTypes on o.PaymentTypeId equals pt.PaymentTypeId into paymentTypesGrp
+                           from pt in paymentTypesGrp.DefaultIfEmpty()
+                           join p in db.Promos on o.PromoId equals p.PromoId into promosGrp
+                           from p in promosGrp.DefaultIfEmpty()
+                           join ph in db.Phones on pv.PhoneId equals ph.PhoneId into phonesGrp
+                           from ph in phonesGrp.DefaultIfEmpty()
+                           join u in db.Users on o.UserId equals u.UserId into userGroup
+                           from u in userGroup.DefaultIfEmpty()
+                           where o.OrderID == orderId
+
+                           select new {
+                               firstName = u.FirstName,
+                               lastName = u.LastName,
+                               email = u.Email,
+                               OrderId = o.OrderID,
+                               amount = o.Amount,
+                               phoneVersion = pv.Version,
+                               paymentType = pt.PaymentType1,
+                               paymentUserName = o.PaymentUserName});
+
+            foreach(var item in results)
             {
-                string HTMLBody = BuildPasswordHTML(Email);
-
-                // Create the Mail Message
-                MailMessage mail = new MailMessage(FromEmailAddress, Email, "Cellable Confirmation ", HTMLBody);
-                // Bcc
-                mail.Bcc.Add(confirmationEmail);
-                mail.IsBodyHtml = true;
-
-                var client = new SmtpClient(SMTPHost, SMTPPort)
-                {
-                    Credentials = new NetworkCredential(SMTPUserName, SMTPPassword),
-                    EnableSsl = true
-                };
-
-                // Send Confirmation Email
-                client.Send(mail);
+                firstName = item.firstName;
+                lastName = item.lastName;
+                email = item.email;
+                oId = item.OrderId.ToString();
+                amount = (Math.Truncate(100 * item.amount) / 100).ToString();
+                paymentType = item.paymentType;
+                paymentUserName = item.paymentUserName;
+                phoneVersion = item.phoneVersion;
             }
-            catch (Exception ex)
-            {
-                ViewBag.Message = "Error Encountered: " + ex.Message + "<br />" + ex.InnerException;
-            }
-        }
 
-        protected string BuildHTML()
-        {
-            string HTML;
-
-            HTML = "<html>" +
-                    "<head>" +
-                          "<style>" +
-                            "img.resize{" +
-                                  "max-width: 75%;" +
-                                  "max-height: 75%;" +
-                             "}" +
-                             "body{" +
-                                "font-family: arial;" +
-                                "font-size:medium;" +
-                            "}" +
-                            "div.small{" +
-                                "font-size:small;" +
-                            "}" +
-                            "div.smaller{" +
-                                "font-size:smaller;" +
-                            "}" +
-                            "div.grayColor{" +
-                                "color:dimgray;" +
-                            "}" +
-                    "</style>" +
-                    "</head> " +
-                    "<body>" +
-                       "<table style=\"width:90%; background-color:darkgreen; font-family:Arial; color:antiquewhite\" align=\"center\"> " +
-                              "<tr> " +
-                                  "<td width=\"50%\" align=\"center\" valign=\"top\">" +
-                                        "<p>" +
-                                            "<div class=\"grayColor\"><b>USPS Tracking Number</b></div>EJ958083578US" +
-                                        "</p>" +
-                                        "<hr />" +
-                                        "<table style=\"width:100%;\">" +
-                                             "<tr >" +
-                                                "<td >" +
-                                                    "<b > Phone VAlue: $150</b>" +
-                                                    "<p></p>" +
-                                                "</td>" +
-                                            "</tr>" +
-                                            "<tr>" +
-                                                "<td>" +
-                                                    "Your phone information has been added to our system..." +
-                                                "</td>" +
-                                            "</tr>" +
-                                        "</table>" +
-                                    "</td>" +
-                                "</tr>" +
-                                "<tr>" +
-                                    "<td colspan=\"2\"><hr/></td>" +
-                                "</tr>" +
-                                "<tr>" +
-                                    "<td align=\"left\" valign=\"top\"><div class=\"smaller\">&copy;" + @DateTime.Now.Year + " - Cellable</div></td>" +
-                                    "<td align=\"right\" valign=\"top\" class=\"smaller\">" +
-                                         "<div class=\"smaller\"><a href=\"mailto:contactus@cellable.com\">contactus@cellable.com</a>" +
-                                         "<br />" +
-                                         "(123)&nbsp;456-7890</div>" +
-                                    "</td>" +
-                                "</tr>" +
-                                "</table>" +
-                        "</body>" +
-                        "</html>";
+            string HTML = "<table style='margin-top: 50px;'>" +
+                    "<tr style='border: solid; border-width: thin; background-color: black;'>" +
+                        "<th style='color: white;'>First Name" +
+                        "</th>" +
+                        "<td style='width: 30px;'></td>" +
+                        "<th style='color: white;'>Last Name " +
+                        "</th>" +
+                        "<td style='width: 30px;'></td>" +
+                        "<th style='color: white;'>Order Number" +
+                        "</th>" +
+                        "<td style='width: 30px;'></td>" +
+                        "<th style='color: white;'>Phone Version" +
+                        "</th>" +
+                        "<td style='width: 30px;'></td>" +
+                        "<th style='color: white;'>Order Amount" +
+                        "</th>" +
+                        "<td style='width: 30px;'></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td>" +
+                        firstName +
+                        "</td>" +
+                        "<td></td>" +
+                        "<td>" +
+                        lastName +
+                        "</td>" +
+                        "<td></td>" +
+                        "<td>" +
+                        oId +
+                        "</td>" +
+                        "<td></td>" +
+                        "<td>" +
+                        phoneVersion +
+                        "</td>" +
+                        "<td></td>" +
+                        "<td>$" +
+                        amount +
+                        "</td>" +
+                        "<td></td>" +
+                    "</tr>" +
+                    "<tr style='border: solid; border-width: thin; background-color: black;'>" +
+                        "<th style='color: white;'>Payment Type" +
+                        "</th>" +
+                        "<td style='width: 30px;'></td>" +
+                        "<th style='color: white'>Payment ID" +
+                        "</th>" +
+                        "<td style='width: 30px;'></td>" +
+                        "<th style='color: white;'>Email" +
+                        "</th>" +
+                        "<td></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td>" +
+                            paymentType +
+                        "</td>" +
+                        "<td style='width: 30px;'></td>" +
+                        "<td>" +
+                            paymentUserName +
+                        "</td>" +
+                        "<td style='width: 30px;'></td>" +
+                        "<td>" +
+                            email +
+                        "</td>" +
+                        "<td style='width: 30px;'></td>" +
+                    "</tr>" +
+                "</table>" +
+                "<table style='margin-top: 30px;'>" +
+                    "<tr>" +
+                        "<td>" +
+                            "<h3>Thank you for shopping with us!" +
+                            "</h3>" +
+                            "<p style='border-bottom: thin solid #000;'></p>" +
+                        "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td>" +
+                            "<p>" +
+                                "We're excited that you've decided to sell your gadgets to Cellable. To print your free shipping label and packing slip, print out the attachment on this email." +
+                            "</p>" +
+                            "<p>" +
+                                "Please be sure to include your packing slip inside your box so we can easily identify your items." +
+                            "</p>" +
+                        "</td>" +
+                    "</tr>" +
+                    "<tr style='margin-top: 30px;'>" +
+                        "<td>" +
+                            "<h3>Shipping to Cellable</h3>" +
+                        "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td>1. Do a factory reset on the phones. This prevents missuse of data and information." +
+                        "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td>2. Find a strong box with plenty of packing materials to pack your items. Please do not add any items that are not on your packing slip." +
+                        "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td>3. Pack your items and packing slip in the box with plenty of packing materials. Tape your prepaid shipping label to the box. To print your prepaid shipping label click your attachment." +
+                        "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td>4. Drop your box off for shipping at the nearest USPS location." +
+                        "</td>" +
+                    "</tr>" +
+                "</table>" +
+                "<table>" +
+                    "<tr style='margin-top: 30px;'>" +
+                        "<td>We'll let you know as soon as we receive your items. If you have any questions along the way, you can check the status of your items on our website or visit our help center." +
+                        "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td style='height: 36px'>" +
+                            "<p style='margin-top: 32px;'>" +
+                                "Thanks,</p>" +
+                                    "<p style='margin-left: 35px;'>  Cellable team" +
+                            "</p>" +
+                        "</td>" +
+                    "</tr>" +
+                    "<tr style='margin-top: 50px;'>" +
+                        "<td style='margin-top: 30px;'>" +
+                            "<p style='text-align: center; margin-top: 30px; font-size: xx-small;'>" +
+                                "© Copyright 2020 - Cellable LLC, All Rights Reserved, Patents Pending." +
+                            "</p>" +
+                            "<p style='text-align: center;  font-size: xx-small;'>" +
+                                "Designated trademarks and brands are the property of their respective owners." +
+                            "</p>" +
+                            "<p style='text-align: center; font-size: xx-small;'>" +
+                                "Cellable is not affiliated with the manufacturers of the items available for trade-in." +
+                            "</p>" +
+                            "<p style='text-align: center; font-size: xx-small;'>" +
+                                CellableAddress +
+                            "</p>" +
+                        "</td>" +
+                    "</tr>" +
+                "</table>";
 
             return HTML;
         }
