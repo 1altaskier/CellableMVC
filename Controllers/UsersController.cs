@@ -497,7 +497,7 @@ namespace CellableMVC.Controllers
 
         public ActionResult SaveTestimonial()
         {
-            if (Request["Stars"] != "" || Request["Stars"] != null)
+            if (Request["Stars"] != "")
             {
                 Testimonial testimonial = new Testimonial();
                 testimonial.Rating = int.Parse(Request["Stars"].ToString());

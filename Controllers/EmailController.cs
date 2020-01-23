@@ -115,7 +115,7 @@ namespace CellableMVC.Controllers
                 lastName = item.lastName;
                 email = item.email;
                 oId = item.OrderId.ToString();
-                amount = (Math.Truncate(100 * item.amount) / 100).ToString();
+                amount = decimal.Round(item.amount, 2).ToString();
                 paymentType = item.paymentType;
                 paymentUserName = item.paymentUserName;
                 phoneVersion = item.phoneVersion;
