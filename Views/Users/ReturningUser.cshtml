@@ -8,6 +8,14 @@
     function valid_form() {
         var paymentType = document.getElementById("PaymentTypes").value;
         var paymentUserName = document.getElementById("PaymentUserName").value;
+        var userNameDisplay = document.getElementById("PayUserName");
+
+        if (paymentType != "1") {
+            userNameDisplay.innerHTML = "<i class='text-danger'>*</i>&nbsp;Email Address:";
+        }
+        else {
+            userNameDisplay.innerHTML = "<i class='text-danger'>*</i>&nbsp;User Name / Email:";
+        }
 
         // Custom "Forced" Validation For Password
         if (paymentType == "") {
@@ -133,8 +141,7 @@
                                 </tr>
                                 <tr>
                                     <td style="width:100%; text-align:left; padding:10px;">
-                                        <i class="text-danger">*</i>&nbsp;Payment User Name:
-                                        <br />
+                                        <div id="PayUserName" name="PayUserName"><i class="text-danger">*</i>&nbsp;User Name / Email:</div>
                                         <input type="text" id="PaymentUserName" name="PaymentUserName" class="form-control" onchange="valid_form()" />
                                         <div id="PaymentUserNameValidationMessage" class="text-danger"></div>
                                         <br />
@@ -209,7 +216,16 @@
                                             @Html.Raw("<tr>")
                                             @Html.Raw("<td  style='padding:3px; text-align:right;'>Promo Code Applied:</td>")
                                             @Html.Raw("<td style='width:25px; text-align:right; color:forestgreen;'>+</td>")
-                                            @Html.Raw("<td style='width:25px; text-align:right; color:forestgreen;'>" + Session["PromoValue"] + "%</td>")
+                                            @Html.Raw("<td style='width:25px; text-align:right; color:forestgreen;'>")
+                                            if (Session["PromoType"].ToString() == "%")
+                                            {
+                                                @Html.Raw(Session["PromoValue"].ToString() + Session["PromoType"].ToString());
+                                            }
+                                            else
+                                            {
+                                                @Html.Raw(Session["PromoType"] + decimal.Round(decimal.Parse(Session["PromoValue"].ToString()), 2).ToString());
+                                            }
+                                            @Html.Raw("</td>")
                                             @Html.Raw("</tr>")
                                         }
                                         <tr>
