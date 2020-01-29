@@ -11,8 +11,7 @@ namespace CellableMVC.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Permission
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,13 +19,10 @@ namespace CellableMVC.Models
         {
             this.Users = new HashSet<User>();
         }
-
-        [Display(Name = "Permission ID")]
+    
         public int PermissionId { get; set; }
-
-        [Display(Name = "Permission Type")]
         public string PermissionType { get; set; }
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }
     }

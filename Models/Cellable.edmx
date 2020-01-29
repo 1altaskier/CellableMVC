@@ -101,6 +101,7 @@
           <Property Name="StartDate" Type="date" Nullable="false" />
           <Property Name="EndDate" Type="date" Nullable="false" />
           <Property Name="Discount" Type="decimal" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="DollarValue" Type="money" />
         </EntityType>
         <EntityType Name="SlideShow">
           <Key>
@@ -595,6 +596,7 @@
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Discount" Type="Decimal" Precision="3" Scale="2" Nullable="false" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Promos" FromRole="Promos" ToRole="Orders" />
+          <Property Name="DollarValue" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="State">
           <Key>
@@ -1124,6 +1126,7 @@
           <EntitySetMapping Name="Promos">
             <EntityTypeMapping TypeName="CellableModel.Promo">
               <MappingFragment StoreEntitySet="Promos">
+                <ScalarProperty Name="DollarValue" ColumnName="DollarValue" />
                 <ScalarProperty Name="PromoId" ColumnName="PromoId" />
                 <ScalarProperty Name="PromoCode" ColumnName="PromoCode" />
                 <ScalarProperty Name="PromoName" ColumnName="PromoName" />

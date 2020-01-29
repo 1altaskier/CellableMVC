@@ -107,6 +107,7 @@
     <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="Discount" Type="Decimal" Precision="3" Scale="2" Nullable="false" />
     <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Promos" FromRole="Promos" ToRole="Orders" />
+    <Property Name="DollarValue" Type="Decimal" Precision="19" Scale="4" />
   </EntityType>
   <EntityType Name="State">
     <Key>

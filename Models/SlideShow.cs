@@ -11,16 +11,11 @@ namespace CellableMVC.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class SlideShow
     {
-        [Display(Name = "Slide ID")]
         public int SlideId { get; set; }
-
-        [Display(Name = "Image Name")]
         public string ImageName { get; set; }
-
         public string Description { get; set; }
     }
 }

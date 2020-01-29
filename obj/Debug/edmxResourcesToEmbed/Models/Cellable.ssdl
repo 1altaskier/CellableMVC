@@ -96,6 +96,7 @@
     <Property Name="StartDate" Type="date" Nullable="false" />
     <Property Name="EndDate" Type="date" Nullable="false" />
     <Property Name="Discount" Type="decimal" Precision="3" Scale="2" Nullable="false" />
+    <Property Name="DollarValue" Type="money" />
   </EntityType>
   <EntityType Name="SlideShow">
     <Key>

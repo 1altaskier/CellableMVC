@@ -11,17 +11,11 @@ namespace CellableMVC.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class State
     {
-        [Display(Name = "State ID")]
         public int StateID { get; set; }
-
-        [Display(Name = "State Abbrv")]
         public string StateAbbrv { get; set; }
-
-        [Display(Name = "State Name")]
         public string StateName { get; set; }
     }
 }

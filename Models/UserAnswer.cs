@@ -11,20 +11,15 @@ namespace CellableMVC.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class UserAnswer
     {
         public int AnswerId { get; set; }
-        
         public bool Answer { get; set; }
-
         public int PossibleDefectId { get; set; }
-
         public int UserPhoneId { get; set; }
-
+    
         public virtual PossibleDefect PossibleDefect { get; set; }
-
         public virtual UserPhone UserPhone { get; set; }
     }
 }

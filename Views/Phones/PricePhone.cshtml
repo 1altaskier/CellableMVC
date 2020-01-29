@@ -76,7 +76,14 @@
                             <br />
                             @Html.Raw("Promo Code: " + Session["PromoCode"]);
                             <br />
-                            @Html.Raw("+" + Session["PromoValue"] + "%");
+                            if (Session["PromoType"].ToString() == "%")
+                            {
+                                @Html.Raw("+" + Session["PromoValue"] + Session["PromoType"]);
+                            }
+                            else
+                            {
+                                @Html.Raw("+" + Session["PromoType"] + decimal.Round(decimal.Parse(Session["PromoValue"].ToString()), 2).ToString());
+                            }
                         }
                         @using (Html.BeginForm("CompleteUserPhoneRegistration", "Users"))
                         {
@@ -132,7 +139,16 @@
                                 @Html.Raw("<tr>")
                                 @Html.Raw("<td  style='padding:3px; text-align:right;'>Promo Code Applied:</td>")
                                 @Html.Raw("<td style='width:25px; text-align:right; color:forestgreen;'>+</td>")
-                                @Html.Raw("<td style='width:25px; text-align:right; color:forestgreen;'>" + Session["PromoValue"] + "%</td>")
+                                @Html.Raw("<td style='width:25px; text-align:right; color:forestgreen;'>")
+                                if (Session["PromoType"].ToString() == "%")
+                                {
+                                    @Html.Raw(Session["PromoValue"].ToString() + Session["PromoType"].ToString());
+                                }
+                                else
+                                {
+                                    @Html.Raw(Session["PromoType"] + decimal.Round(decimal.Parse(Session["PromoValue"].ToString()), 2).ToString());
+                                }
+                                @Html.Raw("</td>")
                                 @Html.Raw("</tr>")
                             }
                             <tr>

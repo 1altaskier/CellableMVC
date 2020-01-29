@@ -21,6 +21,11 @@ namespace CellableMVC.Controllers
             ViewBag.Footer = footer.Value;
             ViewBag.Slide1 = Slide1.Value;
 
+            // Get Slide Show Images
+            IList<SlideShow> slideShow = db.SlideShows.ToList();
+
+            ViewBag.SlideShow = slideShow;
+
             var phones = db.Phones.ToList();
 
             return View(phones);

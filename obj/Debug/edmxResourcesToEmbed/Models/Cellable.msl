@@ -90,6 +90,7 @@
     <EntitySetMapping Name="Promos">
       <EntityTypeMapping TypeName="CellableModel.Promo">
         <MappingFragment StoreEntitySet="Promos">
+          <ScalarProperty Name="DollarValue" ColumnName="DollarValue" />
           <ScalarProperty Name="PromoId" ColumnName="PromoId" />
           <ScalarProperty Name="PromoCode" ColumnName="PromoCode" />
           <ScalarProperty Name="PromoName" ColumnName="PromoName" />

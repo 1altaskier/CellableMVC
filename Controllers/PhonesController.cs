@@ -222,11 +222,23 @@ namespace CellableMVC.Controllers
                 {
                     Promo promo = db.Promos.FirstOrDefault(x => x.PromoCode == PromoCode && (x.StartDate < DateTime.Today && x.EndDate > DateTime.Today));
 
-                    var promoDiscount = decimal.Parse(Session["Phone Value"].ToString()) * promo.Discount;
+                    decimal? promoDiscount = 0;
+                    if (promo.Discount != 0)
+                    {
+                        promoDiscount = decimal.Parse(Session["Phone Value"].ToString()) * promo.Discount;
+                        Session["PromoValue"] = promo.Discount;
+                        Session["PromoType"] = "%";
+                    }
+                    else
+                    {
+                        promoDiscount = decimal.Parse(Session["Phone Value"].ToString()) + promo.DollarValue;
+                        Session["PromoValue"] = promo.DollarValue;
+                        Session["PromoType"] = "$";
+                    }
+
                     Session["PromoCodeId"] = promo.PromoId;
                     Session["PromoCode"] = PromoCode;
-                    Session["PromoValue"] = promo.Discount;
-                    Session["Phone Value"] = decimal.Parse(Session["Phone Value"].ToString()) + promoDiscount;
+                    Session["Phone Value"] = promoDiscount;
                 }
                 catch (Exception ex)
                 {

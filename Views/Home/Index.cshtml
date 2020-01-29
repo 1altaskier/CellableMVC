@@ -66,15 +66,12 @@
         <td style="width:100%; text-align:center" colspan="2">
             <div class="slider-frame">
                 <div class="slider-images">
-                    <div class="img-container">
-                        <img src="~/Pictures/android-live-wallpaper-featured-800x400.jpg" />
-                    </div>
-                    <div class="img-container">
-                        <img src="~/Pictures/CellphoneLouvre.png" />
-                    </div>
-                    <div class="img-container">
-                        <img src="~/Pictures/cellback.jpg" />
-                    </div>
+                    @foreach (var item in ViewBag.SlideShow)
+                    {
+                        <div class="img-container">
+                            <img src="~/Pictures/@Html.Raw(item.ImageName)" />
+                        </div>
+                    }
                 </div>
             </div>
         </td>
