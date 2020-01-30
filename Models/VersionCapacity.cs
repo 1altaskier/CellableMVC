@@ -17,6 +17,7 @@ namespace CellableMVC.Models
         public int VersionCapacityId { get; set; }
         public int VersionId { get; set; }
         public int StorageCapacityId { get; set; }
+        public Nullable<decimal> Value { get; set; }
     
         public virtual PhoneVersion PhoneVersion { get; set; }
         public virtual StorageCapacity StorageCapacity { get; set; }

@@ -186,6 +186,7 @@
     <EntitySetMapping Name="VersionCapacities">
       <EntityTypeMapping TypeName="CellableModel.VersionCapacity">
         <MappingFragment StoreEntitySet="VersionCapacity">
+          <ScalarProperty Name="Value" ColumnName="Value" />
           <ScalarProperty Name="StorageCapacityId" ColumnName="StorageCapacityId" />
           <ScalarProperty Name="VersionId" ColumnName="VersionId" />
           <ScalarProperty Name="VersionCapacityId" ColumnName="VersionCapacityId" />

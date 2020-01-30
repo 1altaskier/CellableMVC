@@ -82,7 +82,7 @@
                                     {
                                         if (capacities.StorageCapacityId == versionCapacities.StorageCapacityId)
                                         {
-                                            <input id="@capacities.StorageCapacityId" type="radio" name="capacity" value="@capacities.StorageCapacityId" onchange="SetField('capacity')" />@capacities.Description @Html.Raw("&nbsp; &nbsp;")
+                                            <input id="@capacities.StorageCapacityId" type="radio" name="capacity" value="@versionCapacities.VersionCapacityId" onchange="SetField('capacity')" />@capacities.Description @Html.Raw("&nbsp; &nbsp;")
                                         }
                                     }
                                 }

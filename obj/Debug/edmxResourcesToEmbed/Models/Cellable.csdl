@@ -491,6 +491,7 @@
     <Property Name="StorageCapacityId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="PhoneVersion" Relationship="CellableModel.FK_VersionCapacity_PhoneVersion" FromRole="VersionCapacity" ToRole="PhoneVersion" />
     <NavigationProperty Name="StorageCapacity" Relationship="CellableModel.FK_VersionCapacity_StorageCapacity" FromRole="VersionCapacity" ToRole="StorageCapacity" />
+    <Property Name="Value" Type="Decimal" Precision="18" Scale="0" />
   </EntityType>
   <Association Name="FK_VersionCapacity_PhoneVersion">
     <End Type="CellableModel.PhoneVersion" Role="PhoneVersion" Multiplicity="1" />

@@ -40,7 +40,7 @@
                         <div style="height:100px;"></div>
                         @Html.Raw(Session["PhoneBrandName"])
                         <br />
-                        @Session["VersionName"].ToString() @Html.Raw("(") @ViewBag.CapacityDesc @Html.Raw(")")
+                        @Session["VersionName"].ToString() @Html.Raw("(") @Session["CapacityDescription"] @Html.Raw(")")
                         <br />
                         <img src="~/Pictures/@Session["ImageLocation"]" style="height:250px; width:130px;" />
                         <br />
@@ -107,7 +107,7 @@
                                 </td>
                                 <td style="width:25px; text-align:right; color:forestgreen; font-weight:bold">$</td>
                                 <td style="padding:3px; text-align:right; color:forestgreen; font-weight:bold">
-                                    @decimal.Round(decimal.Parse(Session["BaseCost"].ToString()), 2)
+                                    @decimal.Truncate(decimal.Parse(Session["Phone Value"].ToString()))
                                 </td>
                             </tr>
                             @foreach (var defect in Model)

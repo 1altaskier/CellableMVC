@@ -203,6 +203,7 @@
           <Property Name="VersionCapacityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="VersionId" Type="int" Nullable="false" />
           <Property Name="StorageCapacityId" Type="int" Nullable="false" />
+          <Property Name="Value" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <Association Name="FK__PhoneVers__Phone__5070F446">
           <End Role="Phones" Type="Self.Phones" Multiplicity="0..1" />
@@ -980,6 +981,7 @@
           <Property Name="StorageCapacityId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PhoneVersion" Relationship="CellableModel.FK_VersionCapacity_PhoneVersion" FromRole="VersionCapacity" ToRole="PhoneVersion" />
           <NavigationProperty Name="StorageCapacity" Relationship="CellableModel.FK_VersionCapacity_StorageCapacity" FromRole="VersionCapacity" ToRole="StorageCapacity" />
+          <Property Name="Value" Type="Decimal" Precision="18" Scale="0" />
         </EntityType>
         <Association Name="FK_VersionCapacity_PhoneVersion">
           <End Type="CellableModel.PhoneVersion" Role="PhoneVersion" Multiplicity="1" />
@@ -1223,6 +1225,7 @@
           <EntitySetMapping Name="VersionCapacities">
             <EntityTypeMapping TypeName="CellableModel.VersionCapacity">
               <MappingFragment StoreEntitySet="VersionCapacity">
+                <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="StorageCapacityId" ColumnName="StorageCapacityId" />
                 <ScalarProperty Name="VersionId" ColumnName="VersionId" />
                 <ScalarProperty Name="VersionCapacityId" ColumnName="VersionCapacityId" />

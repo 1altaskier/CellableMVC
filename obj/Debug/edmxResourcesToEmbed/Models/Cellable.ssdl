@@ -198,6 +198,7 @@
     <Property Name="VersionCapacityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="VersionId" Type="int" Nullable="false" />
     <Property Name="StorageCapacityId" Type="int" Nullable="false" />
+    <Property Name="Value" Type="decimal" Precision="18" Scale="0" />
   </EntityType>
   <Association Name="FK__PhoneVers__Phone__5070F446">
     <End Role="Phones" Type="Self.Phones" Multiplicity="0..1" />

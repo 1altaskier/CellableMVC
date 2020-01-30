@@ -163,9 +163,10 @@ namespace CellableMVC.Controllers
         public ActionResult PricePhone(FormCollection form)
         {
             IList<PossibleDefect> defects = db.PossibleDefects.ToList();
-            PhoneVersion version = db.PhoneVersions.Find(Session["VersionId"]);
 
-            var baseCost = version.BaseCost;
+            // Get Phone's Base Value
+            VersionCapacity vc = db.VersionCapacities.Find(int.Parse(Request["capacity"]));
+            decimal? baseCost = vc.Value;
 
             foreach (var item in form)
             {
@@ -194,9 +195,11 @@ namespace CellableMVC.Controllers
                 Session["Storage Capacity"] = Request.Form["capacity"];
             }
 
-            StorageCapacity capacity = db.StorageCapacities.Find(int.Parse(Session["Storage Capacity"].ToString()));
+            //StorageCapacity capacity1 = db.StorageCapacities.Find(int.Parse(Session["Storage Capacity"].ToString()));
+            StorageCapacity capacity = db.StorageCapacities.Find(vc.StorageCapacityId);
+            Session["CapacityDescription"] = capacity.Description;
             // For Description on Pricing Page
-            ViewBag.CapacityDesc = capacity.Description;
+            ViewBag.CapacityDesc = Session["CapacityDescription"];
 
             if (Session["Phone Value"] == null)
             {

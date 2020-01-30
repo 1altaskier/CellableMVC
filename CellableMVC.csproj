@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\EmailController.cs" />
+    <Compile Include="Helpers\General.cs" />
     <Compile Include="Helpers\IncomingPhone.cs" />
     <Compile Include="Helpers\MailHelper.cs" />
     <Compile Include="Helpers\User.cs" />
@@ -236,6 +237,7 @@
     <Compile Include="Models\VersionCapacity.cs">
       <DependentUpon>Cellable.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\vmAbout.cs" />
     <Compile Include="ViewModels\vmOrderDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -129,9 +129,9 @@ namespace CellableMVC.Controllers
 
             ViewBag.PaymentTypes = new SelectList(db.PaymentTypes, "PaymentTypeId", "PaymentType1", "-- How You Get Paid --");
 
-            StorageCapacity capacity = db.StorageCapacities.Find(int.Parse(Session["Storage Capacity"].ToString()));
+            //StorageCapacity capacity = db.StorageCapacities.Find(int.Parse(Session["Storage Capacity"].ToString()));
             // For Description on Pricing Page
-            ViewBag.CapacityDesc = capacity.Description;
+            ViewBag.CapacityDesc = Session["CapacityDescription"];
 
             User user = db.Users.Find(int.Parse(Session["LoggedInUserId"].ToString()));
 
