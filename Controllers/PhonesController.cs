@@ -164,9 +164,20 @@ namespace CellableMVC.Controllers
         {
             IList<PossibleDefect> defects = db.PossibleDefects.ToList();
 
-            // Get Phone's Base Value
-            VersionCapacity vc = db.VersionCapacities.Find(int.Parse(Request["capacity"]));
-            decimal? baseCost = vc.Value;
+            // Get Phone's Base Value & Capacity Description
+            decimal? baseCost = null;
+            if (Request["capacity"] != null)
+            {
+                VersionCapacity vc = db.VersionCapacities.Find(int.Parse(Request["capacity"]));
+                baseCost = vc.Value;
+                StorageCapacity capacity = db.StorageCapacities.Find(vc.StorageCapacityId);
+                Session["CapacityDescription"] = capacity.Description;
+            }
+            else
+            {
+                baseCost = decimal.Parse(Session["BaseValue"].ToString());
+            }
+
 
             foreach (var item in form)
             {
@@ -195,15 +206,14 @@ namespace CellableMVC.Controllers
                 Session["Storage Capacity"] = Request.Form["capacity"];
             }
 
-            //StorageCapacity capacity1 = db.StorageCapacities.Find(int.Parse(Session["Storage Capacity"].ToString()));
-            StorageCapacity capacity = db.StorageCapacities.Find(vc.StorageCapacityId);
-            Session["CapacityDescription"] = capacity.Description;
+
             // For Description on Pricing Page
             ViewBag.CapacityDesc = Session["CapacityDescription"];
 
             if (Session["Phone Value"] == null)
             {
                 Session["Phone Value"] = baseCost;
+                Session["BaseValue"] = baseCost;
             }
 
             var title = db.SystemSettings.Find(27);
@@ -230,18 +240,20 @@ namespace CellableMVC.Controllers
                     {
                         promoDiscount = decimal.Parse(Session["Phone Value"].ToString()) * promo.Discount;
                         Session["PromoValue"] = promo.Discount;
+                        Session["Phone Value"] = decimal.Parse(Session["Phone Value"].ToString()) + promoDiscount;
                         Session["PromoType"] = "%";
                     }
                     else
                     {
                         promoDiscount = decimal.Parse(Session["Phone Value"].ToString()) + promo.DollarValue;
                         Session["PromoValue"] = promo.DollarValue;
+                        Session["Phone Value"] = promoDiscount;
                         Session["PromoType"] = "$";
                     }
 
                     Session["PromoCodeId"] = promo.PromoId;
                     Session["PromoCode"] = PromoCode;
-                    Session["Phone Value"] = promoDiscount;
+                    //Session["BaseValue"] = Session["Phone Value"];
                 }
                 catch (Exception ex)
                 {

@@ -107,7 +107,7 @@
                                 </td>
                                 <td style="width:25px; text-align:right; color:forestgreen; font-weight:bold">$</td>
                                 <td style="padding:3px; text-align:right; color:forestgreen; font-weight:bold">
-                                    @decimal.Truncate(decimal.Parse(Session["Phone Value"].ToString()))
+                                    @decimal.Truncate(decimal.Parse(Session["BaseValue"].ToString())).00
                                 </td>
                             </tr>
                             @foreach (var defect in Model)
@@ -157,8 +157,16 @@
                                 </td>
                                 <td style="width:25px; text-align:right; color:forestgreen; font-weight:bold; border-top:solid; border-top-color:black; border-top-width:1px">$</td>
                                 <td style="padding:3px; text-align:right; color:forestgreen; font-weight:bold; border-top:solid; border-top-color:black; border-top-width:1px">
-                                    @decimal.Round(decimal.Parse(@Session["Phone Value"].ToString()), 2)
-                                </td>
+                                    @{ string phoneValue = Session["Phone Value"].ToString(); }
+                                    @if (phoneValue.Contains("."))
+                                    {
+                                        @Html.Raw(decimal.Round(decimal.Parse(Session["Phone Value"].ToString()), 2))
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw(Session["Phone Value"].ToString())@Html.Raw(".00")
+                                    }
+                                    </td>
                             </tr>
                         </table>
                     </td>
