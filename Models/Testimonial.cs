@@ -19,5 +19,6 @@ namespace CellableMVC.Models
         public int Rating { get; set; }
         public int UserId { get; set; }
         public System.DateTime CreateDate { get; set; }
+        public Nullable<bool> Published { get; set; }
     }
 }

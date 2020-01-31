@@ -149,6 +149,7 @@
     <Property Name="Rating" Type="int" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
     <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="Published" Type="bit" />
   </EntityType>
   <EntityType Name="User">
     <Key>

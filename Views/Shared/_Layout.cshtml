@@ -52,13 +52,19 @@
         var sTimeout = parseInt(sessionTimeoutWarning) * 60 * 1000;
         setTimeout('SessionEnd()', sTimeout);
 
+        window.history.forward();
+        function noBack()
+        {
+            window.history.forward();
+        }
+
         function SessionEnd() {
             window.location = "/Users/Cancel";
         }
     </script>
 
 </head>
-<body class="custom-background">
+<body class="custom-background" onLoad="noBack();" onpageshow="if (event.persisted) noBack();" onUnload="">
     <div id="fb-root"></div>
     <table style="position:fixed; top:0; width:100%; height:20px; z-index:100">
         <tr>
@@ -67,12 +73,12 @@
                     <tr style="vertical-align:middle;">
                         <td style="width:20%; text-align:center;" class="Header">
                             <h2>@Html.ActionLink("Cellable", "Index", "Home", new { }, new { style = "color:lawngreen;" })</h2>
-                            <span class='fa fa-star checked'></span>
-                            <span class='fa fa-star checked'></span>
-                            <span class='fa fa-star checked'></span>
-                            <span class='fa fa-star checked'></span>
-                            <span class='fa fa-star checked'></span>
-                            @ViewBag.AvgRating
+                            @{ var total = int.Parse(Session["AvgStars"].ToString()); }
+                            @for (int i = 1; i <= total; i++ )
+                            {
+                                <span class='fa fa-star checked'></span>
+                            }
+                            (ratings: @Session["TotalStars"])
                         </td>
                         <td style="text-align:left; vertical-align:middle; width:50%">
                             <div style="display: inline-block; width:80px">@Html.ActionLink("Home", "Index", "Home", new { }, new { @class = "NavLink" })</div>

@@ -490,11 +490,6 @@ namespace CellableMVC.Controllers
             return View(orderDetailsVMlist);
         }
 
-        public ActionResult Testimonial()
-        {
-            return View();
-        }
-
         public ActionResult SaveTestimonial()
         {
             if (Request["Stars"] != "")

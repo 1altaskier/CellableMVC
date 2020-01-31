@@ -13,10 +13,8 @@ namespace CellableMVC.Controllers
 
         public ActionResult Index()
         {
-            // Get the Average Star Rating
-            //var avgRating = AvgRating();
-            //General gen = new General();
-            //gen.AvgStars = avgRating;
+            // Set the Average Star Rating Stuff
+            AvgRating();
 
             var title = db.SystemSettings.Find(18);
             var text = db.SystemSettings.Find(2);
@@ -28,7 +26,6 @@ namespace CellableMVC.Controllers
             ViewBag.Title = title.Value;
             ViewBag.Text = text.Value;
             ViewBag.Footer = footer.Value;
-            ViewBag.Slide1 = Slide1.Value;
 
             // Get Slide Show Images
             IList<SlideShow> slideShow = db.SlideShows.ToList();
@@ -97,6 +94,25 @@ namespace CellableMVC.Controllers
             ViewBag.AdminEmail = adminEmil.Value;
 
             return View();
+        }
+
+        private void AvgRating()
+        {
+            IList<Testimonial> testimonials = db.Testimonials.ToList();
+
+            int total = testimonials.Count();
+            int ratings = 0;
+            int avg = 0;
+
+            foreach (var item in testimonials)
+            {
+                ratings += item.Rating;
+            }
+
+            avg = ratings / total;
+
+            Session["AvgStars"] = avg;
+            Session["TotalStars"] = total;
         }
     }
 }

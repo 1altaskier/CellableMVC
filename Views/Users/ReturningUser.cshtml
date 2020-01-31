@@ -169,7 +169,7 @@
                                         <tr>
                                             <td style="text-align:center" colspan="3">
                                                 <div style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: green; font-size: 55px;">
-                                                    $@decimal.Truncate(decimal.Parse(Session["Phone Value"].ToString()))
+                                                    $@decimal.Round(decimal.Parse(@Session["Phone Value"].ToString()), 2)
                                                 </div>
                                             </td>
                                         </tr>

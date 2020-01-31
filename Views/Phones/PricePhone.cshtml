@@ -48,7 +48,15 @@
                     </td>
                     <td style="text-align:center; width:40%">
                         <div style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: green; font-size: 55px;">
-                            $@decimal.Truncate(decimal.Parse(Session["Phone Value"].ToString()))
+                            @{ string phoneValue = Session["Phone Value"].ToString(); }
+                            @if (phoneValue.Contains("."))
+                            {
+                                @Html.Raw("$")@Html.Raw(decimal.Round(decimal.Parse(Session["Phone Value"].ToString()), 2))
+                            }
+                            else
+                            {
+                                @Html.Raw("$")@Html.Raw(Session["Phone Value"].ToString())@Html.Raw(".00")
+                            }
                         </div>
                         <p />
                         @if (Session["PromoCode"] == null)
@@ -157,7 +165,6 @@
                                 </td>
                                 <td style="width:25px; text-align:right; color:forestgreen; font-weight:bold; border-top:solid; border-top-color:black; border-top-width:1px">$</td>
                                 <td style="padding:3px; text-align:right; color:forestgreen; font-weight:bold; border-top:solid; border-top-color:black; border-top-width:1px">
-                                    @{ string phoneValue = Session["Phone Value"].ToString(); }
                                     @if (phoneValue.Contains("."))
                                     {
                                         @Html.Raw(decimal.Round(decimal.Parse(Session["Phone Value"].ToString()), 2))

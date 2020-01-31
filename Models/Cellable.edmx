@@ -154,6 +154,7 @@
           <Property Name="Rating" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="Published" Type="bit" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -1032,6 +1033,7 @@
           <Property Name="Rating" Type="Int32" Nullable="false" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Published" Type="Boolean" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1253,6 +1255,7 @@
           <EntitySetMapping Name="Testimonials">
             <EntityTypeMapping TypeName="CellableModel.Testimonial">
               <MappingFragment StoreEntitySet="Testimonials">
+                <ScalarProperty Name="Published" ColumnName="Published" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Rating" ColumnName="Rating" />

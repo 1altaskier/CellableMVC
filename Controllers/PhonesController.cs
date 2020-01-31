@@ -172,6 +172,7 @@ namespace CellableMVC.Controllers
                 baseCost = vc.Value;
                 StorageCapacity capacity = db.StorageCapacities.Find(vc.StorageCapacityId);
                 Session["CapacityDescription"] = capacity.Description;
+                Session["BaseValue"] = baseCost;
             }
             else
             {
@@ -206,14 +207,12 @@ namespace CellableMVC.Controllers
                 Session["Storage Capacity"] = Request.Form["capacity"];
             }
 
-
             // For Description on Pricing Page
             ViewBag.CapacityDesc = Session["CapacityDescription"];
 
             if (Session["Phone Value"] == null)
             {
                 Session["Phone Value"] = baseCost;
-                Session["BaseValue"] = baseCost;
             }
 
             var title = db.SystemSettings.Find(27);
@@ -253,7 +252,6 @@ namespace CellableMVC.Controllers
 
                     Session["PromoCodeId"] = promo.PromoId;
                     Session["PromoCode"] = PromoCode;
-                    //Session["BaseValue"] = Session["Phone Value"];
                 }
                 catch (Exception ex)
                 {
