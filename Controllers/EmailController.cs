@@ -20,6 +20,7 @@ namespace CellableMVC.Controllers
         string SMTPPassword = System.Configuration.ConfigurationManager.AppSettings["SMTPPassword"];
         string CellableAddress = System.Configuration.ConfigurationManager.AppSettings["PostalAddress"];
         private string confirmationEmail = WebConfigurationManager.AppSettings["confirmationEmail"];
+        private string imageLocation = WebConfigurationManager.AppSettings["ImageLocation"];
 
         private CellableEntities db = new CellableEntities();
         private LoggedInUser loggedInUser = new LoggedInUser();
@@ -48,11 +49,11 @@ namespace CellableMVC.Controllers
                 // Bcc
                 mail.Bcc.Add(confirmationEmail);
 
-                if (type == "Confirm")
-                {
-                    // Add Label as Attachment
-                    mail.Attachments.Add(new Attachment(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Pictures/SampleMailingLabel.png")));
-                }
+                //if (type == "Confirm")
+                //{
+                //    // Add Label as Attachment
+                //    mail.Attachments.Add(new Attachment("/Pictures/SampleMailingLabel.png"));
+                //}
 
                 mail.IsBodyHtml = true;
 
@@ -224,6 +225,14 @@ namespace CellableMVC.Controllers
                     "</tr>" +
                     "<tr>" +
                         "<td>4. Drop your box off for shipping at the nearest USPS location." +
+                        "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td><b>Click <a href='https://cellablepictures.blob.core.windows.net/systemimages/SampleMailingLabel.png'>HERE</a> to download your shipping label</b>" +
+                        "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<td><b>Click <a href='https://cellablepictures.blob.core.windows.net/systemimages/SampleMailingLabel.png'>HERE</a> to download your packing slip</b>" +
                         "</td>" +
                     "</tr>" +
                 "</table>" +

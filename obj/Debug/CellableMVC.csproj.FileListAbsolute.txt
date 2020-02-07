@@ -86,3 +86,6 @@ C:\Projects\GIT Repositories\CellableMVC\bin\System.Net.Http.Formatting.xml
 C:\Projects\GIT Repositories\CellableMVC\bin\System.Web.Http.xml
 C:\Projects\GIT Repositories\CellableMVC\bin\System.Web.Http.WebHost.xml
 C:\Projects\GIT Repositories\CellableMVC\obj\Debug\CellableMVC.csprojAssemblyReference.cache
+C:\Projects\GIT Repositories\CellableMVC\bin\SendGrid.dll
+C:\Projects\GIT Repositories\CellableMVC\bin\SendGrid.pdb
+C:\Projects\GIT Repositories\CellableMVC\bin\SendGrid.xml
