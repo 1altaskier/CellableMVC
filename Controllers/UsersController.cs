@@ -19,6 +19,7 @@ namespace CellableMVC.Controllers
         private string USPSAPIUserName = WebConfigurationManager.AppSettings["USPSAPIUserName"];
         private string USPSAPIPassword = WebConfigurationManager.AppSettings["USPSAPIPassword"];
         private string AdminEmail = WebConfigurationManager.AppSettings["AdminEmail"];
+        private string phoneImageLocation = WebConfigurationManager.AppSettings["PhoneImageLocation"];
 
         private CellableEntities db = new CellableEntities();
 
@@ -142,6 +143,7 @@ namespace CellableMVC.Controllers
             ViewBag.Title = title.Value;
             ViewBag.Text = text.Value;
             ViewBag.Footer = footer.Value;
+            ViewBag.phoneImageLocation = phoneImageLocation;
 
             return View(user);
         }
