@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using CellableMVC.Helpers;
+using System.Web.Configuration;
 
 namespace CellableMVC.Controllers
 {
@@ -11,6 +12,9 @@ namespace CellableMVC.Controllers
     {
         private CellableEntities db = new CellableEntities();
         private IncomingPhone phone = new IncomingPhone();
+
+        private string imageLocation = WebConfigurationManager.AppSettings["ImageLocation"];
+        private string phoneImageLocation = WebConfigurationManager.AppSettings["PhoneImageLocation"];
 
         // GET: Phones
         public ActionResult Phones()
@@ -47,6 +51,8 @@ namespace CellableMVC.Controllers
             ViewBag.Text = text.Value;
             ViewBag.Footer = footer.Value;
 
+            ViewBag.imageLocation = imageLocation;
+
             var phones = db.Phones.ToList();
 
             return View(phones);
@@ -71,6 +77,8 @@ namespace CellableMVC.Controllers
             ViewBag.Title = title.Value;
             ViewBag.Text = text.Value;
             ViewBag.Footer = footer.Value;
+
+            ViewBag.imageLocation = imageLocation;
 
             IList<Carrier> carriers = db.Carriers.ToList();
 
@@ -106,6 +114,8 @@ namespace CellableMVC.Controllers
             ViewBag.Title = title.Value;
             ViewBag.Text = text.Value;
             ViewBag.Footer = footer.Value;
+
+            ViewBag.imageLocation = phoneImageLocation;
 
             return View(phoneVersions);
         }
@@ -156,6 +166,9 @@ namespace CellableMVC.Controllers
             ViewBag.Title = title.Value;
             ViewBag.Text = text.Value;
             ViewBag.Footer = footer.Value;
+
+            ViewBag.imageLocation = imageLocation;
+            ViewBag.phoneImageLocation = phoneImageLocation;
 
             return View(possibleDefects);
         }
@@ -223,6 +236,8 @@ namespace CellableMVC.Controllers
             ViewBag.Text = text.Value;
             ViewBag.Footer = footer.Value;
 
+            ViewBag.imageLocation = phoneImageLocation;
+
             return View(defects);
         }
 
@@ -271,6 +286,7 @@ namespace CellableMVC.Controllers
             ViewBag.Title = title.Value;
             ViewBag.Text = text.Value;
             ViewBag.Footer = footer.Value;
+            ViewBag.phoneImageLocation = phoneImageLocation;
 
             IList<PhoneVersion> versions = db.PhoneVersions
                                             .ToList()

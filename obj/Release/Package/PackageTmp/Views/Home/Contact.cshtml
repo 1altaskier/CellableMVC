@@ -1,0 +1,14 @@
+﻿<h2>@ViewBag.Title</h2>
+<h3>@ViewBag.Message</h3>
+
+<address>
+    @ViewBag.Address<br />
+    @ViewBag.City, @ViewBag.State @ViewBag.Zip<br />
+    <abbr title="Phone">P:</abbr>
+    @ViewBag.Phone
+</address>
+
+<address>
+    <strong>Contact Us:</strong>   <a href="mailto:@ViewBag.ContactEmail">@ViewBag.ContactEmail</a><br />
+    <strong>Tech Support:</strong> <a href="mailto:@ViewBag.AdminEmail">@ViewBag.AdminEmail</a>
+</address>

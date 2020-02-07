@@ -1,0 +1,191 @@
+﻿@model IEnumerable<CellableMVC.Models.PossibleDefect>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    function valid_form() {
+        // Custom "Forced" Validation For Carrier
+        if (document.getElementById("Carriers").value == "") {
+            document.getElementById("CarriersValidationMessage").innerHTML = "Please Select Carrier";
+            valid = false;
+        }
+        else {
+            document.getElementById("CarriersValidationMessage").innerHTML = "";
+            valid = true;
+        }
+
+        return valid;
+    }
+</script>
+
+<style>
+    .PromoCode:hover {
+        box-shadow: 0 2px 3px 0 lawngreen, 0 2px 3px 0 rgba(0,0,0,0.19);
+    }
+</style>
+
+<table style="width:70%; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td>
+            <h4>@ViewBag.Title</h4>
+            <hr />
+            <p>
+                @ViewBag.Text
+            </p>
+            <table style="width:80%; margin-left:auto; margin-right:auto; font-family:'HP Simplified'">
+                <tr>
+                    <td style="text-align:center; vertical-align:top; width:30%">
+                        <div style="height:100px;"></div>
+                        @Html.Raw(Session["PhoneBrandName"])
+                        <br />
+                        @Session["VersionName"].ToString() @Html.Raw("(") @Session["CapacityDescription"] @Html.Raw(")")
+                        <br />
+                        <img src="~/Pictures/@Session["ImageLocation"]" style="height:250px; width:130px;" />
+                        <br />
+                        Please Note: We do not pay for devices that have been reported lost or stolen.
+                    </td>
+                    <td style="text-align:center; width:40%">
+                        <div style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: green; font-size: 55px;">
+                            @{ string phoneValue = Session["Phone Value"].ToString(); }
+                            @if (phoneValue.Contains("."))
+                            {
+                                @Html.Raw("$")@Html.Raw(decimal.Round(decimal.Parse(Session["Phone Value"].ToString()), 2))
+                            }
+                            else
+                            {
+                                @Html.Raw("$")@Html.Raw(Session["Phone Value"].ToString())@Html.Raw(".00")
+                            }
+                        </div>
+                        <p />
+                        @if (Session["PromoCode"] == null)
+                        {
+                            using (Html.BeginForm("CalcPromo", "Phones", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                @Html.Raw("Do you have a Promo Code?");
+                                <br />
+                                <input id="id" name="id" type="hidden" value="@Session["VersionId"]" />
+                                <input id="PromoCode" name="PromoCode" type="text" placeholder="Enter Promo Code" autofocus />
+                                <button type="submit" name="submit" id="PromoCode" class="PromoCode" value="reset">
+                                    <i class="fa fa-plus-square"></i>
+                                </button>
+                                <p></p>
+                            }
+                        }
+                        else
+                        {
+                            //string discount = Session["PromoDiscount"].ToString();
+                            //discount.Split(char["."])[0];
+
+                            @Html.Raw("Promo Code Applied");
+                            <br />
+                            @Html.Raw("Promo Code: " + Session["PromoCode"]);
+                            <br />
+                            if (Session["PromoType"].ToString() == "%")
+                            {
+                                @Html.Raw("+" + Session["PromoValue"] + Session["PromoType"]);
+                            }
+                            else
+                            {
+                                @Html.Raw("+" + Session["PromoType"] + decimal.Round(decimal.Parse(Session["PromoValue"].ToString()), 2).ToString());
+                            }
+                        }
+                        @using (Html.BeginForm("CompleteUserPhoneRegistration", "Users"))
+                        {
+                            @Html.AntiForgeryToken()
+                            <p>
+                                <input type="submit" value="Sell My Phone" class="button" onclick="return valid_form()" />
+                                <input type="button" value="Cancel" class="button" onclick="location.href='@Url.Action("Cancel", "Users")';return false;" />
+                            </p>
+                        }
+                    </td>
+                    <td style="width:30%;">
+                        <table style="width:100%; left:auto; right:auto;">
+                            <tr>
+                                <td style="text-align:center; background-color:lightgrey" colspan="3">
+                                    <b>Your Phone Details</b><br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:3px; text-align:right; font-weight:bold">
+                                    Phone's Base Value:
+                                </td>
+                                <td style="width:25px; text-align:right; color:forestgreen; font-weight:bold">$</td>
+                                <td style="padding:3px; text-align:right; color:forestgreen; font-weight:bold">
+                                    @decimal.Truncate(decimal.Parse(Session["BaseValue"].ToString())).00
+                                </td>
+                            </tr>
+                            @foreach (var defect in Model)
+                            {
+                                foreach (var item in Session)
+                                {
+                                    var temp = 0;
+                                    if (int.TryParse(item.ToString(), out temp))
+                                    {
+                                        if (defect.PossibleDefectId == int.Parse(item.ToString()) && (Session[item.ToString()].ToString() != "0.00" && Session[item.ToString()].ToString() != "0"))
+                                        {
+                                            @Html.Raw("<tr><td style='padding:3px; text-align:right;'>")
+                                            if (defect.DefectName == "No")
+                                            {
+                                                @defect.DefectGroup.GroupName;
+                                            }
+                                            else
+                                            {
+                                                @defect.DefectName;
+                                            }
+                                            @Html.Raw(": </td><td style='width:25px; text-align:right; color:red;'>- $</td><td style='padding:3px; text-align:right; color:red;'>") @Session[@item.ToString()] @Html.Raw("</td></tr>")
+                                        }
+                                    }
+
+                                }
+                            }
+                            @if (Session["PromoCode"] != null)
+                            {
+                                @Html.Raw("<tr>")
+                                @Html.Raw("<td  style='padding:3px; text-align:right;'>Promo Code Applied:</td>")
+                                @Html.Raw("<td style='width:25px; text-align:right; color:forestgreen;'>+</td>")
+                                @Html.Raw("<td style='width:25px; text-align:right; color:forestgreen;'>")
+                                if (Session["PromoType"].ToString() == "%")
+                                {
+                                    @Html.Raw(Session["PromoValue"].ToString() + Session["PromoType"].ToString());
+                                }
+                                else
+                                {
+                                    @Html.Raw(Session["PromoType"] + decimal.Round(decimal.Parse(Session["PromoValue"].ToString()), 2).ToString());
+                                }
+                                @Html.Raw("</td>")
+                                @Html.Raw("</tr>")
+                            }
+                            <tr>
+                                <td style="padding:3px; text-align:right; font-weight:bold; border-top:solid; border-top-color:black; border-top-width:1px">
+                                    Phone Value:
+                                </td>
+                                <td style="width:25px; text-align:right; color:forestgreen; font-weight:bold; border-top:solid; border-top-color:black; border-top-width:1px">$</td>
+                                <td style="padding:3px; text-align:right; color:forestgreen; font-weight:bold; border-top:solid; border-top-color:black; border-top-width:1px">
+                                    @if (phoneValue.Contains("."))
+                                    {
+                                        @Html.Raw(decimal.Round(decimal.Parse(Session["Phone Value"].ToString()), 2))
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw(Session["Phone Value"].ToString())@Html.Raw(".00")
+                                    }
+                                    </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<table style="width:70%; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td style="text-align:center; vertical-align:bottom; height:150px;">
+            @ViewBag.Footer
+        </td>
+    </tr>
+</table>

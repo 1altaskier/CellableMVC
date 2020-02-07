@@ -160,7 +160,7 @@
                                     <br />
                                     @Session["VersionName"].ToString() @Html.Raw("(") @ViewBag.CapacityDesc @Html.Raw(")")
                                     <br />
-                                    <img src="~/Pictures/@Session["ImageLocation"]" style="height:250px; width:130px;" />
+                                    <img src="@ViewBag.imageLocation/@Session["ImageLocation"]" style="height:250px; width:130px;" />
                                     <br />
                                     Please Note: We do not pay for devices that have been reported lost or stolen.
                                 </td>

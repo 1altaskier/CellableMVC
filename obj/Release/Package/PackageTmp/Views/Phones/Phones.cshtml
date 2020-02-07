@@ -1,0 +1,42 @@
+﻿@model IEnumerable<CellableMVC.Models.Phone>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table style="width:80%; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td>
+            <h4>@ViewBag.Title</h4>
+            <hr />
+        </td>
+    </tr>
+    <tr>
+        <td>
+
+            @ViewBag.Text
+        </td>
+    </tr>
+</table>
+<table style="width:80%">
+    <tr>
+        @foreach (var item in Model)
+        {
+            <td style="width:33%">
+                <div class="samsungselect">
+                    <a class="btn btn-default" href="/Phones/Carriers/@item.PhoneId" style="font-size: 50px; height: 350px; left: 58px; width: 250px; padding: 10px; border-radius: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); margin-top: 50px; margin-left: 190px;">
+                        <img src="~/Pictures/@item.ImageName" style="width: 185px; height: 224px; left: 200px; margin-top: 27px; padding-top: 10px;" />
+                        <p style="font-family: 'HP Simplified'; padding-top: 50px; font-size: 25px; width: 249px; height: 70px; color: #000; text-align: center; margin-right: 50px;">@Html.DisplayFor(modelItem => item.Brand)</p>
+                    </a>
+                </div>
+            </td>
+        }
+    </tr>
+</table>
+<table style="width:80%; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td style="text-align:center; vertical-align:bottom; height:150px;">
+            @ViewBag.Footer
+        </td>
+    </tr>
+</table>

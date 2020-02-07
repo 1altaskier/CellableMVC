@@ -1,0 +1,25 @@
+﻿@using CellableMVC.Helpers;
+
+@{ Layout = null; }
+
+@Styles.Render("~/Content/css")
+
+
+<table style="width:100%; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td style="width:100%; text-align:center;">
+            <img src="~/Pictures/usps-logo.jpg" style="width:380px; text-align:center;" />
+        </td>
+    </tr>
+</table>
+<table style="width:80%; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td>
+            @{ 
+                var replace = "<SUP>&reg;</SUP>";
+                var msg = MailHelper.TrackingMessage.Replace("&lt;SUP>&amp;reg;&lt;/SUP>", replace);
+            }
+            @Html.Raw(msg)
+        </td>
+    </tr>
+</table>

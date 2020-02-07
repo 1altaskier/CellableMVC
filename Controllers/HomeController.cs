@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using CellableMVC.Helpers;
+using System.Web.Configuration;
 
 namespace CellableMVC.Controllers
 {
     public class HomeController : Controller
     {
         private CellableEntities db = new CellableEntities();
+
+        private string imageLocation = WebConfigurationManager.AppSettings["ImageLocation"];
+        private string webImageLocation = WebConfigurationManager.AppSettings["WebImageLocation"];
 
         public ActionResult Index()
         {
@@ -26,6 +30,8 @@ namespace CellableMVC.Controllers
             ViewBag.Title = title.Value;
             ViewBag.Text = text.Value;
             ViewBag.Footer = footer.Value;
+
+            ViewBag.imageLocation = imageLocation;
 
             // Get Slide Show Images
             IList<SlideShow> slideShow = db.SlideShows.ToList();
@@ -67,6 +73,8 @@ namespace CellableMVC.Controllers
             ViewBag.Footer = footer.Value;
             ViewBag.Image = image.Value;
 
+            ViewBag.imageLocation = imageLocation;
+
             return View();
         }
 
@@ -92,6 +100,8 @@ namespace CellableMVC.Controllers
             ViewBag.Phone = phone.Value;
             ViewBag.ContactEmail = contactEmail.Value;
             ViewBag.AdminEmail = adminEmil.Value;
+
+            ViewBag.imageLocation = imageLocation;
 
             return View();
         }

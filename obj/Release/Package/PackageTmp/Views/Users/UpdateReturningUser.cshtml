@@ -1,0 +1,284 @@
+﻿@model CellableMVC.Models.User
+
+@{
+    ViewBag.Title = "UpdateReturningUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    function togglePassword() {
+        const password = document.getElementById("NewPassword");
+        const password1 = document.getElementById("Password1");
+        const confirmPassword = document.getElementById("ConfirmPassword");
+        const password2 = document.getElementById("Password2");
+        const oldPPassword = document.getElementById("OldPassword");
+        const password3 = document.getElementById("Password3");
+
+        if (password.type === "password") {
+            password.type = "text";
+            confirmPassword.type = "text";
+            oldPPassword.type = "text";
+            Password1.innerHTML = "<i class='fa fa-eye input-field' onclick='togglePassword()' style='right:5px;'></i>"
+            Password2.innerHTML = "<i class='fa fa-eye input-field' onclick='togglePassword()' style='right:5px;'></i>"
+            Password3.innerHTML = "<i class='fa fa-eye input-field' onclick='togglePassword()' style='right:5px;'></i>"
+        } else {
+            password.type = "password";
+            confirmPassword.type = "password";
+            oldPPassword.type = "password";
+            password1.innerHTML = "<i class='fa fa-eye-slash input-field' onclick='togglePassword()' style='right:5px;'></i>"
+            password2.innerHTML = "<i class='fa fa-eye-slash input-field' onclick='togglePassword()' style='right:5px;'></i>"
+            password3.innerHTML = "<i class='fa fa-eye-slash input-field' onclick='togglePassword()' style='right:5px;'></i>"
+        }
+    };
+
+    function valid_form() {
+        var state = document.getElementById("State").value;
+        var newPassword = document.getElementById("NewPassword").value;
+        var oldPassword = document.getElementById("OldPassword").value;
+        var confirmPassword = document.getElementById("ConfirmPassword").value;
+        var email = document.getElementById("Email").value;
+
+        //alert(email);
+
+        // Custom "Forced" Validation For State
+        if (state == "") {
+            document.getElementById("StateValidationMessage").innerHTML = "Please Select State";
+            valid = false;
+        }
+        else {
+            document.getElementById("StateValidationMessage").innerHTML = "";
+            valid = true;
+        }
+
+        if (newPassword != "") {
+            if (newPassword.length < 8) {
+                document.getElementById("NewPasswordValidationMessage").innerHTML = "Password must be at least 8 characters";
+                valid = false;
+            }
+            else {
+                document.getElementById("NewPasswordValidationMessage").innerHTML = "";
+                valid = true;
+            }
+            if (confirmPassword == "") {
+                document.getElementById("ConfirmPasswordValidationMessage").innerHTML = "Please confirm new password";
+                valid = false;
+            }
+            else {
+                document.getElementById("ConfirmPasswordValidationMessage").innerHTML = "";
+                valid = true;
+            }
+            if (oldPassword == "") {
+                document.getElementById("OldPasswordValidationMessage").innerHTML = "Please enter old password";
+                valid = false;
+            }
+            else {
+                document.getElementById("OldPasswordValidationMessage").innerHTML = "";
+                valid = true;
+            }
+            if (newPassword != confirmPassword) {
+                document.getElementById("PasswordMatchValidationMessage").innerHTML = "Passwords do not match";
+                valid = false;
+            }
+            else {
+                document.getElementById("PasswordMatchValidationMessage").innerHTML = "";
+                valid = true;
+            }
+        }
+
+        if (email == "") {
+            document.getElementById("EmailValidationMessage").innerHTML = "mail is required";
+            valid = false;
+        }
+        else {
+            document.getElementById("EmailValidationMessage").innerHTML = "";
+            valid = true;
+        }
+
+        return valid;
+    }
+</script>
+
+@using (Html.BeginForm("UpdateUser", "Users", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <table style="width:70%; margin-left:auto; margin-right:auto;">
+        <tr>
+            <td>
+                <h4>Update Registered User Information</h4>
+                <hr />
+                @Html.HiddenFor(model => model.UserId)
+
+
+                <table style="width:100%; margin-left:auto; margin-right:auto; padding:10px">
+                    <tr>
+                        <td style="vertical-align:top; border-right-color:black; border-right-style:solid; border-right-width:1px;">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <input type="submit" id="submit" name="submit" value="Submit" class="PromoCode" onclick="valid_form()" />
+                                        <input type="button" id="cancel" name="cancel" value="Cancel" class="PromoCode" onclick="@("window.location.href='" + @Url.Action("ReturningUser", "Users") + "'");" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="text-danger">@ViewBag.Message</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="vertical-align:top; border-right-color:black; border-right-style:solid; border-right-width:1px; padding:20px;">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <b>
+                                                @Html.Label("User Name")
+                                            </b>
+                                            <br />
+                                            @Model.UserName
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <b>
+                                                @Html.Label("New Password")
+                                            </b>
+                                            <br />
+                                            <input type="password" name="NewPassword" id="NewPassword" class="form-control" onchange="return valid_form()" />
+                                            <div id="Password1">
+                                                <i class="fa fa-eye-slash input-field" onclick="togglePassword()" style="right:5px;"></i>
+                                            </div>
+                                            <div id="NewPasswordValidationMessage" name="NewPasswordValidationMessage" class="text-danger"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <b>
+                                                @Html.Label("Confirm Password")
+                                            </b>
+                                            <br />
+                                            <input type="password" name="ConfirmPassword" id="ConfirmPassword" class="form-control" onchange="return valid_form()" />
+                                            <div id="Password2">
+                                                <i class="fa fa-eye-slash input-field" onclick="togglePassword()" style="right:5px;"></i>
+                                            </div>
+                                            <div id="ConfirmPasswordValidationMessage" name="ConfirmPasswordValidationMessage" class="text-danger"></div>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <b>
+                                                @Html.Label("Old Password")
+                                            </b>
+                                            <br />
+                                            <input type="password" name="OldPassword" id="OldPassword" class="form-control" onchange="return valid_form()" />
+                                            <div id="Password3">
+                                                <i class="fa fa-eye-slash input-field" onclick="togglePassword()" style="right:5px;"></i>
+                                            </div>
+                                            <div id="OldPasswordValidationMessage" name="OldPasswordValidationMessage" class="text-danger"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr><td><div id="PasswordMatchValidationMessage" name="PasswordMatchValidationMessage" class="text-danger"></div></td></tr>
+                            </table>
+                        </td>
+                        <td style="vertical-align:top; padding:20px;">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <b>@Html.Label("First Name")</b>
+                                        <br />
+                                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                                    </td>
+                                    <td>
+                                        <b>
+                                            @Html.Label("Last Name")
+                                        </b>
+                                        <br />@Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+                            </table>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <b>@Html.Label("Email")</b>
+                                        <br />
+                                        <input type="Email" name="Email" id="Email" class="form-control" value="@Model.Email" onblur="valid_form()" />
+                                        <div id="EmailValidationMessage" name="EmailValidationMessage" class="text-danger"></div>
+                                    </td>
+                                    <td>
+                                        <b>
+                                            @Html.Label("Phone Number")
+                                        </b>
+                                        <br />
+                                        @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+                            </table>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <b>@Html.Label("Street Address")</b>
+                                        <br />
+                                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                    </td>
+                                    <td>
+                                        <b>
+                                            @Html.Label("Apt/Ste")
+                                        </b>
+                                        <br />
+                                        @Html.EditorFor(model => model.Address2, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Address2, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+                            </table>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <b>@Html.Label("City")</b>
+                                        <br />
+                                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                                    </td>
+                                    <td>
+                                        <b>
+                                            @Html.Label("State")
+                                        </b>
+                                        <br />
+                                        @Html.DropDownList("State", null, "-- Select State --", htmlAttributes: new { @class = "form-control", onchange = "valid_form()" })
+                                        <div id="StateValidationMessage" class="text-danger"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <b>
+                                            @Html.Label("Zip")
+                                        </b>
+                                        <br />
+                                        @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <hr />
+            </td>
+        </tr>
+    </table>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,485 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CellableModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Carrier">
+    <Key>
+      <PropertyRef Name="CarrierId" />
+    </Key>
+    <Property Name="CarrierId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CarrierName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ImageName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="DefectGroup">
+    <Key>
+      <PropertyRef Name="DefectGroupId" />
+    </Key>
+    <Property Name="DefectGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GroupName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DisplayOrder" Type="int" />
+  </EntityType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="OrderID" />
+    </Key>
+    <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Amount" Type="money" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="OrderStatusId" Type="int" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="PaymentTypeId" Type="int" />
+    <Property Name="PromoId" Type="int" />
+    <Property Name="UserPhoneId" Type="int" />
+    <Property Name="PaymentUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="USPSTrackingId" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="OrderStatus">
+    <Key>
+      <PropertyRef Name="OrderStatusId" />
+    </Key>
+    <Property Name="OrderStatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StatusType" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PaymentTypes">
+    <Key>
+      <PropertyRef Name="PaymentTypeId" />
+    </Key>
+    <Property Name="PaymentTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PaymentType" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Permissions">
+    <Key>
+      <PropertyRef Name="PermissionId" />
+    </Key>
+    <Property Name="PermissionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PermissionType" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Phones">
+    <Key>
+      <PropertyRef Name="PhoneId" />
+    </Key>
+    <Property Name="PhoneId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Brand" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ImageName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="PhoneVersion">
+    <Key>
+      <PropertyRef Name="VersionId" />
+    </Key>
+    <Property Name="VersionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Version" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="BaseCost" Type="money" />
+    <Property Name="ImageName" Type="nvarchar" MaxLength="50" />
+    <Property Name="PhoneId" Type="int" />
+    <Property Name="StorageCapacityId" Type="int" />
+    <Property Name="Views" Type="int" />
+    <Property Name="Purchases" Type="int" />
+    <Property Name="Active" Type="bit" />
+  </EntityType>
+  <EntityType Name="PossibleDefects">
+    <Key>
+      <PropertyRef Name="PossibleDefectId" />
+    </Key>
+    <Property Name="PossibleDefectId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DefectName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="DefectCost" Type="money" Nullable="false" />
+    <Property Name="VersionId" Type="int" Nullable="false" />
+    <Property Name="DefectGroupId" Type="int" />
+    <Property Name="GroupImage" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Promos">
+    <Key>
+      <PropertyRef Name="PromoId" />
+    </Key>
+    <Property Name="PromoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PromoCode" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="PromoName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="StartDate" Type="date" Nullable="false" />
+    <Property Name="EndDate" Type="date" Nullable="false" />
+    <Property Name="Discount" Type="decimal" Precision="3" Scale="2" Nullable="false" />
+    <Property Name="DollarValue" Type="money" />
+  </EntityType>
+  <EntityType Name="SlideShow">
+    <Key>
+      <PropertyRef Name="SlideId" />
+    </Key>
+    <Property Name="SlideId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ImageName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="States">
+    <Key>
+      <PropertyRef Name="StateID" />
+    </Key>
+    <Property Name="StateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StateAbbrv" Type="varchar" MaxLength="2" Nullable="false" />
+    <Property Name="StateName" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StorageCapacity">
+    <Key>
+      <PropertyRef Name="StorageCapacityId" />
+    </Key>
+    <Property Name="StorageCapacityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StorageCapacity" Type="int" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="SystemSettings">
+    <Key>
+      <PropertyRef Name="SettingId" />
+    </Key>
+    <Property Name="SettingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Value" Type="nvarchar" MaxLength="2000" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Testimonials">
+    <Key>
+      <PropertyRef Name="TestimonialId" />
+    </Key>
+    <Property Name="TestimonialId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Text" Type="nvarchar" MaxLength="250" />
+    <Property Name="Rating" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="Published" Type="bit" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="PermissionId" Type="int" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Address2" Type="nvarchar" MaxLength="100" />
+    <Property Name="City" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="State" Type="nvarchar" MaxLength="2" Nullable="false" />
+    <Property Name="Zip" Type="int" Nullable="false" />
+    <Property Name="PhoneNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastLogin" Type="datetime" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="UserAnswers">
+    <Key>
+      <PropertyRef Name="AnswerId" />
+    </Key>
+    <Property Name="AnswerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Answer" Type="bit" Nullable="false" />
+    <Property Name="PossibleDefectId" Type="int" Nullable="false" />
+    <Property Name="UserPhoneId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserPhone">
+    <Key>
+      <PropertyRef Name="UserPhoneId" />
+    </Key>
+    <Property Name="UserPhoneId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="PhoneId" Type="int" Nullable="false" />
+    <Property Name="CarrierId" Type="int" Nullable="false" />
+    <Property Name="VersionId" Type="int" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="VersionCapacity">
+    <Key>
+      <PropertyRef Name="VersionCapacityId" />
+    </Key>
+    <Property Name="VersionCapacityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VersionId" Type="int" Nullable="false" />
+    <Property Name="StorageCapacityId" Type="int" Nullable="false" />
+    <Property Name="Value" Type="decimal" Precision="18" Scale="0" />
+  </EntityType>
+  <Association Name="FK__PhoneVers__Phone__5070F446">
+    <End Role="Phones" Type="Self.Phones" Multiplicity="0..1" />
+    <End Role="PhoneVersion" Type="Self.PhoneVersion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Phones">
+        <PropertyRef Name="PhoneId" />
+      </Principal>
+      <Dependent Role="PhoneVersion">
+        <PropertyRef Name="PhoneId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_106">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_110">
+    <End Role="PossibleDefects" Type="Self.PossibleDefects" Multiplicity="1" />
+    <End Role="UserAnswers" Type="Self.UserAnswers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PossibleDefects">
+        <PropertyRef Name="PossibleDefectId" />
+      </Principal>
+      <Dependent Role="UserAnswers">
+        <PropertyRef Name="PossibleDefectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_125">
+    <End Role="PhoneVersion" Type="Self.PhoneVersion" Multiplicity="1" />
+    <End Role="PossibleDefects" Type="Self.PossibleDefects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PhoneVersion">
+        <PropertyRef Name="VersionId" />
+      </Principal>
+      <Dependent Role="PossibleDefects">
+        <PropertyRef Name="VersionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_137">
+    <End Role="UserPhone" Type="Self.UserPhone" Multiplicity="1" />
+    <End Role="UserAnswers" Type="Self.UserAnswers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserPhone">
+        <PropertyRef Name="UserPhoneId" />
+      </Principal>
+      <Dependent Role="UserAnswers">
+        <PropertyRef Name="UserPhoneId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_151">
+    <End Role="OrderStatus" Type="Self.OrderStatus" Multiplicity="1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrderStatus">
+        <PropertyRef Name="OrderStatusId" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="OrderStatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_171">
+    <End Role="Carrier" Type="Self.Carrier" Multiplicity="1" />
+    <End Role="UserPhone" Type="Self.UserPhone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Carrier">
+        <PropertyRef Name="CarrierId" />
+      </Principal>
+      <Dependent Role="UserPhone">
+        <PropertyRef Name="CarrierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_174">
+    <End Role="PhoneVersion" Type="Self.PhoneVersion" Multiplicity="1" />
+    <End Role="UserPhone" Type="Self.UserPhone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PhoneVersion">
+        <PropertyRef Name="VersionId" />
+      </Principal>
+      <Dependent Role="UserPhone">
+        <PropertyRef Name="VersionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_175">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserPhone" Type="Self.UserPhone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="UserPhone">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_178">
+    <End Role="Permissions" Type="Self.Permissions" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Permissions">
+        <PropertyRef Name="PermissionId" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="PermissionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_190">
+    <End Role="Phones" Type="Self.Phones" Multiplicity="1" />
+    <End Role="UserPhone" Type="Self.UserPhone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Phones">
+        <PropertyRef Name="PhoneId" />
+      </Principal>
+      <Dependent Role="UserPhone">
+        <PropertyRef Name="PhoneId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_PaymentTypes">
+    <End Role="PaymentTypes" Type="Self.PaymentTypes" Multiplicity="0..1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PaymentTypes">
+        <PropertyRef Name="PaymentTypeId" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="PaymentTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_Promos">
+    <End Role="Promos" Type="Self.Promos" Multiplicity="0..1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Promos">
+        <PropertyRef Name="PromoId" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="PromoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PossibleDefects_DefectGroup">
+    <End Role="DefectGroup" Type="Self.DefectGroup" Multiplicity="0..1" />
+    <End Role="PossibleDefects" Type="Self.PossibleDefects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DefectGroup">
+        <PropertyRef Name="DefectGroupId" />
+      </Principal>
+      <Dependent Role="PossibleDefects">
+        <PropertyRef Name="DefectGroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VersionCapacity_PhoneVersion">
+    <End Role="PhoneVersion" Type="Self.PhoneVersion" Multiplicity="1" />
+    <End Role="VersionCapacity" Type="Self.VersionCapacity" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PhoneVersion">
+        <PropertyRef Name="VersionId" />
+      </Principal>
+      <Dependent Role="VersionCapacity">
+        <PropertyRef Name="VersionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VersionCapacity_StorageCapacity">
+    <End Role="StorageCapacity" Type="Self.StorageCapacity" Multiplicity="1" />
+    <End Role="VersionCapacity" Type="Self.VersionCapacity" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StorageCapacity">
+        <PropertyRef Name="StorageCapacityId" />
+      </Principal>
+      <Dependent Role="VersionCapacity">
+        <PropertyRef Name="StorageCapacityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="GetOrderDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UserId" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="CellableModelStoreContainer">
+    <EntitySet Name="Carrier" EntityType="Self.Carrier" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DefectGroup" EntityType="Self.DefectGroup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrderStatus" EntityType="Self.OrderStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PaymentTypes" EntityType="Self.PaymentTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Permissions" EntityType="Self.Permissions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Phones" EntityType="Self.Phones" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhoneVersion" EntityType="Self.PhoneVersion" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PossibleDefects" EntityType="Self.PossibleDefects" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Promos" EntityType="Self.Promos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SlideShow" EntityType="Self.SlideShow" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="States" EntityType="Self.States" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StorageCapacity" EntityType="Self.StorageCapacity" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SystemSettings" EntityType="Self.SystemSettings" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Testimonials" EntityType="Self.Testimonials" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserAnswers" EntityType="Self.UserAnswers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserPhone" EntityType="Self.UserPhone" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VersionCapacity" EntityType="Self.VersionCapacity" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__PhoneVers__Phone__5070F446" Association="Self.FK__PhoneVers__Phone__5070F446">
+      <End Role="Phones" EntitySet="Phones" />
+      <End Role="PhoneVersion" EntitySet="PhoneVersion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_106" Association="Self.FK_106">
+      <End Role="User" EntitySet="User" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_110" Association="Self.FK_110">
+      <End Role="PossibleDefects" EntitySet="PossibleDefects" />
+      <End Role="UserAnswers" EntitySet="UserAnswers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_125" Association="Self.FK_125">
+      <End Role="PhoneVersion" EntitySet="PhoneVersion" />
+      <End Role="PossibleDefects" EntitySet="PossibleDefects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_137" Association="Self.FK_137">
+      <End Role="UserPhone" EntitySet="UserPhone" />
+      <End Role="UserAnswers" EntitySet="UserAnswers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_151" Association="Self.FK_151">
+      <End Role="OrderStatus" EntitySet="OrderStatus" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_171" Association="Self.FK_171">
+      <End Role="Carrier" EntitySet="Carrier" />
+      <End Role="UserPhone" EntitySet="UserPhone" />
+    </AssociationSet>
+    <AssociationSet Name="FK_174" Association="Self.FK_174">
+      <End Role="PhoneVersion" EntitySet="PhoneVersion" />
+      <End Role="UserPhone" EntitySet="UserPhone" />
+    </AssociationSet>
+    <AssociationSet Name="FK_175" Association="Self.FK_175">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserPhone" EntitySet="UserPhone" />
+    </AssociationSet>
+    <AssociationSet Name="FK_178" Association="Self.FK_178">
+      <End Role="Permissions" EntitySet="Permissions" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
+    <AssociationSet Name="FK_190" Association="Self.FK_190">
+      <End Role="Phones" EntitySet="Phones" />
+      <End Role="UserPhone" EntitySet="UserPhone" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_PaymentTypes" Association="Self.FK_Orders_PaymentTypes">
+      <End Role="PaymentTypes" EntitySet="PaymentTypes" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_Promos" Association="Self.FK_Orders_Promos">
+      <End Role="Promos" EntitySet="Promos" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PossibleDefects_DefectGroup" Association="Self.FK_PossibleDefects_DefectGroup">
+      <End Role="DefectGroup" EntitySet="DefectGroup" />
+      <End Role="PossibleDefects" EntitySet="PossibleDefects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VersionCapacity_PhoneVersion" Association="Self.FK_VersionCapacity_PhoneVersion">
+      <End Role="PhoneVersion" EntitySet="PhoneVersion" />
+      <End Role="VersionCapacity" EntitySet="VersionCapacity" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VersionCapacity_StorageCapacity" Association="Self.FK_VersionCapacity_StorageCapacity">
+      <End Role="StorageCapacity" EntitySet="StorageCapacity" />
+      <End Role="VersionCapacity" EntitySet="VersionCapacity" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

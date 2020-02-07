@@ -20,13 +20,13 @@
                             @if (Session["VersionId"] == null)
                             {
                                 <a href="@Url.Action("PhoneVersions", "Phones", new { brandId = Session["BrandId"], carrierId = item.CarrierId })" class="btn">
-                                    <img src="~/Pictures/@item.ImageName" alt="@item.CarrierName">
+                                    <img src="@ViewBag.imageLocation/@item.ImageName" alt="@item.CarrierName">
                                 </a>
                             }
                             else
                             {
                                 <a href="@Url.Action("DefectQuestions", "Phones", new { id = int.Parse(Session["VersionId"].ToString()) })" class="btn">
-                                    <img src="~/Pictures/@item.ImageName" alt="@item.CarrierName">
+                                    <img src="@ViewBag.imageLocation/@item.ImageName" alt="@item.CarrierName">
                                 </a>
                             }
                         </td>

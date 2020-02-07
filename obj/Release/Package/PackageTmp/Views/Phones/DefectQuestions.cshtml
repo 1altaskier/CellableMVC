@@ -1,0 +1,171 @@
+﻿@model IEnumerable<CellableMVC.Models.PossibleDefect>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    function ValidateForm() {
+
+        var isValid;
+
+        if (document.getElementById("hdCapacity").value == "") {
+            document.getElementById("CapacityValidationMessage").innerHTML = "* Please Select You Phone's Storage Capacity";
+            isValid = false
+        }
+        else {
+            document.getElementById("CapacityValidationMessage").innerHTML = "";
+            isValid = true;
+        }
+
+        return isValid;
+    }
+
+    function SetField(field) {
+        if (field == "capacity") {
+            document.getElementById("hdCapacity").value = "GoodToGo";
+            document.getElementById("CapacityValidationMessage").innerHTML = "";
+        }
+    }
+</script>
+
+<table style="width:80%; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td>
+            <h4>@ViewBag.Title</h4>
+            <hr />
+            <p>
+                @ViewBag.Text
+            </p>
+            <div class="text-danger" style="text-align:center">@ViewBag.Message</div>
+        </td>
+    </tr>
+</table>
+
+@using (Html.BeginForm("PricePhone", "Phones", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <input id="id" name="id" type="hidden" value="@Session["VersionId"]" />
+    <table style="width:70%; margin-left:auto; margin-right:auto; font-family:'HP Simplified'">
+        <tr>
+            <td style="text-align:center; vertical-align:top; width:30%;">
+                <div style="height:50px;"></div>
+                <div style="position:fixed; width:300px">
+                    @Html.Raw(Session["PhoneBrandName"])
+                    <br />
+                    @Html.Raw(Session["VersionName"])
+                    <br />
+                    <img src="~/Pictures/@Session["ImageLocation"]" style="height:250px; width:130px;" />
+                    <br />
+                    Please Note: We do not pay for devices that have been reported lost or stolen.
+                    <p>
+                        <input type="submit" class="button" value="Price Phone" onclick=" return ValidateForm()" />
+                        <input type="reset" class="button" value="Reset Form" />
+                    </p>
+                </div>
+            </td>
+            <td style="text-align:left;">
+                <table style="width:80%; margin-left:auto; margin-right:auto;">
+                    <tr>
+                        <td>
+                            <div style=" margin-right: 50px; height: 125px; border: medium solid #ccc; width: 600px; border-radius: 15px; margin-left: 24px;">
+                                <div style="text-align:left; background-color:lightgray;">
+                                    &nbsp;&nbsp;&nbsp;
+                                    <p style="text-align:left; background-color:lightgray; margin-top: -10px; width: 573px; margin-left: 17px; border-bottom: thin solid #ccc; ">
+                                        Storage Capacity
+                                    </p>
+                                </div>
+                                <div style="display:inline-block; width:50px;"></div>
+                                @foreach (var capacities in ViewBag.Capacities)
+                                {
+                                    foreach (var versionCapacities in ViewBag.PhoneCapacities)
+                                    {
+                                        if (capacities.StorageCapacityId == versionCapacities.StorageCapacityId)
+                                        {
+                                            <input id="@capacities.StorageCapacityId" type="radio" name="capacity" value="@versionCapacities.VersionCapacityId" onchange="SetField('capacity')" />@capacities.Description @Html.Raw("&nbsp; &nbsp;")
+                                        }
+                                    }
+                                }
+                                <br />
+                                <div style="display:inline-block; width:50px;"></div><div id="CapacityValidationMessage" name="CapacityValidationMessage" style="display:inline-block" class="text-danger"></div>
+                                <input type="hidden" name="hdCapacity" id="hdCapacity" />
+                            </div>
+                        </td>
+                    </tr>
+                    @foreach (var group in Model)
+                    {
+                        if (group.DefectGroup.GroupName == "Default")
+                        {
+                            <tr>
+                                <td style="vertical-align:middle;">
+                                    <div style="vertical-align:bottom; margin-right: 50px; height: 88px; border: medium solid #ccc; width: 600px; border-radius: 15px; margin-left: 24px;">
+                                        <div style="height:12px"></div>
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td style="width:5%"></td>
+                                                <td style="width:15%; text-align:left"><img src="~/Pictures/@Html.DisplayFor(modelItem => group.GroupImage)" /></td>
+                                                <td style="width:55%; text-align:left; font-size:large;">@Html.DisplayFor(modelItem => group.DefectName)</td>
+                                                <td style="width:10%; text-align:right">
+                                                    <input type="checkbox"
+                                                           id="@Html.DisplayFor(modelItem => group.PossibleDefectId)"
+                                                           name="@Html.DisplayFor(modelItem => group.PossibleDefectId)"
+                                                           value="@Html.DisplayFor(modelItem => group.PossibleDefectId)@Html.Raw("_")@Html.DisplayFor(modelItem => group.DefectCost)">
+                                                </td>
+                                                <td style="width:15%"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    @{var lastGroupId = 0; }
+                    @foreach (var group in Model)
+                    {
+                        // Don't Display Default Groups
+                        if (group.DefectGroup.GroupName != "Default")
+                        {
+                            // Don't Repeat an Already Created Group
+                            if (lastGroupId != group.DefectGroup.DefectGroupId)
+                            {
+                                lastGroupId = group.DefectGroup.DefectGroupId;
+                                <tr>
+                                    <td>
+                                        <div style=" margin-right: 50px; height: 125px; border: medium solid #ccc; width: 600px; border-radius: 15px; margin-left: 24px;">
+                                            &nbsp;&nbsp;&nbsp;
+                                            <p style="text-align:left; margin-top: -10px; font-size:large; width: 573px; margin-left: 17px; border-bottom: thin solid #ccc; ">
+                                                @Html.DisplayFor(modelItem => group.DefectGroup.GroupName)
+                                            </p>
+                                            <div style="width:30px; display:inline-block"></div>
+                                            @foreach (var defect in Model)
+                                            {
+                                                if (group.DefectGroupId == defect.DefectGroupId)
+                                                {
+                                                    <input id="@defect.PossibleDefectId" type="radio" name="@group.DefectGroupId" value="@defect.PossibleDefectId@Html.Raw("_")@Html.DisplayFor(modelItem => defect.DefectCost)"
+                                                           @if (defect.DefectName == "Yes") { @Html.Raw("checked") ; } /> @Html.Raw("&nbsp;")@Html.DisplayFor(modelItem => defect.DefectName)
+                                                        @Html.Raw("&nbsp;&nbsp;&nbsp;")
+                                                    }
+                                                }
+
+                                            @if (@group.DefectGroupId != 10 && @group.DefectGroupId != 11)
+                                            {
+                                                <input id="x" type="radio" name="@group.DefectGroupId" value="x_0" checked /> @Html.Raw("None")
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table style="width:70%; margin-left:auto; margin-right:auto;">
+        <tr>
+            <td style="text-align:center; vertical-align:middle; height:150px;">
+                @ViewBag.Footer
+            </td>
+        </tr>
+    </table>
+}
