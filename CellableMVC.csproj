@@ -64,6 +64,9 @@
     <Reference Include="SendGrid, Version=9.12.6.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
       <HintPath>packages\SendGrid.9.12.6\lib\net452\SendGrid.dll</HintPath>
     </Reference>
+    <Reference Include="Shippo, Version=2.1.13.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Shippo.2.1.13\lib\net45\Shippo.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />

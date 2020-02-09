@@ -89,3 +89,5 @@ C:\Projects\GIT Repositories\CellableMVC\obj\Debug\CellableMVC.csprojAssemblyRef
 C:\Projects\GIT Repositories\CellableMVC\bin\SendGrid.dll
 C:\Projects\GIT Repositories\CellableMVC\bin\SendGrid.pdb
 C:\Projects\GIT Repositories\CellableMVC\bin\SendGrid.xml
+C:\Projects\GIT Repositories\CellableMVC\bin\Shippo.dll
+C:\Projects\GIT Repositories\CellableMVC\bin\Shippo.xml

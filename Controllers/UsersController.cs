@@ -7,10 +7,10 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using CellableMVC.Helpers;
-using System.Data.SqlClient;
 using System.Data;
 using System.Data.Entity;
-using CellableMVC.Controllers;
+using Shippo;
+using System.Collections;
 
 namespace CellableMVC.Controllers
 {
@@ -20,6 +20,7 @@ namespace CellableMVC.Controllers
         private string USPSAPIPassword = WebConfigurationManager.AppSettings["USPSAPIPassword"];
         private string AdminEmail = WebConfigurationManager.AppSettings["AdminEmail"];
         private string phoneImageLocation = WebConfigurationManager.AppSettings["PhoneImageLocation"];
+        private string ShippoTestAPIToken = WebConfigurationManager.AppSettings["ShippoTestAPIToken"];
 
         private CellableEntities db = new CellableEntities();
 
@@ -401,6 +402,10 @@ namespace CellableMVC.Controllers
                     db.SaveChanges();
 
                     dbContextTransaction.Commit();
+
+                    // Get/Save Shipping Label
+                    MailController mail = new MailController();
+                    mail.GetShippingLabel();
 
                     // Send Confirmation Email(s)
                     EmailController email = new EmailController();
