@@ -31,6 +31,7 @@
     <Property Name="UserPhoneId" Type="int" />
     <Property Name="PaymentUserName" Type="nvarchar" MaxLength="50" />
     <Property Name="USPSTrackingId" Type="nvarchar" MaxLength="50" />
+    <Property Name="MailingLabel" Type="nvarchar" MaxLength="500" />
   </EntityType>
   <EntityType Name="OrderStatus">
     <Key>
@@ -121,16 +122,6 @@
     <Property Name="StorageCapacityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="StorageCapacity" Type="int" Nullable="false" />
     <Property Name="Description" Type="varchar" MaxLength="10" />
-  </EntityType>
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="SystemSettings">
     <Key>
@@ -410,7 +401,6 @@
     <EntitySet Name="SlideShow" EntityType="Self.SlideShow" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="States" EntityType="Self.States" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="StorageCapacity" EntityType="Self.StorageCapacity" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SystemSettings" EntityType="Self.SystemSettings" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Testimonials" EntityType="Self.Testimonials" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />

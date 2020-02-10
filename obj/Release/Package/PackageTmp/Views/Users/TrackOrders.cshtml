@@ -80,10 +80,16 @@
         }
     });
 
-    function popupWindow(trackingNumber, win, w, h) {
+    function popupTrackingWindow(trackingNumber, win, w, h) {
         const y = win.top.outerHeight / 2 + win.top.screenY - (h / 2);
         const x = win.top.outerWidth / 2 + win.top.screenX - (w / 2);
         return win.open("/Mail/_USPSTrackingMessage?trackingNumber=" + trackingNumber, "USPS Tracking", 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + y + ', left=' + x);
+    }
+
+    function popupLabelWindow(url, win, w, h) {
+        const y = win.top.outerHeight / 2 + win.top.screenY - (h / 2);
+        const x = win.top.outerWidth / 2 + win.top.screenX - (w / 2);
+        return win.open(url, "Print Mailing Label", 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + y + ', left=' + x);
     }
 </script>
 
@@ -149,7 +155,10 @@
             @Html.DisplayNameFor(model => model.PaymentUserName)
         </th>
         <th>
-            USPS Tracking
+            @Html.DisplayNameFor(model => model.MailLabel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TrackingNumber)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CreateDate)
@@ -213,7 +222,13 @@
                 @Html.DisplayFor(modelItem => item.PaymentUserName)
             </td>
             <td>
-                <div onclick="popupWindow('EJ958083578US', window, 400, 400)" style="color:blue; cursor:pointer;">EJ958083578US</div>
+                @if (item.MailLabel != null)
+                {
+                    <div onclick="popupLabelWindow('@item.MailLabel', window, 800, 600)" style="color:blue; cursor:pointer;">Print Label</div>
+                }
+            </td>
+            <td>
+                <div onclick="popupTrackingWindow('@item.TrackingNumber', window, 400, 400)" style="color:blue; cursor:pointer;">@item.TrackingNumber</div>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreateDate)
