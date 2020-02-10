@@ -156,32 +156,6 @@ namespace CellableMVC.Controllers
                     db.Configuration.ValidateOnSaveEnabled = false;
                     db.SaveChanges();
                 }
-
-                // Save Label URL & Tracking # to the Database
-                //Order order = new Order();
-                //order.OrderID = orderId;
-                //order.MailingLabel = transaction.LabelURL.ToString();
-                //order.USPSTrackingId = transaction.TrackingNumber.ToString();
-                //order.CreateDate = DateTime.Now;
-
-                //db.Orders.Attach(order);
-
-                //db.Entry(order).Property(x => x.Amount).IsModified = false;
-                //db.Entry(order).Property(x => x.UserId).IsModified = false;
-                //db.Entry(order).Property(x => x.OrderStatusId).IsModified = false;
-                //db.Entry(order).Property(x => x.CreateDate).IsModified = false;
-                //db.Entry(order).Property(x => x.CreateBy).IsModified = false;
-                //db.Entry(order).Property(x => x.PaymentTypeId).IsModified = false;
-                //db.Entry(order).Property(x => x.PromoId).IsModified = false;
-                //db.Entry(order).Property(x => x.UserPhoneId).IsModified = false;
-                //db.Entry(order).Property(x => x.PaymentUserName).IsModified = false;
-
-                //db.Entry(order).Property(x => x.MailingLabel).IsModified = true;
-                //db.Entry(order).Property(x => x.USPSTrackingId).IsModified = true;
-
-                //db.Entry(order).State = EntityState.Modified;
-                //db.Configuration.ValidateOnSaveEnabled = false;
-                //db.SaveChanges();
             }
             else
             {
