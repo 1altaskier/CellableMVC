@@ -5,43 +5,77 @@
 }
 
 <style>
-        .slider-frame {
-            overflow: hidden;
-            height: 400px;
-            width: 1200px;
-            margin-left: 200px;
-            margin-top: 20px;
+    .slider-frame {
+        overflow: hidden;
+        height: 400px;
+        width: 1200px;
+        margin-left: 200px;
+        margin-top: 20px;
+    }
+    /*---------------SLIDE ANIMATION---------------------*/
+    @@-webkit-keyframes slide-animation {
+        0% {
+            left: 0px;
         }
-        /*---------------SLIDE ANIMATION---------------------*/
-        @@-webkit-keyframes slide-animation{
-            0% {left:0px;}
-            10% {left:0px;}
-            20% {left:1200px;}
-            30% {left:1200px;}
-            40% {left:2400px;}
-            50% {left:2400px;}
-            60% {left:1200px;}
-            70% {left:1200px;}
-            80% {left: 0px;}
-            90% {left: 0px;}
-            100% {left: 0px;}
+
+        10% {
+            left: 0px;
         }
-        .slider-images {
-            width: 3600px;
-            height: 400px;
-            position: relative;
-            margin: 0 0 0 -2400px;
-            -webkit-animation-name: slide-animation;
-            -webkit-animation-duration: 33s;
-            -webkit-animation-iteration-count: infinite;
-            -webkit-animation-play-state: running;
+
+        20% {
+            left: 1200px;
         }
-        .img-container {
-            height: 400px;
-            width: 1200px;
-            position: relative;
-            float: left;
+
+        30% {
+            left: 1200px;
         }
+
+        40% {
+            left: 2400px;
+        }
+
+        50% {
+            left: 2400px;
+        }
+
+        60% {
+            left: 1200px;
+        }
+
+        70% {
+            left: 1200px;
+        }
+
+        80% {
+            left: 0px;
+        }
+
+        90% {
+            left: 0px;
+        }
+
+        100% {
+            left: 0px;
+        }
+    }
+
+    .slider-images {
+        width: 3600px;
+        height: 400px;
+        position: relative;
+        margin: 0 0 0 -2400px;
+        -webkit-animation-name: slide-animation;
+        -webkit-animation-duration: 33s;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-play-state: running;
+    }
+
+    .img-container {
+        height: 400px;
+        width: 1200px;
+        position: relative;
+        float: left;
+    }
 </style>
 
 <div style="height:50px"></div>
@@ -64,6 +98,26 @@
     </tr>
     <tr>
         <td style="width:100%; text-align:center" colspan="2">
+            <table style="width:70%; text-align:center; margin-left:auto; margin-right:auto;">
+                <tr>
+                    @foreach (var item in Model)
+                    {
+                        <td style="width:33%; text-align:center;">
+                            <a class="btn btn-default" href="/Phones/Carriers/@item.PhoneId" style="font-size: 50px; height: 350px; left: 58px; width: 250px; padding: 10px; border-radius: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); margin-top: 50px; ">
+                                <img src="@ViewBag.imageLocation/@item.ImageName" style="width: 185px; height: 224px; left: 200px; margin-top: 27px; padding-top: 10px;" />
+                                <p style="font-family: 'HP Simplified'; padding-top: 50px; font-size: 25px; width: 249px; height: 70px; color: #000; text-align: center; margin-right: 50px;">@Html.DisplayFor(modelItem => item.Brand)</p>
+                            </a>
+                        </td>
+                    }
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr><td style="height:50px"></td></tr>
+</table>
+<table style="width:100%; text-align:center; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td style="width:100%; text-align:center" colspan="2">
             <div class="slider-frame">
                 <div class="slider-images">
                     @foreach (var item in ViewBag.SlideShow)
@@ -76,20 +130,6 @@
             </div>
         </td>
     </tr>
-    <tr><td style="height:50px"></td></tr>
-</table>
-<table style="width:70%; text-align:center; margin-left:auto; margin-right:auto;">
-    <tr>
-        @foreach (var item in Model)
-        {
-            <td style="width:33%; text-align:center;">
-                <a class="btn btn-default" href="/Phones/Carriers/@item.PhoneId" style="font-size: 50px; height: 350px; left: 58px; width: 250px; padding: 10px; border-radius: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); margin-top: 50px; ">
-                    <img src="@ViewBag.imageLocation/@item.ImageName" style="width: 185px; height: 224px; left: 200px; margin-top: 27px; padding-top: 10px;" />
-                    <p style="font-family: 'HP Simplified'; padding-top: 50px; font-size: 25px; width: 249px; height: 70px; color: #000; text-align: center; margin-right: 50px;">@Html.DisplayFor(modelItem => item.Brand)</p>
-                </a>
-            </td>
-        }
-    </tr>
 </table>
 <table style="width:100%; margin-left:auto; margin-right:auto;">
     <tr>
@@ -98,3 +138,4 @@
         </td>
     </tr>
 </table>
+
