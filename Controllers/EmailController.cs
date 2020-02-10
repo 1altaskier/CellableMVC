@@ -82,6 +82,8 @@ namespace CellableMVC.Controllers
             string paymentType = "";
             string paymentUserName = "";
             string phoneVersion = "";
+            string trackingNumber = "";
+            string mailLabel = "";
 
             var results = (from o in db.Orders.DefaultIfEmpty()
                            join up in db.UserPhones on o.UserId equals up.UserId into userPhoneGrp
@@ -108,7 +110,10 @@ namespace CellableMVC.Controllers
                                amount = o.Amount,
                                phoneVersion = pv.Version,
                                paymentType = pt.PaymentType1,
-                               paymentUserName = o.PaymentUserName});
+                               paymentUserName = o.PaymentUserName,
+                               trackingNumber = o.USPSTrackingId,
+                               mailLabel = o.MailingLabel
+                           });
 
             foreach(var item in results)
             {
@@ -120,6 +125,8 @@ namespace CellableMVC.Controllers
                 paymentType = item.paymentType;
                 paymentUserName = item.paymentUserName;
                 phoneVersion = item.phoneVersion;
+                trackingNumber = item.trackingNumber;
+                mailLabel = item.mailLabel;
             }
 
             string HTML = "<table style='margin-top: 50px;'>" +
@@ -228,11 +235,11 @@ namespace CellableMVC.Controllers
                         "</td>" +
                     "</tr>" +
                     "<tr>" +
-                        "<td><b>Click <a href='https://cellablepictures.blob.core.windows.net/systemimages/SampleMailingLabel.png'>HERE</a> to download your shipping label</b>" +
+                        "<td><b>Click <a href='" + mailLabel + "'>HERE</a> to download your shipping label</b>" +
                         "</td>" +
                     "</tr>" +
                     "<tr>" +
-                        "<td><b>Click <a href='https://cellablepictures.blob.core.windows.net/systemimages/SampleMailingLabel.png'>HERE</a> to download your packing slip</b>" +
+                        "<td><b>Click <a href='" + mailLabel + "'>HERE</a> to download your packing slip</b>" +
                         "</td>" +
                     "</tr>" +
                 "</table>" +

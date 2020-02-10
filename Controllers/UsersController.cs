@@ -329,9 +329,11 @@ namespace CellableMVC.Controllers
 
                     // Set User Name Session Variables
                     User sessionUser = db.Users.Find(int.Parse(Session["LoggedInUserId"].ToString()));
+                    var userId = sessionUser.UserId;
 
                     // Set User Name Session Variables
                     Session["LoggedInUser"] = sessionUser.UserName;
+                    Session["LoggedInUserId"] = sessionUser.UserId;
                     loggedInUser.UserId = sessionUser.UserId;
                     loggedInUser.UserName = sessionUser.UserName;
 
@@ -385,6 +387,7 @@ namespace CellableMVC.Controllers
                     db.Orders.Add(order);
                     db.SaveChanges();
                     var orderId = order.OrderID;
+                    Session["OrderId"] = orderId;
 
                     // Get the Version Info for this Particular Phone
                     PhoneVersion phoneVersion = db.PhoneVersions.Find(int.Parse(Session["VersionId"].ToString()));
@@ -405,11 +408,12 @@ namespace CellableMVC.Controllers
 
                     // Get/Save Shipping Label
                     MailController mail = new MailController();
-                    mail.GetShippingLabel();
+                    mail.GetShippingLabel(userId, orderId);
 
                     // Send Confirmation Email(s)
                     EmailController email = new EmailController();
                     email.SendEmail(orderId, "Confirm", userEmail);
+
 
                     return RedirectToAction("TrackOrders", "Users", new { NewOrder = "true" });
                 }
@@ -462,6 +466,8 @@ namespace CellableMVC.Controllers
                                Discount = p.Discount,
                                PaymentType = pt.PaymentType1,
                                PaymentUserName = o.PaymentUserName,
+                               TrackingNumber = o.USPSTrackingId,
+                               MailLabel = o.MailingLabel,
                                CreateDate = o.CreateDate
                            }).ToList();
 
@@ -480,6 +486,8 @@ namespace CellableMVC.Controllers
                 vmDetails.Discount = item.Discount;
                 vmDetails.PaymentType = item.PaymentType;
                 vmDetails.PaymentUserName = item.PaymentUserName;
+                vmDetails.MailLabel = item.MailLabel;
+                vmDetails.TrackingNumber = item.TrackingNumber;
                 vmDetails.CreateDate = item.CreateDate;
                 orderDetailsVMlist.Add(vmDetails);
             }

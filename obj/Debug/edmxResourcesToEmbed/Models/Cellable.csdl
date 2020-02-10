@@ -28,6 +28,7 @@
     <Property Name="UserPhoneId" Type="Int32" />
     <Property Name="PaymentUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="USPSTrackingId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MailingLabel" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="OrderStatu">
     <Key>
@@ -126,16 +127,6 @@
     <NavigationProperty Name="PhoneVersions" Relationship="Self.FK_PhoneVersion_StorageCapacity" FromRole="StorageCapacity" ToRole="PhoneVersion" />
     <Property Name="Description" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="VersionCapacities" Relationship="CellableModel.FK_VersionCapacity_StorageCapacity" FromRole="StorageCapacity" ToRole="VersionCapacity" />
-  </EntityType>
-  <EntityType Name="sysdiagram">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="principal_id" Type="Int32" Nullable="false" />
-    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="Int32" />
-    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <EntityType Name="User">
     <Key>
@@ -368,7 +359,6 @@
     <EntitySet Name="Promos" EntityType="Self.Promo" />
     <EntitySet Name="States" EntityType="Self.State" />
     <EntitySet Name="StorageCapacities" EntityType="Self.StorageCapacity" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
     <EntitySet Name="Users" EntityType="Self.User" />
     <EntitySet Name="UserAnswers" EntityType="Self.UserAnswer" />
     <EntitySet Name="UserPhones" EntityType="Self.UserPhone" />

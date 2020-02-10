@@ -38,7 +38,6 @@ namespace CellableMVC.Models
         public virtual DbSet<Promo> Promos { get; set; }
         public virtual DbSet<State> States { get; set; }
         public virtual DbSet<StorageCapacity> StorageCapacities { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserAnswer> UserAnswers { get; set; }
         public virtual DbSet<UserPhone> UserPhones { get; set; }

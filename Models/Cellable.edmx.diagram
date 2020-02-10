@@ -16,7 +16,6 @@
         <EntityTypeShape EntityType="CellableModel.Promo" Width="1.5" PointX="3" PointY="20.5" IsExpanded="true" />
         <EntityTypeShape EntityType="CellableModel.State" Width="1.5" PointX="7.75" PointY="8.875" IsExpanded="true" />
         <EntityTypeShape EntityType="CellableModel.StorageCapacity" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CellableModel.sysdiagram" Width="1.5" PointX="10.875" PointY="2.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CellableModel.User" Width="1.5" PointX="3" PointY="9" IsExpanded="true" />
         <EntityTypeShape EntityType="CellableModel.UserAnswer" Width="1.5" PointX="7.5" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="CellableModel.UserPhone" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />

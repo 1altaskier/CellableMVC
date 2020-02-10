@@ -23,7 +23,7 @@ SELECT [AnswerId]
       ,[Value]
   FROM [dbo].[VersionCapacity]
 
-    delete from [VersionCapacity] where VersionId = 45
+    delete from [VersionCapacity] where VersionId = 46
 
   SELECT TOP (1000) [PossibleDefectId]
       ,[DefectName]
@@ -33,7 +33,7 @@ SELECT [AnswerId]
       ,[GroupImage]
   FROM [dbo].[PossibleDefects]
 
-    delete from [PossibleDefects] where VersionId = 45
+    delete from [PossibleDefects] where VersionId = 46
 
 
   SELECT TOP (1000) [VersionId]
@@ -47,4 +47,4 @@ SELECT [AnswerId]
       ,[Active]
   FROM [dbo].[PhoneVersion]
 
-      delete from [PhoneVersion] where VersionId = 45
+      delete from [PhoneVersion] where VersionId = 46

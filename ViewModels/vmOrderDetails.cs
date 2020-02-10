@@ -33,6 +33,12 @@ namespace CellableMVC.Models
         [Display(Name = "Payment User Name")]
         public string PaymentUserName { get; set; }
 
+        [Display(Name = "Tracking Number")]
+        public string TrackingNumber { get; set; }
+
+        [Display(Name = "Mailing Label")]
+        public string MailLabel { get; set; }
+
         [Display(Name = "Create Date")]
         public DateTime CreateDate { get; set; }
     }

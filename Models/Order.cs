@@ -25,6 +25,7 @@ namespace CellableMVC.Models
         public Nullable<int> UserPhoneId { get; set; }
         public string PaymentUserName { get; set; }
         public string USPSTrackingId { get; set; }
+        public string MailingLabel { get; set; }
     
         public virtual User User { get; set; }
         public virtual OrderStatu OrderStatu { get; set; }

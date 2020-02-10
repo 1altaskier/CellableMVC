@@ -222,9 +222,6 @@
     <Compile Include="Models\StorageCapacity.cs">
       <DependentUpon>Cellable.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>Cellable.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\SystemSetting.cs">
       <DependentUpon>Cellable.tt</DependentUpon>
     </Compile>

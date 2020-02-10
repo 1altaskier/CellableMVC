@@ -5,14 +5,21 @@ using CellableMVC.Helpers;
 using Shippo;
 using System.Collections;
 using System;
+using System.Collections.Generic;
+using CellableMVC.Models;
+using System.Data.Entity;
 
 namespace CellableMVC.Controllers
 {
     public class MailController : Controller
     {
+        private CellableEntities db = new CellableEntities();
+
         private string USPSAPIUserName = WebConfigurationManager.AppSettings["USPSAPIUserName"];
         private string USPSAPIPassword = WebConfigurationManager.AppSettings["USPSAPIPassword"];
         private string ShippoTestAPIToken = WebConfigurationManager.AppSettings["ShippoTestAPIToken"];
+        private string ContactUsPhone = WebConfigurationManager.AppSettings["ContactUsPhone"];
+        private string ContactEmail = WebConfigurationManager.AppSettings["ContactEmail"];
 
         public ActionResult _USPSTrackingMessage(string trackingNumber)
         {
@@ -63,86 +70,122 @@ namespace CellableMVC.Controllers
             string outState = a.State;
         }
 
-        //public ActionResult TrackPackage(string trackingNumber)
-        //{
-        //    USPSManager mgr = new USPSManager(USPSAPIUserName, true);
-        //    string msg = mgr.GetTrackingInfo(USPSAPIUserName, USPSAPIPassword, trackingNumber);
-
-        //    Helpers.MailHelper mail = new Helpers.MailHelper();
-        //    mail.TrackingMessage = msg;
-
-        //    return RedirectToAction("TrackOrders", "Users", new { } );
-        //}
-
-        public void GetShippingLabel()
+        public void GetShippingLabel(int userId, int orderId)
         {
             // Generate Mailing Label
-            https://api.goshippo.com/
             APIResource resource = new APIResource(ShippoTestAPIToken);
 
-            // to address
+            // To Address
+            //Get Cellable Mail Info
+            SystemSetting address = db.SystemSettings.Find(9);
+            SystemSetting city = db.SystemSettings.Find(11);
+            SystemSetting state = db.SystemSettings.Find(12);
+            SystemSetting zip = db.SystemSettings.Find(13);
+            SystemSetting phone = db.SystemSettings.Find(14);
+
             Hashtable toAddressTable = new Hashtable();
-            toAddressTable.Add("name", "Mr Hippo");
-            toAddressTable.Add("company", "Shippo");
-            toAddressTable.Add("street1", "215 Clayton St.");
-            toAddressTable.Add("city", "San Francisco");
-            toAddressTable.Add("state", "CA");
-            toAddressTable.Add("zip", "94117");
+            toAddressTable.Add("name", "Cellable Receiving");
+            toAddressTable.Add("company", "Cellable");
+            toAddressTable.Add("street1", address.Value);
+            toAddressTable.Add("city", city.Value);
+            toAddressTable.Add("state", state.Value);
+            toAddressTable.Add("zip", zip.Value);
             toAddressTable.Add("country", "US");
-            toAddressTable.Add("phone", "+1 555 341 9393");
-            toAddressTable.Add("email", "support@goshipppo.com");
+            toAddressTable.Add("phone", "+1 " + ContactUsPhone);
+            toAddressTable.Add("email", ContactEmail);
 
             // from address
+            // Get User Mail Info
+            User user = db.Users.Find(userId);
             Hashtable fromAddressTable = new Hashtable();
-            fromAddressTable.Add("name", "Ms Hippo");
-            fromAddressTable.Add("company", "San Diego Zoo");
-            fromAddressTable.Add("street1", "2920 Zoo Drive");
-            fromAddressTable.Add("city", "San Diego");
-            fromAddressTable.Add("state", "CA");
-            fromAddressTable.Add("zip", "92101");
+            fromAddressTable.Add("name", user.FirstName + " " + user.LastName);
+            fromAddressTable.Add("street1", user.Address);
+            fromAddressTable.Add("city", user.City);
+            fromAddressTable.Add("state", user.State);
+            fromAddressTable.Add("zip", user.Zip);
             fromAddressTable.Add("country", "US");
-            fromAddressTable.Add("email", "hippo@goshipppo.com");
-            fromAddressTable.Add("phone", "+1 619 231 1515");
-            fromAddressTable.Add("metadata", "Customer ID 123456");
+            fromAddressTable.Add("email", user.Email);
+            fromAddressTable.Add("phone", "+1 " + user.PhoneNumber);
+            fromAddressTable.Add("metadata", "Order ID " + orderId);
 
             // parcel
             Hashtable parcelTable = new Hashtable();
-            parcelTable.Add("length", "5");
-            parcelTable.Add("width", "5");
-            parcelTable.Add("height", "5");
+            parcelTable.Add("length", "6");
+            parcelTable.Add("width", "4");
+            parcelTable.Add("height", "2");
             parcelTable.Add("distance_unit", "in");
-            parcelTable.Add("weight", "2");
-            parcelTable.Add("mass_unit", "lb");
+            parcelTable.Add("weight", "7");
+            parcelTable.Add("mass_unit", "oz");
+            List<Hashtable> parcels = new List<Hashtable>();
+            parcels.Add(parcelTable);
+
 
             // shipment
             Hashtable shipmentTable = new Hashtable();
             shipmentTable.Add("address_to", toAddressTable);
             shipmentTable.Add("address_from", fromAddressTable);
-            shipmentTable.Add("parcels", parcelTable);
+            shipmentTable.Add("parcels", parcels);
+            shipmentTable.Add("object_purpose", "PURCHASE");
+            shipmentTable.Add("async", false);
 
-            Console.WriteLine("Getting shipping label..");
+            // create Shipment object
+            Shipment shipment = resource.CreateShipment(shipmentTable);
+
+            // select desired shipping rate according to your business logic
+            // we simply select the first rate in this example
+            Rate rate = shipment.Rates[0];
+
             Hashtable transactionParameters = new Hashtable();
-            transactionParameters.Add("shipment", shipmentTable);
-            transactionParameters.Add("servicelevel_token", "usps_priority");
-            transactionParameters.Add("carrier_account", "b741b99f95e841639b54272834bc478c");
+            transactionParameters.Add("rate", rate.ObjectId);
+            transactionParameters.Add("async", false);
+            Transaction transaction = resource.CreateTransaction(transactionParameters);
 
-            try
+            if (((String)transaction.Status).Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
             {
-                Transaction transaction = resource.CreateTransaction(transactionParameters);
+                var order = new Order() 
+                { 
+                    OrderID = orderId,
+                    MailingLabel = transaction.LabelURL.ToString(),
+                    USPSTrackingId = transaction.TrackingNumber.ToString()
+                };
+                using (var db = new CellableEntities())
+                {
+                    db.Orders.Attach(order);
+                    db.Entry(order).Property(x => x.MailingLabel).IsModified = true;
+                    db.Entry(order).Property(x => x.USPSTrackingId).IsModified = true;
+                    db.Configuration.ValidateOnSaveEnabled = false;
+                    db.SaveChanges();
+                }
 
-                if (((String)transaction.Status).Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
-                {
-                    Console.WriteLine("Label url : " + transaction.LabelURL);
-                    Console.WriteLine("Tracking number : " + transaction.TrackingNumber);
-                }
-                else
-                {
-                    Console.WriteLine("An Error has occured while generating your label. Messages : " + transaction.Messages);
-                }
+                // Save Label URL & Tracking # to the Database
+                //Order order = new Order();
+                //order.OrderID = orderId;
+                //order.MailingLabel = transaction.LabelURL.ToString();
+                //order.USPSTrackingId = transaction.TrackingNumber.ToString();
+                //order.CreateDate = DateTime.Now;
+
+                //db.Orders.Attach(order);
+
+                //db.Entry(order).Property(x => x.Amount).IsModified = false;
+                //db.Entry(order).Property(x => x.UserId).IsModified = false;
+                //db.Entry(order).Property(x => x.OrderStatusId).IsModified = false;
+                //db.Entry(order).Property(x => x.CreateDate).IsModified = false;
+                //db.Entry(order).Property(x => x.CreateBy).IsModified = false;
+                //db.Entry(order).Property(x => x.PaymentTypeId).IsModified = false;
+                //db.Entry(order).Property(x => x.PromoId).IsModified = false;
+                //db.Entry(order).Property(x => x.UserPhoneId).IsModified = false;
+                //db.Entry(order).Property(x => x.PaymentUserName).IsModified = false;
+
+                //db.Entry(order).Property(x => x.MailingLabel).IsModified = true;
+                //db.Entry(order).Property(x => x.USPSTrackingId).IsModified = true;
+
+                //db.Entry(order).State = EntityState.Modified;
+                //db.Configuration.ValidateOnSaveEnabled = false;
+                //db.SaveChanges();
             }
-            catch(Exception ex)
+            else
             {
-
+                Console.WriteLine("An Error has occured while generating your label. Messages : " + transaction.Messages);
             }
         }
     }
