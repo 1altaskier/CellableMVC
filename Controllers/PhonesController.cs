@@ -126,7 +126,7 @@ namespace CellableMVC.Controllers
             IList<PossibleDefect> possibleDefects = null;
 
             // Get a list of Defects to pass to the view
-            possibleDefects = db.PossibleDefects.ToList().OrderBy(x => x.DefectGroupId).Where(x => x.VersionId == id).ToList();
+            possibleDefects = db.PossibleDefects.ToList().OrderBy(x => x.DefectGroup.DisplayOrder).Where(x => x.VersionId == id).ToList();
 
             // Get the Version Info for this Particular Phone
             PhoneVersion phoneVersion = db.PhoneVersions.Find(id);
@@ -200,7 +200,9 @@ namespace CellableMVC.Controllers
                     item.ToString() != "capacity" &&
                     item.ToString() != "carriers" &&
                     item.ToString() != "hdCarrier" &&
-                    item.ToString() != "hdCapacity")
+                    item.ToString() != "hdCapacity" &&
+                    !item.ToString().Contains("val_") &&
+                    !item.ToString().Contains("hdn_"))
                 {
                     string defectField = Request.Form[item.ToString()];
                     string[] delimiter = new string[] { "_" };

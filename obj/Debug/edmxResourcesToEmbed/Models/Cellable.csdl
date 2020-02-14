@@ -447,6 +447,7 @@
     <Property Name="GroupName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="PossibleDefects" Relationship="CellableModel.FK_PossibleDefects_DefectGroup" FromRole="DefectGroup" ToRole="PossibleDefect" />
     <Property Name="DisplayOrder" Type="Int32" />
+    <Property Name="Info" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
   </EntityType>
   <Association Name="FK_PossibleDefects_DefectGroup">
     <End Type="CellableModel.DefectGroup" Role="DefectGroup" Multiplicity="0..1" />

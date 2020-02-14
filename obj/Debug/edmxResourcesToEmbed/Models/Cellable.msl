@@ -166,6 +166,7 @@
     <EntitySetMapping Name="DefectGroups">
       <EntityTypeMapping TypeName="CellableModel.DefectGroup">
         <MappingFragment StoreEntitySet="DefectGroup">
+          <ScalarProperty Name="Info" ColumnName="Info" />
           <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
           <ScalarProperty Name="GroupName" ColumnName="GroupName" />
           <ScalarProperty Name="DefectGroupId" ColumnName="DefectGroupId" />
