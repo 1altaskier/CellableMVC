@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
     <title>Cellable - @ViewBag.Title</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -52,11 +54,11 @@
         var sTimeout = parseInt(sessionTimeoutWarning) * 60 * 1000;
         setTimeout('SessionEnd()', sTimeout);
 
-        //window.history.forward();
-        //function noBack()
-        //{
-        //    window.history.forward();
-        //}
+        window.history.forward();
+        function noBack()
+        {
+            window.history.forward();
+        }
 
         function SessionEnd() {
             window.location = "/Users/Cancel";
@@ -64,14 +66,14 @@
     </script>
 
 </head>
-<body class="custom-background">
+<body class="custom-background" onLoad="noBack();" onpageshow="if (event.persisted) noBack();" onUnload="">
     <div id="fb-root"></div>
-    <table style="position:fixed; top:0; width:100%; height:20px; z-index:100">
+    <table class="navbar-brand" style="position:fixed; top:0; width:100%; height:20px; z-index:100">
         <tr>
             <td colspan="4" style="background-color:black; height:80px;">
                 <table style="width:100%">
-                    <tr style="vertical-align:middle;">
-                        <td style="width:20%; text-align:center;" class="Header">
+                    <tr style="vertical-align:middle; width: 100%; position: fixed;">
+                        <td style="width:100%; text-align:center; position: fixed;" class="Header">
                             <h2>@Html.ActionLink("Cellable", "Index", "Home", new { }, new { style = "color:lawngreen;" })</h2>
                             @{ var total = int.Parse(Session["AvgStars"].ToString()); }
                             @for (int i = 1; i <= total; i++ )
@@ -80,32 +82,32 @@
                             }
                             (ratings: @Session["TotalStars"])
                         </td>
-                        <td style="text-align:left; vertical-align:middle; width:50%">
-                            <div style="display: inline-block; width:80px">@Html.ActionLink("Home", "Index", "Home", new { }, new { @class = "NavLink" })</div>
-                            <div style="display: inline-block; width:80px">@Html.ActionLink("About", "About", "Home", new { }, new { @class = "NavLink" })</div>
+                        <td style="text-align:left; vertical-align:middle; width:100%; position: fixed;">
+                            <div style="display: inline-block; width:100%; position: fixed;">@Html.ActionLink("Home", "Index", "Home", new { }, new { @class = "NavLink" })</div>
+                            <div style="display: inline-block; width:100%; position: fixed;">@Html.ActionLink("About", "About", "Home", new { }, new { @class = "NavLink" })</div>
                             @if (System.Web.HttpContext.Current.Session["LoggedInUser"] != null && Session["LoggedInUser"].ToString() != "")
                             {
-                                <div style="display: inline-block; width:80px">@Html.ActionLink("Logout", "Cancel", "Users", new { }, new { @class = "NavLink" })</div>
+                                <div style="display: inline-block; width:100%; position: fixed;">@Html.ActionLink("Logout", "Cancel", "Users", new { }, new { @class = "NavLink" })</div>
                             }
                             else
                             {
-                                <div style="display: inline-block; width:80px">@Html.ActionLink("Login", "Login", "Users", new { }, new { @class = "NavLink" })</div>
+                                <div style="display: inline-block; width:100%; position: fixed;">@Html.ActionLink("Login", "Login", "Users", new { }, new { @class = "NavLink" })</div>
                             }
-                            <div style="display: inline-block; width:50px">@Html.ActionLink("Sell", "Phones", "Phones", new { }, new { @class = "NavLink" })</div>
+                            <div  style="display: inline-block; width:100%; position: fixed;">@Html.ActionLink("Sell", "Phones", "Phones", new { }, new { @class = "NavLink" })</div>
                             @if (System.Web.HttpContext.Current.Session["LoggedInUser"] != null && Session["LoggedInUser"].ToString() != "")
                             {
-                                <div style="display: inline-block; width:60px">@Html.ActionLink("Tracking", "TrackOrders", "Users", new { }, new { @class = "NavLink" })</div>
+                                <div  style="display: inline-block; width:60px">@Html.ActionLink("Tracking", "TrackOrders", "Users", new { }, new { @class = "NavLink" })</div>
                             }
                         </td>
                         @*<td style="width:7%; text-align:left">@Html.ActionLink("Register", "Register", "Users", new { }, new { @class = "NavLink" })</td>*@
-                        <td style="width:20%; text-align:left">
+                        <td style="width:100%; text-align:left; position: fixed;">
                             @using (Html.BeginForm("SearchResults", "Phones", FormMethod.Post, new { enctype = "multipart/form-data" }))
                             {
                                 <input type="search" id="searchString" name="searchString" placeholder="Search For Your Phone" style="width:400px">@Html.Raw("&nbsp;&nbsp;")
                                 <button type="submit" name="submit" id="submit" value="submit" style="background-color:black; border-color:black"><i class="fa fa-search" style="color:lawngreen"></i></button>
                             }
                         </td>
-                        <td style="width:10%; text-align:center;">
+                        <td  style="width:100%; text-align:center;">
                             @if (System.Web.HttpContext.Current.Session["LoggedInUser"] != null && Session["LoggedInUser"].ToString() != "")
                             {
                                 <i class="LoggedIn">Logged in as:<br /><div style="color:lawngreen">@Session["LoggedInUser"]</div></i>
@@ -131,11 +133,11 @@
             <td style="text-align:left; width:30%;">
                 <div class="Header">&copy; @DateTime.Now.Year - Cellable</div>
             </td>
-            <td style="text-align:center; width:30%;">
+            <td style="text-align:center; width:100%;">
                 <a href="mailto:admin@cellable.com" class="NavLink">Support</a>
-                <div style="width:30px; display:inline-block"></div>
+                <div style="width:100%; display:inline-block"></div>
                 @Html.ActionLink("About Us", "About", "Home", new { }, new { @class = "NavLink" })
-                <div style="width:30px; display:inline-block"></div>
+                <div style="width:100%; display:inline-block"></div>
                 @Html.ActionLink("Contact Us", "Contact", "Home", new { }, new { @class = "NavLink" })
             </td>
             <td style="text-align:right; width:30%; height:40px;">

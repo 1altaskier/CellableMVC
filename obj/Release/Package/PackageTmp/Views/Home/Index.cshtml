@@ -122,9 +122,11 @@
                 <div class="slider-images">
                     @foreach (var item in ViewBag.SlideShow)
                     {
-                        <div class="img-container">
+                    <div class="img-container">
+                        <a class="btn btn-default" href="/Phones/Phones">
                             <img src="@ViewBag.imageLocation/@Html.Raw(item.ImageName)" />
-                        </div>
+                        </a>
+                    </div>
                     }
                 </div>
             </div>

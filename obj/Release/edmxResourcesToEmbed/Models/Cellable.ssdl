@@ -15,6 +15,7 @@
     <Property Name="DefectGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="GroupName" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="DisplayOrder" Type="int" />
+    <Property Name="Info" Type="nvarchar" MaxLength="500" />
   </EntityType>
   <EntityType Name="Orders">
     <Key>
@@ -192,7 +193,7 @@
     <Property Name="StorageCapacityId" Type="int" Nullable="false" />
     <Property Name="Value" Type="decimal" Precision="18" Scale="0" />
   </EntityType>
-  <Association Name="FK__PhoneVers__Phone__5070F446">
+  <Association Name="FK__PhoneVers__Phone__73BA3083">
     <End Role="Phones" Type="Self.Phones" Multiplicity="0..1" />
     <End Role="PhoneVersion" Type="Self.PhoneVersion" Multiplicity="*" />
     <ReferentialConstraint>
@@ -407,7 +408,7 @@
     <EntitySet Name="UserAnswers" EntityType="Self.UserAnswers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserPhone" EntityType="Self.UserPhone" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="VersionCapacity" EntityType="Self.VersionCapacity" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK__PhoneVers__Phone__5070F446" Association="Self.FK__PhoneVers__Phone__5070F446">
+    <AssociationSet Name="FK__PhoneVers__Phone__73BA3083" Association="Self.FK__PhoneVers__Phone__73BA3083">
       <End Role="Phones" EntitySet="Phones" />
       <End Role="PhoneVersion" EntitySet="PhoneVersion" />
     </AssociationSet>

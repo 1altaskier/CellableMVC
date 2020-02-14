@@ -4,10 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script type="text/javascript">
+    <script type="text/javascript">
     function ValidateForm() {
 
-        var isValid;
+        var isValid = true;
 
         if (document.getElementById("hdCapacity").value == "") {
             document.getElementById("CapacityValidationMessage").innerHTML = "* Please Select You Phone's Storage Capacity";
@@ -15,19 +15,39 @@
         }
         else {
             document.getElementById("CapacityValidationMessage").innerHTML = "";
-            isValid = true;
         }
 
+        @{var lastGroupId = 0; }
+        @foreach (var group in Model)
+        {
+            // Don't Repeat an Already Created Group
+            if (lastGroupId != group.DefectGroup.DefectGroupId)
+            {
+                lastGroupId = group.DefectGroup.DefectGroupId;
+                @Html.Raw("if (document.getElementById('hdn_" + group.DefectGroupId.ToString() + "').value == '') { document.getElementById('val_" + group.DefectGroupId.ToString() + "').style.display = ''; isValid = false; }");
+                @Html.Raw("else { document.getElementById('val_" + group.DefectGroupId.ToString() + "').style.display = 'none'; }");
+            }
+        }
+
+        //alert(isValid);
+
         return isValid;
-    }
+     }
 
     function SetField(field) {
+
         if (field == "capacity") {
             document.getElementById("hdCapacity").value = "GoodToGo";
             document.getElementById("CapacityValidationMessage").innerHTML = "";
         }
+        else {
+
+            document.getElementById("hdn_" + field).value = field;
+        }
+
+        //alert(document.getElementById("hdn_" + field).value);
     }
-</script>
+    </script>
 
 <table style="width:80%; margin-left:auto; margin-right:auto;">
     <tr>
@@ -59,7 +79,7 @@
                     <br />
                     Please Note: We do not pay for devices that have been reported lost or stolen.
                     <p>
-                        <input type="submit" class="button" value="Price Phone" onclick=" return ValidateForm()" />
+                        <input type="submit" class="button" value="Price Phone" onclick="return ValidateForm()" />
                         <input type="reset" class="button" value="Reset Form" />
                     </p>
                 </div>
@@ -71,7 +91,7 @@
                             <div style=" margin-right: 50px; height: 125px; border: medium solid #ccc; width: 600px; border-radius: 15px; margin-left: 24px;">
                                 <div style="text-align:left; background-color:lightgray;">
                                     &nbsp;&nbsp;&nbsp;
-                                    <p style="text-align:left; background-color:lightgray; margin-top: -10px; width: 573px; margin-left: 17px; border-bottom: thin solid #ccc; ">
+                                    <p style="text-align:left; font-size:large; background-color:lightgray; margin-top: -10px; width: 573px; margin-left: 17px; border-bottom: thin solid #ccc; ">
                                         Storage Capacity
                                     </p>
                                 </div>
@@ -82,7 +102,7 @@
                                     {
                                         if (capacities.StorageCapacityId == versionCapacities.StorageCapacityId)
                                         {
-                                            <input id="@capacities.StorageCapacityId" type="radio" name="capacity" value="@versionCapacities.VersionCapacityId" onchange="SetField('capacity')" />@capacities.Description @Html.Raw("&nbsp; &nbsp;")
+                                            <input id="capacity" type="radio" name="capacity" value="@versionCapacities.VersionCapacityId" onchange="SetField('capacity')" />@capacities.Description @Html.Raw("&nbsp; &nbsp;")
                                         }
                                     }
                                 }
@@ -92,69 +112,38 @@
                             </div>
                         </td>
                     </tr>
+                    @{ lastGroupId = 0; }
                     @foreach (var group in Model)
                     {
-                        if (group.DefectGroup.GroupName == "Default")
+                        // Don't Repeat an Already Created Group
+                        if (lastGroupId != group.DefectGroup.DefectGroupId)
                         {
+                            lastGroupId = group.DefectGroup.DefectGroupId;
                             <tr>
-                                <td style="vertical-align:middle;">
-                                    <div style="vertical-align:bottom; margin-right: 50px; height: 88px; border: medium solid #ccc; width: 600px; border-radius: 15px; margin-left: 24px;">
-                                        <div style="height:12px"></div>
-                                        <table style="width:100%">
-                                            <tr>
-                                                <td style="width:5%"></td>
-                                                <td style="width:15%; text-align:left"><img src="@ViewBag.imageLocation/@Html.DisplayFor(modelItem => group.GroupImage)" /></td>
-                                                <td style="width:55%; text-align:left; font-size:large;">@Html.DisplayFor(modelItem => group.DefectName)</td>
-                                                <td style="width:10%; text-align:right">
-                                                    <input type="checkbox"
-                                                           id="@Html.DisplayFor(modelItem => group.PossibleDefectId)"
-                                                           name="@Html.DisplayFor(modelItem => group.PossibleDefectId)"
-                                                           value="@Html.DisplayFor(modelItem => group.PossibleDefectId)@Html.Raw("_")@Html.DisplayFor(modelItem => group.DefectCost)">
-                                                </td>
-                                                <td style="width:15%"></td>
-                                            </tr>
-                                        </table>
+                                <td>
+                                    <div style=" margin-right: 50px; height: 125px; border: medium solid #ccc; width: 600px; border-radius: 15px; margin-left: 24px;">
+                                        &nbsp;&nbsp;&nbsp;
+                                        <p style="text-align:left; margin-top: -10px; font-size:large; width: 573px; margin-left: 17px; border-bottom: thin solid #ccc; ">
+                                            @Html.DisplayFor(modelItem => group.DefectGroup.GroupName)
+                                            @if (group.DefectGroup.Info != null)
+                                            {
+                                                <abbr title="@group.DefectGroup.Info"><i class="fa fa-info-circle" style="cursor:pointer;"></i></abbr>
+                                            }
+                                        </p>
+                                        <div style="width:30px; display:inline-block"></div>
+                                        @foreach (var defect in Model)
+                                        {
+                                            if (group.DefectGroupId == defect.DefectGroupId)
+                                            {
+                                                <input id="@defect.DefectGroupId" type="radio" name="@group.DefectGroupId" value="@defect.PossibleDefectId@Html.Raw("_")@Html.DisplayFor(modelItem => defect.DefectCost)" onchange="SetField('@group.DefectGroupId')" /> @Html.Raw("&nbsp;")@Html.DisplayFor(modelItem => defect.DefectName)
+                                                @Html.Raw("&nbsp;&nbsp;&nbsp;")
+                                            }
+                                        }
+                                        <div id="val_@group.DefectGroupId.ToString()" name="val_@group.DefectGroupId.ToString()" class="text-danger" style="margin-left:40px; display:none;">* Required</div>
+                                        <input type="hidden" id="hdn_@group.DefectGroupId.ToString()" name="hdn_@group.DefectGroupId.ToString()" />
                                     </div>
                                 </td>
                             </tr>
-                        }
-                    }
-                    @{var lastGroupId = 0; }
-                    @foreach (var group in Model)
-                    {
-                        // Don't Display Default Groups
-                        if (group.DefectGroup.GroupName != "Default")
-                        {
-                            // Don't Repeat an Already Created Group
-                            if (lastGroupId != group.DefectGroup.DefectGroupId)
-                            {
-                                lastGroupId = group.DefectGroup.DefectGroupId;
-                                <tr>
-                                    <td>
-                                        <div style=" margin-right: 50px; height: 125px; border: medium solid #ccc; width: 600px; border-radius: 15px; margin-left: 24px;">
-                                            &nbsp;&nbsp;&nbsp;
-                                            <p style="text-align:left; margin-top: -10px; font-size:large; width: 573px; margin-left: 17px; border-bottom: thin solid #ccc; ">
-                                                @Html.DisplayFor(modelItem => group.DefectGroup.GroupName)
-                                            </p>
-                                            <div style="width:30px; display:inline-block"></div>
-                                            @foreach (var defect in Model)
-                                            {
-                                                if (group.DefectGroupId == defect.DefectGroupId)
-                                                {
-                                                    <input id="@defect.PossibleDefectId" type="radio" name="@group.DefectGroupId" value="@defect.PossibleDefectId@Html.Raw("_")@Html.DisplayFor(modelItem => defect.DefectCost)"
-                                                           @if (defect.DefectName == "Yes") { @Html.Raw("checked") ; } /> @Html.Raw("&nbsp;")@Html.DisplayFor(modelItem => defect.DefectName)
-                                                        @Html.Raw("&nbsp;&nbsp;&nbsp;")
-                                                    }
-                                                }
-
-                                            @if (@group.DefectGroupId != 10 && @group.DefectGroupId != 11)
-                                            {
-                                                <input id="x" type="radio" name="@group.DefectGroupId" value="x_0" checked /> @Html.Raw("None")
-                                            }
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
                         }
                     }
                 </table>
