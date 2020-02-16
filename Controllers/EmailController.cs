@@ -84,6 +84,7 @@ namespace CellableMVC.Controllers
             string phoneVersion = "";
             string trackingNumber = "";
             string mailLabel = "";
+            string packingSheet = "https://cellableimages.blob.core.windows.net/systemimages/PackingSheet.pdf";
 
             var results = (from o in db.Orders.DefaultIfEmpty()
                            join up in db.UserPhones on o.UserId equals up.UserId into userPhoneGrp
@@ -239,7 +240,7 @@ namespace CellableMVC.Controllers
                         "</td>" +
                     "</tr>" +
                     "<tr>" +
-                        "<td><b>Click <a href='" + mailLabel + "'>HERE</a> to download your packing slip</b>" +
+                        "<td><b>Click <a href='" + packingSheet + "'>HERE</a> to download your packing slip</b>" +
                         "</td>" +
                     "</tr>" +
                 "</table>" +
