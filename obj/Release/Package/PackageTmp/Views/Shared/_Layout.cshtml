@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@{string AdminEmail = System.Configuration.ConfigurationManager.AppSettings["AdminEmail"]; }
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -74,7 +75,7 @@
                         <td style="width:20%; text-align:center;" class="Header">
                             <h2>@Html.ActionLink("Cellable", "Index", "Home", new { }, new { style = "color:lawngreen;" })</h2>
                             @{ var total = int.Parse(Session["AvgStars"].ToString()); }
-                            @for (int i = 1; i <= total; i++ )
+                            @for (int i = 1; i <= total; i++)
                             {
                                 <span class='fa fa-star checked'></span>
                             }
@@ -132,7 +133,7 @@
                 <div class="Header">&copy; @DateTime.Now.Year - Cellable</div>
             </td>
             <td style="text-align:center; width:30%;">
-                <a href="mailto:admin@cellable.com" class="NavLink">Support</a>
+                <a href="mailto:@AdminEmail" class="NavLink">Support</a>
                 <div style="width:30px; display:inline-block"></div>
                 @Html.ActionLink("About Us", "About", "Home", new { }, new { @class = "NavLink" })
                 <div style="width:30px; display:inline-block"></div>

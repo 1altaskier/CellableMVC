@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
-  <parameter name="CellableEntities-Web.config Connection String" description="CellableEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/Models.Cellable.csdl|res://*/Models.Cellable.ssdl|res://*/Models.Cellable.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=tcp:cellable.database.windows.net,1433;Initial Catalog=Cellable;User Id=cellable;Password=Trump2020;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+  <parameter name="CellableEntities-Web.config Connection String" description="CellableEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/Models.Cellable.csdl|res://*/Models.Cellable.ssdl|res://*/Models.Cellable.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=tcp:cellabledb.database.windows.net,1433;Initial Catalog=Cellable;User Id=cellable;Password=Trump2020;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
     <parameterEntry kind="XmlFile" scope="C:\\Projects\\GIT\ Repositories\\CellableMVC\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='CellableEntities']/@connectionString" />
   </parameter>
 </parameters>
