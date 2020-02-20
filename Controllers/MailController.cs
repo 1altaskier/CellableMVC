@@ -17,7 +17,7 @@ namespace CellableMVC.Controllers
 
         private string USPSAPIUserName = WebConfigurationManager.AppSettings["USPSAPIUserName"];
         private string USPSAPIPassword = WebConfigurationManager.AppSettings["USPSAPIPassword"];
-        private string ShippoTestAPIToken = WebConfigurationManager.AppSettings["ShippoTestAPIToken"];
+        private string ShippoLiveAPIToken = WebConfigurationManager.AppSettings["ShippoLiveAPIToken"];
         private string ContactUsPhone = WebConfigurationManager.AppSettings["ContactUsPhone"];
         private string ContactEmail = WebConfigurationManager.AppSettings["ContactEmail"];
 
@@ -73,7 +73,7 @@ namespace CellableMVC.Controllers
         public void GetShippingLabel(int userId, int orderId)
         {
             // Generate Mailing Label
-            APIResource resource = new APIResource(ShippoTestAPIToken);
+            APIResource resource = new APIResource(ShippoLiveAPIToken);
 
             // To Address
             //Get Cellable Mail Info
