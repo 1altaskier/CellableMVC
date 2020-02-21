@@ -20,7 +20,7 @@ namespace CellableMVC.Controllers
         private string USPSAPIPassword = WebConfigurationManager.AppSettings["USPSAPIPassword"];
         private string AdminEmail = WebConfigurationManager.AppSettings["AdminEmail"];
         private string phoneImageLocation = WebConfigurationManager.AppSettings["PhoneImageLocation"];
-        private string ShippoTestAPIToken = WebConfigurationManager.AppSettings["ShippoLiveAPIToken"];
+        private string ShippoLiveAPIToken = WebConfigurationManager.AppSettings["ShippoLiveAPIToken"];
 
         private CellableEntities db = new CellableEntities();
 
