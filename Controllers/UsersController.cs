@@ -581,7 +581,6 @@ namespace CellableMVC.Controllers
             if (userCookie != null)
             {
                 ViewBag.UserName = Request.Cookies["UserCookie"]["UserName"];
-                ViewBag.Password = Request.Cookies["UserCookie"]["Password"];
             }
 
             return View();
