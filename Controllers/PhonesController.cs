@@ -90,10 +90,12 @@ namespace CellableMVC.Controllers
             // Initialize PhoneVersions Variable
             IList<PhoneVersion> phoneVersions = null;
 
+            bool? active = true;
+
             if (searchString == null)
             {
                 // Get entire list of Phone Versions to pass to the view
-                phoneVersions = db.PhoneVersions.ToList().Where(x => x.Phone.PhoneId == brandId).ToList();
+                phoneVersions = db.PhoneVersions.ToList().Where(x => x.Phone.PhoneId == brandId && x.Active == active).ToList();
             }
             else
             {
