@@ -87,6 +87,8 @@ namespace CellableMVC.Controllers
 
         public ActionResult PhoneVersions(int? brandId, int? carrierId, string searchString = null)
         {
+            Session["CarrierValue"] = Request["value"]; ;
+
             // Initialize PhoneVersions Variable
             IList<PhoneVersion> phoneVersions = null;
 
@@ -183,8 +185,15 @@ namespace CellableMVC.Controllers
             decimal? baseCost = null;
             if (Request["capacity"] != null)
             {
+                int carrierId = int.Parse(Session["Carrier"].ToString());
+                int versionId = int.Parse(Session["VersionId"].ToString());
+
+                // Get Carrier Cost
+                var versionCarrier = db.VersionCarriers.First(x => x.CarrierId == carrierId && x.VersionId == versionId);
+
                 VersionCapacity vc = db.VersionCapacities.Find(int.Parse(Request["capacity"]));
                 baseCost = vc.Value;
+                baseCost -= decimal.Parse(versionCarrier.Value.ToString());
                 StorageCapacity capacity = db.StorageCapacities.Find(vc.StorageCapacityId);
                 Session["CapacityDescription"] = capacity.Description;
                 Session["BaseValue"] = baseCost;
@@ -292,13 +301,13 @@ namespace CellableMVC.Controllers
             ViewBag.Footer = footer.Value;
             ViewBag.phoneImageLocation = phoneImageLocation;
 
-            IList<PhoneVersion> versions = db.PhoneVersions
-                                            .ToList()
-                                            .Where(x => x.Version.ToLower().Contains(searchString.ToLower())
-                                                || x.Phone.Brand.ToLower().Contains(searchString.ToLower()))
-                                            .ToList();
+            // Initialize PhoneVersions Variable
+            IList<PhoneVersion> phoneVersions = null;
 
-            return View(versions);
+            phoneVersions = db.PhoneVersions.ToList().Where(x => x.Version.ToLower().Contains(searchString.ToLower())
+                                                                && x.Active == true).ToList();
+
+            return View(phoneVersions);
         }
     }
 }

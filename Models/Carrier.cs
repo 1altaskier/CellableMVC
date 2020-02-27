@@ -18,13 +18,17 @@ namespace CellableMVC.Models
         public Carrier()
         {
             this.UserPhones = new HashSet<UserPhone>();
+            this.VersionCarriers = new HashSet<VersionCarrier>();
         }
     
         public int CarrierId { get; set; }
         public string CarrierName { get; set; }
         public string ImageName { get; set; }
+        public Nullable<decimal> Value { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserPhone> UserPhones { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VersionCarrier> VersionCarriers { get; set; }
     }
 }

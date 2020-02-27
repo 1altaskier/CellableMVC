@@ -240,6 +240,9 @@
     <Compile Include="Models\VersionCapacity.cs">
       <DependentUpon>Cellable.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\VersionCarrier.cs">
+      <DependentUpon>Cellable.tt</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\vmAbout.cs" />
     <Compile Include="ViewModels\vmOrderDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

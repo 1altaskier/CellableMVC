@@ -7,6 +7,7 @@
     <Property Name="CarrierId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CarrierName" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="ImageName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Value" Type="decimal" Precision="18" Scale="0" />
   </EntityType>
   <EntityType Name="DefectGroup">
     <Key>
@@ -193,7 +194,16 @@
     <Property Name="StorageCapacityId" Type="int" Nullable="false" />
     <Property Name="Value" Type="decimal" Precision="18" Scale="0" />
   </EntityType>
-  <Association Name="FK__PhoneVers__Phone__73BA3083">
+  <EntityType Name="VersionCarrier">
+    <Key>
+      <PropertyRef Name="VersionCarrierId" />
+    </Key>
+    <Property Name="VersionCarrierId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VersionId" Type="int" Nullable="false" />
+    <Property Name="CarrierId" Type="int" Nullable="false" />
+    <Property Name="Value" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__PhoneVers__Phone__5070F446">
     <End Role="Phones" Type="Self.Phones" Multiplicity="0..1" />
     <End Role="PhoneVersion" Type="Self.PhoneVersion" Multiplicity="*" />
     <ReferentialConstraint>
@@ -385,6 +395,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_VersionCarrier_Carrier">
+    <End Role="Carrier" Type="Self.Carrier" Multiplicity="1" />
+    <End Role="VersionCarrier" Type="Self.VersionCarrier" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Carrier">
+        <PropertyRef Name="CarrierId" />
+      </Principal>
+      <Dependent Role="VersionCarrier">
+        <PropertyRef Name="CarrierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VersionCarrier_PhoneVersion">
+    <End Role="PhoneVersion" Type="Self.PhoneVersion" Multiplicity="1" />
+    <End Role="VersionCarrier" Type="Self.VersionCarrier" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PhoneVersion">
+        <PropertyRef Name="VersionId" />
+      </Principal>
+      <Dependent Role="VersionCarrier">
+        <PropertyRef Name="VersionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Function Name="GetOrderDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="UserId" Type="int" Mode="In" />
   </Function>
@@ -408,7 +442,8 @@
     <EntitySet Name="UserAnswers" EntityType="Self.UserAnswers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserPhone" EntityType="Self.UserPhone" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="VersionCapacity" EntityType="Self.VersionCapacity" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK__PhoneVers__Phone__73BA3083" Association="Self.FK__PhoneVers__Phone__73BA3083">
+    <EntitySet Name="VersionCarrier" EntityType="Self.VersionCarrier" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__PhoneVers__Phone__5070F446" Association="Self.FK__PhoneVers__Phone__5070F446">
       <End Role="Phones" EntitySet="Phones" />
       <End Role="PhoneVersion" EntitySet="PhoneVersion" />
     </AssociationSet>
@@ -471,6 +506,14 @@
     <AssociationSet Name="FK_VersionCapacity_StorageCapacity" Association="Self.FK_VersionCapacity_StorageCapacity">
       <End Role="StorageCapacity" EntitySet="StorageCapacity" />
       <End Role="VersionCapacity" EntitySet="VersionCapacity" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VersionCarrier_Carrier" Association="Self.FK_VersionCarrier_Carrier">
+      <End Role="Carrier" EntitySet="Carrier" />
+      <End Role="VersionCarrier" EntitySet="VersionCarrier" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VersionCarrier_PhoneVersion" Association="Self.FK_VersionCarrier_PhoneVersion">
+      <End Role="PhoneVersion" EntitySet="PhoneVersion" />
+      <End Role="VersionCarrier" EntitySet="VersionCarrier" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

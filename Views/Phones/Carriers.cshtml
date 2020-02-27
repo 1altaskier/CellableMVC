@@ -12,27 +12,65 @@
             <p>
                 You've decided to sell your @Session["BrandName"] phone. Plese select your carrier now.
             </p>
-            <table>
-                <tr>
-                    @foreach (var item in Model)
+            <table style="margin-right:auto; margin-left:auto;">
+                @{
+                    int cellCount = 0;
+                    int cellLimit = 4;
+                }
+
+                @foreach (var item in Model)
+                {
+                    if (cellCount != cellLimit)
                     {
-                        <td style="vertical-align:bottom;">
-                            @if (Session["VersionId"] == null)
-                            {
-                                <a href="@Url.Action("PhoneVersions", "Phones", new { brandId = Session["BrandId"], carrierId = item.CarrierId })" class="btn">
-                                    <img src="@ViewBag.imageLocation/@item.ImageName" alt="@item.CarrierName">
-                                </a>
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("DefectQuestions", "Phones", new { id = int.Parse(Session["VersionId"].ToString()) })" class="btn">
-                                    <img src="@ViewBag.imageLocation/@item.ImageName" alt="@item.CarrierName">
-                                </a>
-                            }
-                        </td>
+                        cellCount++;
                     }
-                </tr>
-            </table>
+                    else
+                    {
+                        cellCount = 1;
+                    }
+
+                    if (cellCount == 1)
+                    {
+                        @Html.Raw("<tr><td><table style='margin-right:auto; margin-left:auto;'><tr><td style='margin-right:auto; margin-left:auto;'>");
+                    }
+                    <td style="vertical-align:bottom;">
+                        @if (Session["VersionId"] == null)
+                        {
+                            <a href="@Url.Action("PhoneVersions", "Phones", new { brandId = Session["BrandId"], carrierId = item.CarrierId })" class="btn">
+                                @if (@item.ImageName != null)
+                                {
+                                    <img src="@ViewBag.imageLocation/@item.ImageName" alt="@item.CarrierName">
+                                }
+                                else
+                                {
+                                    <div style="height:30px;"></div>
+                                    @item.CarrierName
+                                }
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("DefectQuestions", "Phones", new { id = int.Parse(Session["VersionId"].ToString()) })" class="btn">
+                                @if (@item.ImageName != null)
+                                {
+                                    <img src="@ViewBag.imageLocation/@item.ImageName" alt="@item.CarrierName">
+                                }
+                                else
+                                {
+                                    <div style="height:30px;"></div>
+                                    @item.CarrierName
+                                }
+                            </a>
+                        }
+                        <div style="height:20px;"></div>
+                    </td>
+                    if (cellCount == cellLimit)
+                    {
+                        @Html.Raw("</td></tr></table></td></tr>");
+                    }
+                }
+    </tr>
+</table>
         </td>
     </tr>
 </table>

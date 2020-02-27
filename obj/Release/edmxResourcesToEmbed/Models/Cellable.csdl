@@ -8,6 +8,8 @@
     <Property Name="CarrierName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="UserPhones" Relationship="Self.FK_171" FromRole="Carrier" ToRole="UserPhone" />
     <Property Name="ImageName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Value" Type="Decimal" Precision="18" Scale="0" />
+    <NavigationProperty Name="VersionCarriers" Relationship="CellableModel.FK_VersionCarrier_Carrier" FromRole="Carrier" ToRole="VersionCarrier" />
   </EntityType>
   <EntityType Name="Order">
     <Key>
@@ -82,6 +84,7 @@
     <Property Name="Purchases" Type="Int32" />
     <Property Name="Active" Type="Boolean" />
     <NavigationProperty Name="VersionCapacities" Relationship="CellableModel.FK_VersionCapacity_PhoneVersion" FromRole="PhoneVersion" ToRole="VersionCapacity" />
+    <NavigationProperty Name="VersionCarriers" Relationship="CellableModel.FK_VersionCarrier_PhoneVersion" FromRole="PhoneVersion" ToRole="VersionCarrier" />
   </EntityType>
   <EntityType Name="PossibleDefect">
     <Key>
@@ -438,6 +441,15 @@
     <EntitySet Name="SystemSettings" EntityType="CellableModel.SystemSetting" />
     <EntitySet Name="SlideShows" EntityType="CellableModel.SlideShow" />
     <EntitySet Name="Testimonials" EntityType="CellableModel.Testimonial" />
+    <EntitySet Name="VersionCarriers" EntityType="CellableModel.VersionCarrier" />
+    <AssociationSet Name="FK_VersionCarrier_Carrier" Association="CellableModel.FK_VersionCarrier_Carrier">
+      <End Role="Carrier" EntitySet="Carriers" />
+      <End Role="VersionCarrier" EntitySet="VersionCarriers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VersionCarrier_PhoneVersion" Association="CellableModel.FK_VersionCarrier_PhoneVersion">
+      <End Role="PhoneVersion" EntitySet="PhoneVersions" />
+      <End Role="VersionCarrier" EntitySet="VersionCarriers" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="DefectGroup">
     <Key>
@@ -535,4 +547,39 @@
     <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="Published" Type="Boolean" />
   </EntityType>
+  <EntityType Name="VersionCarrier">
+    <Key>
+      <PropertyRef Name="VersionCarrierId" />
+    </Key>
+    <Property Name="VersionCarrierId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="VersionId" Type="Int32" Nullable="false" />
+    <Property Name="CarrierId" Type="Int32" Nullable="false" />
+    <Property Name="Value" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+    <NavigationProperty Name="Carrier" Relationship="CellableModel.FK_VersionCarrier_Carrier" FromRole="VersionCarrier" ToRole="Carrier" />
+    <NavigationProperty Name="PhoneVersion" Relationship="CellableModel.FK_VersionCarrier_PhoneVersion" FromRole="VersionCarrier" ToRole="PhoneVersion" />
+  </EntityType>
+  <Association Name="FK_VersionCarrier_Carrier">
+    <End Type="CellableModel.Carrier" Role="Carrier" Multiplicity="1" />
+    <End Type="CellableModel.VersionCarrier" Role="VersionCarrier" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Carrier">
+        <PropertyRef Name="CarrierId" />
+      </Principal>
+      <Dependent Role="VersionCarrier">
+        <PropertyRef Name="CarrierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VersionCarrier_PhoneVersion">
+    <End Type="CellableModel.PhoneVersion" Role="PhoneVersion" Multiplicity="1" />
+    <End Type="CellableModel.VersionCarrier" Role="VersionCarrier" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PhoneVersion">
+        <PropertyRef Name="VersionId" />
+      </Principal>
+      <Dependent Role="VersionCarrier">
+        <PropertyRef Name="VersionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

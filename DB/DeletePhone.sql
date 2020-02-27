@@ -1,11 +1,14 @@
+DECLARE @VersionID int;
+SELECT @VersionID = 71;
+
 SELECT [AnswerId]
       ,[Answer]
       ,[PossibleDefectId]
       ,[UserPhoneId]
   FROM [dbo].[UserAnswers] 
 
-  delete from Orders where UserPhoneId = 47
-  delete from UserAnswers where UserPhoneId = 47
+  delete from Orders where UserPhoneId = 8
+  delete from UserAnswers where UserPhoneId = 8
 
   SELECT [UserPhoneId]
       ,[UserId]
@@ -15,7 +18,7 @@ SELECT [AnswerId]
       ,[CreateDate]
   FROM [dbo].[UserPhone]
 
-  delete from UserPhone where VersionId = 14
+  delete from UserPhone where VersionId = 9
 
   SELECT [VersionCapacityId]
       ,[VersionId]
@@ -23,7 +26,7 @@ SELECT [AnswerId]
       ,[Value]
   FROM [dbo].[VersionCapacity]
 
-    delete from [VersionCapacity] where VersionId = 46
+    delete from [VersionCapacity] where VersionId = @VersionID
 
   SELECT TOP (1000) [PossibleDefectId]
       ,[DefectName]
@@ -33,8 +36,7 @@ SELECT [AnswerId]
       ,[GroupImage]
   FROM [dbo].[PossibleDefects]
 
-    delete from [PossibleDefects] where VersionId = 46
-
+    delete from [PossibleDefects] where VersionId = @VersionID
 
   SELECT TOP (1000) [VersionId]
       ,[Version]
@@ -47,4 +49,4 @@ SELECT [AnswerId]
       ,[Active]
   FROM [dbo].[PhoneVersion]
 
-      delete from [PhoneVersion] where VersionId = 46
+      delete from [PhoneVersion] where VersionId = @VersionID

@@ -4,6 +4,7 @@
     <EntitySetMapping Name="Carriers">
       <EntityTypeMapping TypeName="CellableModel.Carrier">
         <MappingFragment StoreEntitySet="Carrier">
+          <ScalarProperty Name="Value" ColumnName="Value" />
           <ScalarProperty Name="ImageName" ColumnName="ImageName" />
           <ScalarProperty Name="CarrierId" ColumnName="CarrierId" />
           <ScalarProperty Name="CarrierName" ColumnName="CarrierName" />
@@ -211,6 +212,16 @@
           <ScalarProperty Name="Rating" ColumnName="Rating" />
           <ScalarProperty Name="Text" ColumnName="Text" />
           <ScalarProperty Name="TestimonialId" ColumnName="TestimonialId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VersionCarriers">
+      <EntityTypeMapping TypeName="CellableModel.VersionCarrier">
+        <MappingFragment StoreEntitySet="VersionCarrier">
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="CarrierId" ColumnName="CarrierId" />
+          <ScalarProperty Name="VersionId" ColumnName="VersionId" />
+          <ScalarProperty Name="VersionCarrierId" ColumnName="VersionCarrierId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

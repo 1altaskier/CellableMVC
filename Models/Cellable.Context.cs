@@ -46,6 +46,7 @@ namespace CellableMVC.Models
         public virtual DbSet<SystemSetting> SystemSettings { get; set; }
         public virtual DbSet<SlideShow> SlideShows { get; set; }
         public virtual DbSet<Testimonial> Testimonials { get; set; }
+        public virtual DbSet<VersionCarrier> VersionCarriers { get; set; }
     
         public virtual ObjectResult<Order> GetOrderDetails(Nullable<int> userId)
         {
