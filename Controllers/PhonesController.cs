@@ -80,7 +80,7 @@ namespace CellableMVC.Controllers
 
             ViewBag.imageLocation = imageLocation;
 
-            IList<Carrier> carriers = db.Carriers.ToList();
+            IList<Carrier> carriers = db.Carriers.Where(x => x.Active == true).ToList();
 
             return View(carriers);
         }

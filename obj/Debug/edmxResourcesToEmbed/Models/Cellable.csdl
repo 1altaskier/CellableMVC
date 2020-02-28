@@ -10,6 +10,7 @@
     <Property Name="ImageName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Value" Type="Decimal" Precision="18" Scale="0" />
     <NavigationProperty Name="VersionCarriers" Relationship="CellableModel.FK_VersionCarrier_Carrier" FromRole="Carrier" ToRole="VersionCarrier" />
+    <Property Name="Active" Type="Boolean" />
   </EntityType>
   <EntityType Name="Order">
     <Key>
