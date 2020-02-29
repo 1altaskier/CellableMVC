@@ -34,7 +34,7 @@
                         @Html.Raw("<tr><td><table style='margin-right:auto; margin-left:auto;'><tr><td style='margin-right:auto; margin-left:auto;'>");
                     }
                     <td style="vertical-align:bottom;">
-                        @if (Session["VersionId"] == null)
+                        @if (Request["Search"] == null)
                         {
                             <a href="@Url.Action("PhoneVersions", "Phones", new { brandId = Session["BrandId"], carrierId = item.CarrierId })" class="btn">
                                 @if (@item.ImageName != null)

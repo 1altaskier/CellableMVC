@@ -26,6 +26,7 @@ namespace CellableMVC.Models
         public string ImageName { get; set; }
         public Nullable<decimal> Value { get; set; }
         public Nullable<bool> Active { get; set; }
+        public Nullable<int> Order { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserPhone> UserPhones { get; set; }
