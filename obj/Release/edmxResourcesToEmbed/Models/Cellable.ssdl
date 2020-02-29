@@ -8,6 +8,7 @@
     <Property Name="CarrierName" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="ImageName" Type="nvarchar" MaxLength="50" />
     <Property Name="Value" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="Active" Type="bit" />
   </EntityType>
   <EntityType Name="DefectGroup">
     <Key>
@@ -203,7 +204,7 @@
     <Property Name="CarrierId" Type="int" Nullable="false" />
     <Property Name="Value" Type="decimal" Precision="18" Scale="0" Nullable="false" />
   </EntityType>
-  <Association Name="FK__PhoneVers__Phone__5070F446">
+  <Association Name="FK__PhoneVers__Phone__778AC167">
     <End Role="Phones" Type="Self.Phones" Multiplicity="0..1" />
     <End Role="PhoneVersion" Type="Self.PhoneVersion" Multiplicity="*" />
     <ReferentialConstraint>
@@ -443,7 +444,7 @@
     <EntitySet Name="UserPhone" EntityType="Self.UserPhone" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="VersionCapacity" EntityType="Self.VersionCapacity" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="VersionCarrier" EntityType="Self.VersionCarrier" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK__PhoneVers__Phone__5070F446" Association="Self.FK__PhoneVers__Phone__5070F446">
+    <AssociationSet Name="FK__PhoneVers__Phone__778AC167" Association="Self.FK__PhoneVers__Phone__778AC167">
       <End Role="Phones" EntitySet="Phones" />
       <End Role="PhoneVersion" EntitySet="PhoneVersion" />
     </AssociationSet>
