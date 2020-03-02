@@ -4,6 +4,7 @@
     <EntitySetMapping Name="Carriers">
       <EntityTypeMapping TypeName="CellableModel.Carrier">
         <MappingFragment StoreEntitySet="Carrier">
+          <ScalarProperty Name="Order" ColumnName="Order" />
           <ScalarProperty Name="Active" ColumnName="Active" />
           <ScalarProperty Name="Value" ColumnName="Value" />
           <ScalarProperty Name="ImageName" ColumnName="ImageName" />
