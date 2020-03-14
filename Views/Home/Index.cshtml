@@ -2,7 +2,10 @@
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var testimonals = ViewBag.Testimonials;
 }
+
 <div style="height:50px"></div>
 <table style="width:100%;">
     <tr>
@@ -38,6 +41,64 @@
             </table>
         </td>
     </tr>
+    <tr>
+        <td style="text-align:center;">
+            <table style="width:100%; margin-left:auto; margin-right:auto; margin-top:80px;">
+                <tr><td style="height:20px;"></td></tr>
+                <tr>
+                    <td>
+                        @ViewBag.Body
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:100%; text-align:center; margin-top:50px;">
+            <table style="width:60%; margin-left:auto; margin-right:auto; text-align:center;">
+                <tr>
+                    <td>
+                        <div style="margin-top:50px;"></div>
+                        <div class="slideshow-container">
+                            @foreach (var testimonial in testimonals)
+                            {
+                                <div class="mySlides">
+                                    @for (var i = 1; i <= testimonial.Rating; i++)
+                                    {
+
+                                        @Html.Raw("<span class='fa fa-star checked'></span>");
+                                    }
+                                    <i>@Html.Raw(testimonial.Text)</i>
+                                </div>
+                                <a class="prev" onclick="plusSlides(-1)">❮</a>
+                                <a class="next" onclick="plusSlides(1)">❯</a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:100%; text-align:center;">
+            <table style="width:60%; margin-left:auto; margin-right:auto; text-align:center;">
+                <tr>
+                    <td>
+                        <div class="dot-container">
+                            @{
+                                var x = 1;
+                                foreach (var testimonial in testimonals)
+                                {
+                                    @Html.Raw("<span class='dot' onclick='currentSlide(" + x + ")'></span>");
+                                    x++;
+                                }
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
     <tr><td style="height:50px"></td></tr>
 </table>
 <table style="width:100%; margin-left:auto; margin-right:auto;">
@@ -47,4 +108,33 @@
         </td>
     </tr>
 </table>
+
+<script>
+    var slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("dot");
+        if (n > slides.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = slides.length }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+    }
+</script>
 

@@ -20,15 +20,20 @@ namespace CellableMVC.Controllers
             // Set the Average Star Rating Stuff
             AvgRating();
 
+            // Get Testimonials
+            IList<Testimonial> testimonial = db.Testimonials.Where(x => x.Published == true).ToList();
+
             var title = db.SystemSettings.Find(18);
             var text = db.SystemSettings.Find(2);
+            var body = db.SystemSettings.Find(49);
             var footer = db.SystemSettings.Find(3);
             var Slide1 = db.SystemSettings.Find(4);
 
 
-            //ViewBag.AvgRating = avgRating;
+            ViewBag.Testimonials = testimonial;
             ViewBag.Title = title.Value;
             ViewBag.Text = text.Value;
+            ViewBag.Body = body.Value;
             ViewBag.Footer = footer.Value;
 
             ViewBag.imageLocation = imageLocation;
@@ -45,20 +50,8 @@ namespace CellableMVC.Controllers
 
         public ActionResult About()
         {
-            //var avgRating = AvgRating();
-
-            //vmAbout vmAbout = new vmAbout();
-            //ViewBag.AvgRating = avgRating;
-
-            // Get Testimonials
-            IList<Testimonial> testimonial = db.Testimonials.ToList();
-
-            //vmAbout.testimonials = testimonial;
-            //vmAbout.title = db.SystemSettings.Find(39).ToString();
-            //vmAbout.text = db.SystemSettings.Find(40).ToString();
-            //vmAbout.body = db.SystemSettings.Find(49).ToString();
-            //vmAbout.footer = db.SystemSettings.Find(41).ToString();
-            //vmAbout.image = db.SystemSettings.Find(42).ToString();
+            // Set the Average Star Rating Stuff
+            AvgRating();
 
             var title = db.SystemSettings.Find(39);
             var text = db.SystemSettings.Find(40);
@@ -66,7 +59,6 @@ namespace CellableMVC.Controllers
             var footer = db.SystemSettings.Find(41);
             var image = db.SystemSettings.Find(42);
 
-            ViewBag.Testimonials = testimonial;
             ViewBag.Title = title.Value;
             ViewBag.Text = text.Value;
             ViewBag.Body = body.Value;
@@ -80,8 +72,8 @@ namespace CellableMVC.Controllers
 
         public ActionResult Contact()
         {
-            //var avgRating = AvgRating();
-            //ViewBag.AvgRating = avgRating;
+            // Set the Average Star Rating Stuff
+            AvgRating();
 
             var title = db.SystemSettings.Find(39);
             var address = db.SystemSettings.Find(9);
