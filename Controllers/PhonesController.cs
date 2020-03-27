@@ -238,7 +238,16 @@ namespace CellableMVC.Controllers
 
             if (Session["Phone Value"] == null)
             {
-                Session["Phone Value"] = baseCost;
+                Session["Phone Value"] = baseCost < 0 ? 0 : baseCost;
+
+                if (baseCost < 0)
+                {
+                    Session["Phone Value"] = 0;
+                }
+                else
+                {
+                    Session["Phone Value"] = baseCost;
+                }
             }
 
             var title = db.SystemSettings.Find(27);

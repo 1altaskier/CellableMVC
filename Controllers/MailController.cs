@@ -7,7 +7,9 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using CellableMVC.Models;
-using System.Data.Entity;
+using RestSharp;
+using shipstation_erp.Models;
+using System.Data.Linq;
 
 namespace CellableMVC.Controllers
 {
@@ -69,6 +71,84 @@ namespace CellableMVC.Controllers
             string outCity = a.City;
             string outState = a.State;
         }
+
+        [HttpPost]
+        public void GetShipStationLabel(int orderId, int userId)
+        {
+            var client = new RestClient("https://ssapi.shipstation.com/orders/createlabelfororder");
+            client.Timeout = -1;
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Host", "ssapi.shipstation.com");
+            request.AddHeader("Authorization", "__YOUR_AUTH_HERE__");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddParameter("application/json", "{\n  \"orderId\": " + orderId + ",\n  \"carrierCode\": \"fedex\",\n  \"serviceCode\": \"fedex_2day\",\n  \"packageCode\": \"package\",\n  \"confirmation\": null,\n  \"shipDate\": \"2014-04-03\",\n  \"weight\": {\n    \"value\": 2,\n    \"units\": \"pounds\"\n  },\n  \"dimensions\": null,\n  \"insuranceOptions\": null,\n  \"internationalOptions\": null,\n  \"advancedOptions\": null,\n  \"testLabel\": false\n}", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            Console.WriteLine(response.Content);
+        }
+
+        //public ShipStationCreateOrderRequest GetShipStationCreateOrderRequestByExternalRef(long external_ref)
+        //{
+        //    ShipStationCreateOrderRequest o = new ShipStationCreateOrderRequest();
+        //    billTo b = new billTo();
+        //    shipTo s = new shipTo();
+        //    List<customsItems> Custom = new List<customsItems>();
+        //    oShipInternational intl = new oShipInternational();
+        //    using (var dc = new stylusDataContext())
+        //    {
+        //        ISingleResult<sp_get_order_by_external_refResult> res = dc.sp_get_order_by_external_ref(external_ref);
+        //        foreach (sp_get_order_by_external_refResult ret in res)
+        //        {
+        //            o.orderNumber = external_ref.ToString();
+        //            o.orderDate = ret.sale_datetime.ToString();
+
+        //            o.orderStatus = "awaiting_shipment";
+
+        //            b.name = "Your department.";
+        //            b.company = "Your company";
+        //            b.street1 = "Your address";
+        //            b.city = "city";
+        //            b.state = "ST";
+        //            b.postalCode = "06902";
+        //            b.country = "US";
+        //            b.phone = "888-888-5555";
+        //            b.residential = false;
+
+        //            o.billTo = b;
+
+        //            shipTo st = new shipTo();
+        //            st.name = ret.customer_name;
+        //            st.company = null;
+        //            st.street1 = ret.shipping_address_1;
+        //            st.street2 = ret.shipping_address_2;
+        //            //st.street3 = ret.shipping_address_3;
+        //            if (ret.shipping_country_code != "US")
+        //            {
+        //                intl.contents = "merchandise";
+        //                intl.nonDelivery = "return_to_sender";
+        //                customsItems c = new customsItems();
+        //                c.description = ret.description;
+        //                c.quantity = ret.quantity;
+        //                c.value = 14 * ret.quantity;
+        //                c.harmonizedTariffCode = "";
+        //                c.countryOfOrigin = "US";
+        //                Custom.Add(c);
+        //                intl.customsItems = Custom;
+        //                o.internationalOptions = intl;
+        //            }
+
+        //            st.city = ret.shipping_address_3;
+        //            st.state = ret.shipping_address_4;
+        //            st.postalCode = ret.shipping_postcode;
+        //            st.country = ret.shipping_country_code;
+        //            st.phone = ret.phone;
+        //            st.residential = true;
+
+        //            o.shipTo = st;
+        //        }
+        //        return o;
+        //    }
+        //    return o;
+        //}
 
         public void GetShippingLabel(int userId, int orderId)
         {
@@ -133,7 +213,7 @@ namespace CellableMVC.Controllers
 
             // select desired shipping rate according to your business logic
             // we simply select the first rate in this example
-            Rate rate = shipment.Rates[0];
+            Rate rate = shipment.Rates[3];
 
             Hashtable transactionParameters = new Hashtable();
             transactionParameters.Add("rate", rate.ObjectId);
