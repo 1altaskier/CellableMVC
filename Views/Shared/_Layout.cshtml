@@ -46,16 +46,16 @@
                     <tr style="vertical-align:middle;">
 
                         <td style="width:20%; text-align:center;" class="Header">
-                            <h2>@Html.ActionLink("Cellable", "Index", "Home", new { }, new { style = "color:lawngreen;" })</h2>
+
+                            <h2 style="font-size: 25px; font-family:;">@Html.ActionLink("Cellable", "Index", "Home", new { }, new { style = "color:lawngreen;" })</h2>
                             @{ var total = int.Parse(Session["AvgStars"].ToString()); }
                             @for (int i = 1; i <= total; i++)
                             {
                                 <span class='fa fa-star checked'></span>
                             }
-                            (ratings: @Session["TotalStars"])
+                            (@Session["TotalStars"])
                         </td>
                         <td style="text-align:left; vertical-align:middle; width:50%">
-                            <div style="display: inline-block; width:80px">@Html.ActionLink("Home", "Index", "Home", new { }, new { @class = "NavLink" })</div>
                             <div style="display: inline-block; width:80px">@Html.ActionLink("About", "About", "Home", new { }, new { @class = "NavLink" })</div>
                             @if (System.Web.HttpContext.Current.Session["LoggedInUser"] != null && Session["LoggedInUser"].ToString() != "")
                             {
@@ -76,9 +76,9 @@
                         <td style="width:20%; text-align:left">
                             @using (Html.BeginForm("SearchResults", "Phones", FormMethod.Post, new { enctype = "multipart/form-data" }))
                             {
-                                <button type="submit" name="submit" id="submit" value="submit" style="float:right; background-color:black; border-color:black; float:right"><i class="fa fa-search" style="color:lawngreen"></i></button>
+                                <button type="submit" name="submit" id="submit" value="submit" style="float:right; background-color:black; border-color:black; float:right; border-radius: 5px;"><i class="fa fa-search" style="color:lawngreen"></i></button>
                                 <div style="overflow: hidden; padding-right: .5em;">
-                                    <input type="search" id="searchString" name="searchString" placeholder="Search For Your Phone" style="width:400px">@Html.Raw("&nbsp;&nbsp;")
+                                    <input type="search" id="searchString" name="searchString" placeholder="Search" style="width:1500px; border-radius: 10px; ">@Html.Raw("&nbsp;&nbsp;")
                                 </div>
                             }
                         </td>
@@ -101,7 +101,7 @@
             </td>
         </tr>
     </table>
-    <table style="bottom:0; width:100%; background-color:#232323; position:fixed;  ">
+    <table style="bottom:0; width:100%; background-color:#000; position:fixed;  ">
         <tr >
             <td style="text-align:left; width:5%;">
             </td>
