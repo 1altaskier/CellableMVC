@@ -360,6 +360,7 @@ namespace CellableMVC.Controllers
                                 userAnswer.Answer = true;
                                 userAnswer.PossibleDefectId = int.Parse(item.ToString());
                                 userAnswer.UserPhoneId = userPhoneId;
+                                //userAnswer.DefectGroupId = 
                                 db.UserAnswers.Add(userAnswer);
                                 db.SaveChanges();
                             }
