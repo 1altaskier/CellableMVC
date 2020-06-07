@@ -354,6 +354,7 @@ namespace CellableMVC.Controllers
                     {
                         if (item.ToString().Contains("QuestionAnswer"))
                         {
+<<<<<<< HEAD
                             UserAnswer userAnswer = new UserAnswer();
 
                             string groupAnswerSession = Session["QuestionAnswer" + i].ToString();
@@ -369,6 +370,18 @@ namespace CellableMVC.Controllers
 
                             db.UserAnswers.Add(userAnswer);
                             db.SaveChanges();
+=======
+                            if (Session[item.ToString()].ToString() != "0.00" && Session[item.ToString()].ToString() != "0")
+                            {
+                                UserAnswer userAnswer = new UserAnswer();
+                                userAnswer.Answer = true;
+                                userAnswer.PossibleDefectId = int.Parse(item.ToString());
+                                userAnswer.UserPhoneId = userPhoneId;
+                                //userAnswer.DefectGroupId = 
+                                db.UserAnswers.Add(userAnswer);
+                                db.SaveChanges();
+                            }
+>>>>>>> 28c30d10493d82fa3cb9c30c1ebd48d485dc6a94
                         }
                     }
 

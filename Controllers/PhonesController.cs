@@ -133,7 +133,7 @@ namespace CellableMVC.Controllers
             possibleDefects = db.PossibleDefects.ToList().OrderBy(x => x.DefectGroup.DisplayOrder).Where(x => x.VersionId == id).ToList();
 
             // Get the Version Info for this Particular Phone
-            PhoneVersion phoneVersion = db.PhoneVersions.Find(id); 
+            PhoneVersion phoneVersion = db.PhoneVersions.Find(id);
 
             // Update Phone Version View Count to DB
             if (phoneVersion.Views == null)

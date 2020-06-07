@@ -59,54 +59,47 @@
                             }
                         </div>
                         <p />
-                        @if (decimal.Parse(Session["Phone Value"].ToString()) > 0)
+                        @if (Session["PromoCode"] == null)
                         {
-                            if (Session["PromoCode"] == null)
-                            {
-                                using (Html.BeginForm("CalcPromo", "Phones", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                                {
-                                    Html.AntiForgeryToken();
-
-                                    Html.Raw("Do you have a Promo Code?");
-                                    <br />
-                                    <input id="id" name="id" type="hidden" value="@Session["VersionId"]" />
-                                    <input id="PromoCode" name="PromoCode" type="text" placeholder="Enter Promo Code" autofocus />
-                                    <button type="submit" name="submit" id="PromoCode" class="PromoCode" value="reset">
-                                        <i class="fa fa-plus-square"></i>
-                                    </button>
-                                    <p></p>
-                                }
-                            }
-                            else
-                            {
-                                //string discount = Session["PromoDiscount"].ToString();
-                                //discount.Split(char["."])[0];
-
-                                Html.Raw("Promo Code Applied");
-                                <br />
-                                Html.Raw("Promo Code: " + Session["PromoCode"]);
-                                <br />
-                                if (Session["PromoType"].ToString() == "%")
-                                {
-                                    Html.Raw("+" + Session["PromoValue"] + Session["PromoType"]);
-                                }
-                                else
-                                {
-                                    Html.Raw("+" + Session["PromoType"] + decimal.Round(decimal.Parse(Session["PromoValue"].ToString()), 2).ToString());
-                                }
-                            }
-                            using (Html.BeginForm("CompleteUserPhoneRegistration", "Users"))
+                            using (Html.BeginForm("CalcPromo", "Phones", FormMethod.Post, new { enctype = "multipart/form-data" }))
                             {
                                 @Html.AntiForgeryToken()
-                                <p>
-                                    <input type="submit" value="Sell My Phone" class="button" onclick="return valid_form()" />
-                                    <input type="button" value="Cancel" class="button" onclick="location.href='@Url.Action("Cancel", "Users")';return false;" />
-                                </p>
+
+                                @Html.Raw("Do you have a Promo Code?");
+                                <br />
+                                <input id="id" name="id" type="hidden" value="@Session["VersionId"]" />
+                                <input id="PromoCode" name="PromoCode" type="text" placeholder="Enter Promo Code" autofocus />
+                                <button type="submit" name="submit" id="PromoCode" class="PromoCode" value="reset">
+                                    <i class="fa fa-plus-square"></i>
+                                </button>
+                                <p></p>
                             }
                         }
                         else
                         {
-                            @Html.Raw("<div class='text-danger'>Unfortunately, we cannot purchase your phone.</div>")
+                            //string discount = Session["PromoDiscount"].ToString();
+                            //discount.Split(char["."])[0];
+
+                            @Html.Raw("Promo Code Applied");
+                            <br />
+                            @Html.Raw("Promo Code: " + Session["PromoCode"]);
+                            <br />
+                            if (Session["PromoType"].ToString() == "%")
+                            {
+                                @Html.Raw("+" + Session["PromoValue"] + Session["PromoType"]);
+                            }
+                            else
+                            {
+                                @Html.Raw("+" + Session["PromoType"] + decimal.Round(decimal.Parse(Session["PromoValue"].ToString()), 2).ToString());
+                            }
+                        }
+                        @using (Html.BeginForm("CompleteUserPhoneRegistration", "Users"))
+                        {
+                            @Html.AntiForgeryToken()
+                            <p>
+                                <input type="submit" value="Sell My Phone" class="button" onclick="return valid_form()" />
+                                <input type="button" value="Cancel" class="button" onclick="location.href='@Url.Action("Cancel", "Users")';return false;" />
+                            </p>
                         }
                     </td>
                     <td style="width:30%;">
@@ -157,7 +150,7 @@
                                     {
                                         @Html.Raw(Session["Phone Value"].ToString())@Html.Raw(".00")
                                     }
-                                </td>
+                                    </td>
                             </tr>
                         </table>
                     </td>
