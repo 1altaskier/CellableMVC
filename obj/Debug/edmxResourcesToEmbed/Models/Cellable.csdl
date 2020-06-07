@@ -167,6 +167,8 @@
     <Property Name="UserPhoneId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="PossibleDefect" Relationship="Self.FK_110" FromRole="UserAnswers" ToRole="PossibleDefects" />
     <NavigationProperty Name="UserPhone" Relationship="Self.FK_137" FromRole="UserAnswers" ToRole="UserPhone" />
+    <Property Name="DefectGroupId" Type="Int32" />
+    <Property Name="UserAnswerId" Type="Int32" />
   </EntityType>
   <EntityType Name="UserPhone">
     <Key>

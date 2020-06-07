@@ -348,21 +348,27 @@ namespace CellableMVC.Controllers
                     db.SaveChanges();
                     var userPhoneId = userPhone.UserPhoneId;
 
+                    var i = 0;
                     // Save User Answers
                     foreach (var item in Session)
                     {
-                        var temp = 0;
-                        if (int.TryParse(item.ToString(), out temp))
+                        if (item.ToString().Contains("QuestionAnswer"))
                         {
-                            if (Session[item.ToString()].ToString() != "0.00" && Session[item.ToString()].ToString() != "0")
-                            {
-                                UserAnswer userAnswer = new UserAnswer();
-                                userAnswer.Answer = true;
-                                userAnswer.PossibleDefectId = int.Parse(item.ToString());
-                                userAnswer.UserPhoneId = userPhoneId;
-                                db.UserAnswers.Add(userAnswer);
-                                db.SaveChanges();
-                            }
+                            UserAnswer userAnswer = new UserAnswer();
+
+                            string groupAnswerSession = Session["QuestionAnswer" + i].ToString();
+                            string[] delimiter = new string[] { "_" };
+                            string[] groupAnswer;
+                            groupAnswer = groupAnswerSession.Split(delimiter, StringSplitOptions.None);
+
+                            userAnswer.Answer = true;
+                            userAnswer.PossibleDefectId = int.Parse(groupAnswer[1]);
+                            userAnswer.UserPhoneId = userPhoneId;
+                            userAnswer.DefectGroupId = int.Parse(groupAnswer[0].ToString());
+                            userAnswer.UserAnswerId = int.Parse(groupAnswer[1].ToString());
+
+                            db.UserAnswers.Add(userAnswer);
+                            db.SaveChanges();
                         }
                     }
 

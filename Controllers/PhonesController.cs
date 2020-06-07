@@ -203,7 +203,7 @@ namespace CellableMVC.Controllers
                 baseCost = decimal.Parse(Session["BaseValue"].ToString());
             }
 
-
+            var i = 0;
             foreach (var item in form)
             {
                 if (item.ToString() != "__RequestVerificationToken" &&
@@ -220,10 +220,14 @@ namespace CellableMVC.Controllers
                     string[] defect;
                     defect = defectField.Split(delimiter, StringSplitOptions.None);
 
-                    if (defect[1] != "0" && defect[1] != "0.00")
+                    if (defect[2] != "0" && defect[2] != "0.00")
                     {
-                        baseCost -= decimal.Parse(defect[1]);
-                        Session[defect[0]] = defect[1];
+                        baseCost -= decimal.Parse(defect[2]);
+                        Session[defect[1]] = defect[2];
+
+                        Session["QuestionAnswer" + i] = defect[0] + "_" + defect[1] + "_" + defect[2];
+
+                        i++;
                     }
                 }
             }

@@ -18,6 +18,8 @@ namespace CellableMVC.Models
         public bool Answer { get; set; }
         public int PossibleDefectId { get; set; }
         public int UserPhoneId { get; set; }
+        public Nullable<int> DefectGroupId { get; set; }
+        public Nullable<int> UserAnswerId { get; set; }
     
         public virtual PossibleDefect PossibleDefect { get; set; }
         public virtual UserPhone UserPhone { get; set; }

@@ -147,6 +147,8 @@
     <EntitySetMapping Name="UserAnswers">
       <EntityTypeMapping TypeName="CellableModel.UserAnswer">
         <MappingFragment StoreEntitySet="UserAnswers">
+          <ScalarProperty Name="UserAnswerId" ColumnName="UserAnswerId" />
+          <ScalarProperty Name="DefectGroupId" ColumnName="DefectGroupId" />
           <ScalarProperty Name="AnswerId" ColumnName="AnswerId" />
           <ScalarProperty Name="Answer" ColumnName="Answer" />
           <ScalarProperty Name="PossibleDefectId" ColumnName="PossibleDefectId" />

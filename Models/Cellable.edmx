@@ -180,6 +180,8 @@
           <Property Name="Answer" Type="bit" Nullable="false" />
           <Property Name="PossibleDefectId" Type="int" Nullable="false" />
           <Property Name="UserPhoneId" Type="int" Nullable="false" />
+          <Property Name="DefectGroupId" Type="int" />
+          <Property Name="UserAnswerId" Type="int" />
         </EntityType>
         <EntityType Name="UserPhone">
           <Key>
@@ -694,6 +696,8 @@
           <Property Name="UserPhoneId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PossibleDefect" Relationship="Self.FK_110" FromRole="UserAnswers" ToRole="PossibleDefects" />
           <NavigationProperty Name="UserPhone" Relationship="Self.FK_137" FromRole="UserAnswers" ToRole="UserPhone" />
+          <Property Name="DefectGroupId" Type="Int32" />
+          <Property Name="UserAnswerId" Type="Int32" />
         </EntityType>
         <EntityType Name="UserPhone">
           <Key>
@@ -1263,6 +1267,8 @@
           <EntitySetMapping Name="UserAnswers">
             <EntityTypeMapping TypeName="CellableModel.UserAnswer">
               <MappingFragment StoreEntitySet="UserAnswers">
+                <ScalarProperty Name="UserAnswerId" ColumnName="UserAnswerId" />
+                <ScalarProperty Name="DefectGroupId" ColumnName="DefectGroupId" />
                 <ScalarProperty Name="AnswerId" ColumnName="AnswerId" />
                 <ScalarProperty Name="Answer" ColumnName="Answer" />
                 <ScalarProperty Name="PossibleDefectId" ColumnName="PossibleDefectId" />

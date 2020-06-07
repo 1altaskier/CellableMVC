@@ -24,7 +24,6 @@
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v5.0"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap" rel="stylesheet">
-
     <script type="text/javascript">
         // Redirect User 1 Minute Before Session Timeout
         var sessionTimeoutWarning = @Session.Timeout- 1;
@@ -36,7 +35,7 @@
             window.location = "/Users/Cancel";
         }
     </script>
-
+    <link rel="icon" href="~/favicon.ico" type="image/vnd.microsoft.icon">
 </head>
 <body>
     <div id="fb-root"></div>
@@ -77,8 +76,8 @@
                         <td style="text-align:left;">
                             @using (Html.BeginForm("SearchResults", "Phones", FormMethod.Post, new { enctype = "multipart/form-data" }))
                             {
-                                <div class="search-box" style="overflow: hidden; top: 50%; left: 50%; height: 40px; background-color: white; border-radius: 40px;">
-                                    <button type="submit" name="submit" id="submit" value="submit" style=" background-color:black; border-color:black; float:right; border-radius: 0%; width: 40px; height: 40px; display: flex; padding: 10px; justify-content: center; align-items: center;"><i class="fa fa-search" style="color:lawngreen; line-height: 10px; z-index: 1;"></i></button>
+                                <div class="search-box" style="overflow: hidden; top: 50%; left: 50%; height: 40px; background-color: white;">
+                                    <button type="submit" name="submit" id="submit" value="submit" style=" background-color:black; border-color:black; float:right; width: 40px; height: 40px; display: flex; padding: 10px; justify-content: center; align-items: center;"><i class="fa fa-search" style="color:lawngreen; line-height: 10px; z-index: 1;"></i></button>
                                     <input type="search" id="searchString" name="searchString" placeholder="Search" style="border: none; background: none; font-size: 16px; line-height: 35px; margin-left: 10px;">@Html.Raw("&nbsp;&nbsp;")
                                 </div>
                             }

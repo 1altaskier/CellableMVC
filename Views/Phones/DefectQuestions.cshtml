@@ -135,7 +135,7 @@
                                         {
                                             if (group.DefectGroupId == defect.DefectGroupId)
                                             {
-                                                <input id="@defect.DefectGroupId" type="radio" name="@group.DefectGroupId" value="@defect.PossibleDefectId@Html.Raw("_")@Html.DisplayFor(modelItem => defect.DefectCost)" onchange="SetField('@group.DefectGroupId')" /> @Html.Raw("&nbsp;")@Html.DisplayFor(modelItem => defect.DefectName)
+                                                <input id="@defect.DefectGroupId" type="radio" name="@group.DefectGroupId" value="@defect.DefectGroupId@Html.Raw("_")@defect.PossibleDefectId@Html.Raw("_")@Html.DisplayFor(modelItem => defect.DefectCost)" onchange="SetField('@group.DefectGroupId')" /> @Html.Raw("&nbsp;") @Html.DisplayFor(modelItem => defect.DefectName)
                                                 @Html.Raw("&nbsp;&nbsp;&nbsp;")
                                             }
                                         }
