@@ -175,6 +175,8 @@
     <Property Name="Answer" Type="bit" Nullable="false" />
     <Property Name="PossibleDefectId" Type="int" Nullable="false" />
     <Property Name="UserPhoneId" Type="int" Nullable="false" />
+    <Property Name="DefectGroupId" Type="int" />
+    <Property Name="UserAnswerId" Type="int" />
   </EntityType>
   <EntityType Name="UserPhone">
     <Key>

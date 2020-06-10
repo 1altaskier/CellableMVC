@@ -125,7 +125,30 @@
                                     @decimal.Truncate(decimal.Parse(Session["BaseValue"].ToString())).00
                                 </td>
                             </tr>
+                            @foreach (var defect in Model)
+                            {
+                                foreach (var item in Session)
+                                {
+                                    var temp = 0;
+                                    if (int.TryParse(item.ToString(), out temp))
+                                    {
+                                        if (defect.PossibleDefectId == int.Parse(item.ToString()) && (Session[item.ToString()].ToString() != "0.00" && Session[item.ToString()].ToString() != "0"))
+                                        {
+                                            @Html.Raw("<tr><td style='padding:3px; text-align:right;'>")
+                                            if (defect.DefectName == "No")
+                                            {
+                                                @defect.DefectGroup.GroupName;
+                                            }
+                                            else
+                                            {
+                                                @defect.DefectName;
+                                            }
+                                            @Html.Raw(": </td><td style='width:25px; text-align:right; color:red;'>- $</td><td style='padding:3px; text-align:right; color:red;'>") @Session[@item.ToString()] @Html.Raw("</td></tr>")
+                                        }
+                                    }
 
+                                }
+                            }
                             @if (Session["PromoCode"] != null)
                             {
                                 @Html.Raw("<tr>")
