@@ -183,7 +183,7 @@ namespace CellableMVC.Controllers
 
             // Get Phone's Base Value & Capacity Description
             decimal? baseCost = null;
-            if (Request["capacity"] != null)
+            if (Request["hdnCapacity"] != null)
             {
                 int carrierId = int.Parse(Session["Carrier"].ToString());
                 int versionId = int.Parse(Session["VersionId"].ToString());
@@ -191,11 +191,9 @@ namespace CellableMVC.Controllers
                 // Get Carrier Cost
                 var versionCarrier = db.VersionCarriers.First(x => x.CarrierId == carrierId && x.VersionId == versionId);
 
-                VersionCapacity vc = db.VersionCapacities.Find(int.Parse(Request["capacity"]));
-                baseCost = vc.Value;
+                baseCost = int.Parse(Request["hdnCapacity"]);
                 baseCost -= decimal.Parse(versionCarrier.Value.ToString());
-                StorageCapacity capacity = db.StorageCapacities.Find(vc.StorageCapacityId);
-                Session["CapacityDescription"] = capacity.Description;
+                Session["CapacityDescription"] = Request["hdnCapacityDesc"];
                 Session["BaseValue"] = baseCost;
             }
             else
@@ -211,7 +209,8 @@ namespace CellableMVC.Controllers
                     item.ToString() != "capacity" &&
                     item.ToString() != "carriers" &&
                     item.ToString() != "hdCarrier" &&
-                    item.ToString() != "hdCapacity" &&
+                    item.ToString() != "hdnCapacity" &&
+                    item.ToString() != "hdnCapacityDesc" &&
                     !item.ToString().Contains("val_") &&
                     !item.ToString().Contains("hdn_"))
                 {

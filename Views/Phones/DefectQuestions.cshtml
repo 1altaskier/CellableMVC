@@ -4,12 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <script type="text/javascript">
+<script type="text/javascript">
     function ValidateForm() {
 
         var isValid = true;
 
-        if (document.getElementById("hdCapacity").value == "") {
+        if (document.getElementById("hdnCapacity").value == "") {
             document.getElementById("CapacityValidationMessage").innerHTML = "* Please Select You Phone's Storage Capacity";
             isValid = false
         }
@@ -34,20 +34,20 @@
         return isValid;
      }
 
-    function SetField(field) {
+    function SetField(field, value, desc) {
 
         if (field == "capacity") {
-            document.getElementById("hdCapacity").value = "GoodToGo";
+            document.getElementById("hdnCapacity").value = value;
+            document.getElementById("hdnCapacityDesc").value = desc;
             document.getElementById("CapacityValidationMessage").innerHTML = "";
         }
         else {
-
             document.getElementById("hdn_" + field).value = field;
         }
 
         //alert(document.getElementById("hdn_" + field).value);
     }
-    </script>
+</script>
 
 <table style="width:80%; margin-left:auto; margin-right:auto;">
     <tr>
@@ -102,13 +102,14 @@
                                     {
                                         if (capacities.StorageCapacityId == versionCapacities.StorageCapacityId)
                                         {
-                                            <input id="capacity" type="radio" name="capacity" value="@versionCapacities.VersionCapacityId" onchange="SetField('capacity')" />@capacities.Description @Html.Raw("&nbsp; &nbsp;")
+                                            <input id="capacity" type="radio" name="capacity" value="@versionCapacities.Value" onchange="SetField('capacity', @versionCapacities.Value, '@capacities.Description')" />@capacities.Description @Html.Raw("&nbsp; &nbsp;")
                                         }
                                     }
                                 }
                                 <br />
                                 <div style="display:inline-block; width:50px;"></div><div id="CapacityValidationMessage" name="CapacityValidationMessage" style="display:inline-block" class="text-danger"></div>
-                                <input type="hidden" name="hdCapacity" id="hdCapacity" />
+                                <input type="hidden" name="hdnCapacity" id="hdnCapacity" />
+                                <input type="hidden" name="hdnCapacityDesc" id="hdnCapacityDesc" />
                             </div>
                         </td>
                     </tr>
@@ -135,7 +136,7 @@
                                         {
                                             if (group.DefectGroupId == defect.DefectGroupId)
                                             {
-                                                <input id="@defect.DefectGroupId" type="radio" name="@group.DefectGroupId" value="@defect.DefectGroupId@Html.Raw("_")@defect.PossibleDefectId@Html.Raw("_")@Html.DisplayFor(modelItem => defect.DefectCost)" onchange="SetField('@group.DefectGroupId')" /> @Html.Raw("&nbsp;") @Html.DisplayFor(modelItem => defect.DefectName)
+                                                <input id="@defect.DefectGroupId" type="radio" name="@group.DefectGroupId" value="@defect.DefectGroupId@Html.Raw("_")@defect.PossibleDefectId@Html.Raw("_")@Html.DisplayFor(modelItem => defect.DefectCost)" onchange="SetField('@group.DefectGroupId', null, null)" /> @Html.Raw("&nbsp;") @Html.DisplayFor(modelItem => defect.DefectName)
                                                 @Html.Raw("&nbsp;&nbsp;&nbsp;")
                                             }
                                         }

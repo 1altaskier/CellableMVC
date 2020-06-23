@@ -122,10 +122,10 @@
                                 </td>
                                 <td style="width:25px; text-align:right; color:forestgreen; font-weight:bold">$</td>
                                 <td style="padding:3px; text-align:right; color:forestgreen; font-weight:bold">
-                                    @decimal.Truncate(decimal.Parse(Session["BaseValue"].ToString())).00
+                                    @decimal.Truncate(decimal.Parse(Session["BaseValue"].ToString()))
                                 </td>
                             </tr>
-                            @foreach (var defect in Model)
+                            @*@foreach (var defect in Model)
                             {
                                 foreach (var item in Session)
                                 {
@@ -148,7 +148,7 @@
                                     }
 
                                 }
-                            }
+                            }*@
                             @if (Session["PromoCode"] != null)
                             {
                                 @Html.Raw("<tr>")
